@@ -1,37 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/06 13:24:02 by demane            #+#    #+#             */
-/*   Updated: 2026/01/06 22:24:16 by rbourdon         ###   ########.fr       */
+/*   Created: 2026/01/06 21:53:41 by rbourdon          #+#    #+#             */
+/*   Updated: 2026/01/06 22:35:57 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell_remi.h"
 
-int	ft_minishell(int ac, char **av)
+static int	ft_double_size_operator(char *s)
 {
-	char	*line;
-	t_token	*tokens;
+	int	i;
 
-	while (1)
+	if (!s)
+		return (0);
+	i = 1;
+	if (s[i + 1] && s[i + 1] == s[i])
+		return (1);
+	return (0);
+}
+
+t_token		*ft_lexer(char *l)
+{
+	int	i;
+
+	i = -1;
+	if (!l)
+		return (NULL);
+	while (l[++i])
 	{
-		line = read_line();
-		if (!line)
-			return (1);// en realite erreur sans quitter
-		//fonction pour ajouter a l'historique: ft_add_history(line);
-		tokens = ft_lexer(line);
-		free(line);
-		/*
-		parser
-		executeur
-		*/
+
+
+		if (l[i] == '<' || l[i] == '>' || l[i] == '|' || l[i] == '&')
+		{
+			if (ft_double_size_operator(l + i) == 1)
+				// ajout noeud token double operator
+			else
+				// ajout noeud oprator simple
+		}
 
 
 
 	}
-
 }
