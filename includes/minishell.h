@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
+/*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 13:23:59 by demane            #+#    #+#             */
-/*   Updated: 2026/01/06 15:59:04 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/06 16:14:01 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ typedef enum e_token_type {
 	TOKEN_HEREDOC,
 	TOKEN_AND,
 	TOKEN_OR,
-	TOKEN_LPAREN,
-	TOKEN_RPAREN
+	TOKEN_LBRAGUETTE,
+	TOKEN_RBRAGUETTE
 }	t_token_type;
 
 typedef struct s_token {
