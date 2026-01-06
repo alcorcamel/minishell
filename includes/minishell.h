@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 13:23:59 by demane            #+#    #+#             */
-/*   Updated: 2026/01/06 13:47:08 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/06 15:59:04 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ typedef enum e_token_type {
 	TOKEN_APPEND,
 	TOKEN_HEREDOC,
 	TOKEN_AND,
-	TOKEN_OR
+	TOKEN_OR,
+	TOKEN_LPAREN,
+	TOKEN_RPAREN
 }	t_token_type;
 
 typedef struct s_token {
@@ -31,14 +33,15 @@ typedef struct s_token {
 }	t_token;
 
 typedef enum e_node_type {
-	NODE_CMD,
-	NODE_PIPE,
-	NODE_REDIR_IN,
-	NODE_REDIR_OUT,
-	NODE_REDIR_APPEND,
-	NODE_HEREDOC,
-	NODE_AND,
-	NODE_OR
+	NODE_CMD,// word
+	NODE_PIPE,// |
+	NODE_REDIR_IN,// <
+	NODE_REDIR_OUT,// >
+	NODE_REDIR_APPEND, // >>
+	NODE_HEREDOC, // <<
+	NODE_AND,// &&
+	NODE_OR,// ||
+	NODE_SUBSHELL,// (...word or pipe etc...)
 }	t_node_type;
 
 typedef struct s_ast {
@@ -48,5 +51,7 @@ typedef struct s_ast {
 	char			**args;
 	char			filename;
 }	t_ast;
+
+t_token		*ft_lexer(char *input);
 
 #endif
