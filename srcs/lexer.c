@@ -6,7 +6,7 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 21:53:41 by rbourdon          #+#    #+#             */
-/*   Updated: 2026/01/07 16:44:21 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/07 19:13:09 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,15 @@ static void	ft_operator_assignment(t_token **lst_begin, char *s)
 	if (!s)
 		return ;
 	if (s[i] == '|')
-		ft_lstadd_back(lst_begin, TOKEN_PIPE);
+		ft_lstadd_back(lst_begin, ft_lstnew(TOKEN_PIPE));
 	else if (s[i] == '>')
-		ft_lstadd_back(lst_begin, TOKEN_REDIR_OUT);
+		ft_lstadd_back(lst_begin, ft_lstnew(TOKEN_REDIR_OUT));
 	else if (s[i] == '<')
-		ft_lstadd_back(lst_begin, TOKEN_REDIR_IN);
+		ft_lstadd_back(lst_begin, ft_lstnew(TOKEN_REDIR_IN));
 	else if (s[i] == '(')
-		ft_lstadd_back(lst_begin, TOKEN_LBRACKET);
+		ft_lstadd_back(lst_begin, ft_lstnew(TOKEN_LBRACKET));
 	else if (s[i] == ')')
-		ft_lstadd_back(lst_begin, TOKEN_RBRACKET);
+		ft_lstadd_back(lst_begin, ft_lstnew(TOKEN_RBRACKET));
 }
 
 static int	ft_double_size_operator(char *s, t_token **lst_begin, int *j)
@@ -77,13 +77,13 @@ static int	ft_double_size_operator(char *s, t_token **lst_begin, int *j)
 	if (s[i + 1] && s[i + 1] == s[i])
 	{
 		if (s[i] == '|')
-			ft_lstadd_back(lst_begin, TOKEN_OR);
+			ft_lstadd_back(lst_begin, ft_lstnew(TOKEN_OR));
 		else if (s[i] == '&')
-			ft_lstadd_back(lst_begin, TOKEN_AND);
+			ft_lstadd_back(lst_begin, ft_lstnew(TOKEN_AND));
 		else if (s[i] == '>')
-			ft_lstadd_back(lst_begin, TOKEN_APPEND);
+			ft_lstadd_back(lst_begin, ft_lstnew(TOKEN_APPEND));
 		else if (s[i] == '<')
-			ft_lstadd_back(lst_begin, TOKEN_HEREDOC);
+			ft_lstadd_back(lst_begin, ft_lstnew(TOKEN_HEREDOC));
 		(*j) += 1;
 		return (1);
 	}

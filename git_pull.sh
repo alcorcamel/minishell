@@ -8,5 +8,5 @@ CHECK_ORIG_REMI=$(git remote | grep -c 'origin-remi')
 if [ "$CHECK_ORIG_REMI" -eq 0 ]; then
 	git remote add origin-remi "git@github.com:alcorcamel/minishell.git"
 fi
-git push origin-akim
-git push origin-remi
+git pull origin-akim main
+git pull origin-remi main
