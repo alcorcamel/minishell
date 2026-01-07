@@ -6,16 +6,13 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 13:23:59 by demane            #+#    #+#             */
-/*   Updated: 2026/01/07 09:45:09 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/07 19:13:03 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_REMI_H
 # define MINISHELL_REMI_H
 # include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
 
 typedef enum e_segtype
 {
@@ -33,6 +30,7 @@ typedef struct	s_seg
 
 typedef enum e_token_type
 {
+	TOKEN_BEGIN,
 	TOKEN_WORD,
 	TOKEN_PIPE,
 	TOKEN_REDIR_IN,
