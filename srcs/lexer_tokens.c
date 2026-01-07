@@ -6,7 +6,7 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 21:05:58 by rbourdon          #+#    #+#             */
-/*   Updated: 2026/01/07 21:43:39 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/07 23:28:30 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,4 +107,19 @@ char	*ft_join_segs(t_seg *seg)
 		temp = temp->next;
 	}
 	return (ret[i] = '\0', ret);
+}
+
+static int	ft_add_seg(t_seg **segs, t_segtype type, char *start, int len)
+{
+	char	*s;
+	t_seg	*node;
+
+	s = ft_strndup(start, len);
+	if (!s)
+		return (0);
+	node = ft_segnew(type, s);
+	if (!node)
+		return (free(s), 0);
+	ft_segadd_back(segs, node);
+	return (1);
 }
