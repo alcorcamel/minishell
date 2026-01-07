@@ -1,35 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell remi.h                                   :+:      :+:    :+:   */
+/*   minishell_remi.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 13:23:59 by demane            #+#    #+#             */
-/*   Updated: 2026/01/06 21:38:01 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/07 09:45:09 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef MINISHELL_REMI_H
+# define MINISHELL_REMI_H
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
 
-typedef enum e_segtype {
+typedef enum e_segtype
+{
 	SEG_RAW,// hors quotes
 	SEG_SQ,// '...'
 	SEG_DQ // "..."
-} t_segtype;
+}	t_segtype;
 
-typedef struct s_seg {
+typedef struct	s_seg
+{
 	t_segtype		type;
 	char			*text;// contenu SANS les quotes
 	struct s_seg	*next;
 } t_seg;
 
-typedef enum e_token_type {
+typedef enum e_token_type
+{
 	TOKEN_WORD,
 	TOKEN_PIPE,
 	TOKEN_REDIR_IN,
@@ -43,14 +46,16 @@ typedef enum e_token_type {
 	TOKEN_EOF
 }	t_token_type;
 
-typedef struct s_token {
+typedef struct s_token
+{
 	t_token_type	type;
 	char			*value;
 	t_seg			*segs;
 	struct s_token	*next;
 }	t_token;
 
-typedef enum e_node_type {
+typedef enum e_node_type
+{
 	NODE_CMD,// word
 	NODE_PIPE,// |
 	NODE_REDIR_IN,// <
