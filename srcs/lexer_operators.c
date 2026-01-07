@@ -6,7 +6,7 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 22:04:53 by rbourdon          #+#    #+#             */
-/*   Updated: 2026/01/07 22:47:24 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/07 22:57:49 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	ft_add_op_helper(t_token **lst, t_token *tok, char *s, int *i)
 	if (s[*i] == '>' && s[*i + 1] == '>')
 	{
 		tok = ft_toknew(TOKEN_APPEND);
-		if (!t)
+		if (!tok)
 			return (0);
 		ft_tokadd_back(lst, tok);
 		(*i) += 2;
@@ -62,5 +62,5 @@ int	ft_add_operator(t_token **lst, char *s, int *i)
 		return (0);
 	if (!tok)
 		return (0);
-	return (ft_tokadd_back(lst, tok), (*i)++;, 1);
+	return (ft_tokadd_back(lst, tok), (*i)++, 1);
 }
