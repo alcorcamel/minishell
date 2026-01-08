@@ -6,7 +6,7 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 13:23:59 by demane            #+#    #+#             */
-/*   Updated: 2026/01/07 23:00:28 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/08 00:31:54 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 typedef enum e_segtype
 {
@@ -74,5 +76,19 @@ typedef struct s_ast {
 }	t_ast;
 
 t_token		*ft_lexer(char *input);
+void		ft_free_segs(t_seg *seg);
+void		ft_free_tokens(t_token *tok);
+int			ft_add_operator(t_token **lst, char *s, int *i);
+int			ft_read_word(t_token **lst, char *s, int *i);
+t_token		*ft_toknew(t_token_type type);
+void		ft_tokadd_back(t_token **lst, t_token *new);
+char		*ft_join_segs(t_seg *seg);
+int			ft_add_seg(t_seg **segs, t_segtype type, char *start, int len);
+int			ft_isspaces(char c);
+int			ft_is_brace(char c);
+int			ft_is_an_operator(char c);
+int			ft_is_sep(char c);
+char		*ft_strndup(const char *s, int n);
+t_token		*ft_lexer(char *l);
 
 #endif

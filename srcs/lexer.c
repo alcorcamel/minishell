@@ -1,44 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_tokens.c                                     :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/07 21:05:58 by rbourdon          #+#    #+#             */
-/*   Updated: 2026/01/08 00:18:20 by rbourdon         ###   ########.fr       */
+/*   Created: 2026/01/06 21:53:41 by rbourdon          #+#    #+#             */
+/*   Updated: 2026/01/08 00:57:18 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell_remi.h"
 
-t_token	*ft_toknew(t_token_type type)
+t_token	*ft_lexer(char *l)
 {
-	t_token	*ret;
+	int		i;
+	t_token	*lst_begin;
 
-	ret = (t_token *)malloc(sizeof(t_token));
-	if (!ret)
+	i = 0;
+	if (!l)
 		return (NULL);
-	ret->type = type;
-	ret->value = NULL;
-	ret->segs = NULL;
-	ret->next = NULL;
-	return (ret);
-}
-
-void	ft_tokadd_back(t_token **lst, t_token *new)
-{
-	t_token	*temp;
-
-	if (!lst || !new)
-		return ;
-	if (!*lst)
+	lst_begin = NULL;
+	while (l[i])
 	{
-		*lst = new;
-		return ;
+		while (ft_isspaces(l[i]))
+			i++;
+		if (!l[i])
+			break ;
+		if (ft_is_brace(l[i]) || ft_is_an_operator(l[i]))
+		{
+			if (!ft_add_operator(&lst_begin, l, &i))
+				return (ft_free_tokens(lst_begin), NULL);
+		}
+		else
+		{
+			if (!ft_read_word(&lst_begin, l, &i))
+				return (ft_free_tokens(lst_begin), NULL);
+		}
 	}
-	temp = *lst;
-	while (temp->next)
-		temp = temp->next;
-	temp->next = new;
+	return (lst_begin);
 }
