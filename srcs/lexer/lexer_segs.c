@@ -6,11 +6,11 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 00:14:41 by rbourdon          #+#    #+#             */
-/*   Updated: 2026/01/08 00:56:27 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/08 13:09:55 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell_remi.h"
+#include "lexer.h"
 
 static size_t	ft_strlen(const char *s)
 {

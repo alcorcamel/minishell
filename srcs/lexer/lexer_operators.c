@@ -6,11 +6,11 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 22:04:53 by rbourdon          #+#    #+#             */
-/*   Updated: 2026/01/07 22:57:49 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/08 13:09:44 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell_remi.h"
+#include "lexer.h"
 
 /*pour || et && a ajouter pour le bonus*/
 

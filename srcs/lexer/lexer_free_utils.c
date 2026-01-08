@@ -6,11 +6,11 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 20:43:38 by rbourdon          #+#    #+#             */
-/*   Updated: 2026/01/08 11:43:40 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/08 13:09:34 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell_remi.h"
+#include "lexer.h"
 
 void	ft_free_segs(t_seg *seg)
 {

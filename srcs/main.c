@@ -6,11 +6,11 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 13:24:02 by demane            #+#    #+#             */
-/*   Updated: 2026/01/08 01:11:12 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/08 13:15:59 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell_remi.h"
+#include "lexer/lexer.h"
 
 static char	*ft_type_printer(t_token_type t)
 {
@@ -30,6 +30,7 @@ static char	*ft_type_printer(t_token_type t)
 		return ("LBRACKET");
 	if (t == TOKEN_RBRACKET)
 		return ("RBRACKET");
+	return (NULL);
 }
 
 static void	ft_print_segs(t_seg *s)
@@ -64,7 +65,7 @@ static void	ft_printer(t_token *lst)
 	}
 }
 
-//clear; cc ./srcs/*.c ./includes/minishell_remi.h -lreadline -lhistory -lncurses
+//clear; cc ./srcs/main.c ./srcs/lexer/*.c ./srcs/lexer/lexer.h -lreadline -lhistory -lncurses
 
 int	main(int ac, char **av)
 {
@@ -84,9 +85,6 @@ int	main(int ac, char **av)
 		parser
 		executeur
 		*/
-
-
-
 	}
-
+	return (0);
 }

@@ -6,11 +6,11 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 23:02:29 by rbourdon          #+#    #+#             */
-/*   Updated: 2026/01/08 00:55:28 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/08 13:09:50 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell_remi.h"
+#include "lexer.h"
 
 
 static int	ft_read_sq(char *s, int *i, t_seg **segs)

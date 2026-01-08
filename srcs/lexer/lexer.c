@@ -6,11 +6,11 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 21:53:41 by rbourdon          #+#    #+#             */
-/*   Updated: 2026/01/08 00:57:18 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/08 13:10:12 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell_remi.h"
+#include "lexer.h"
 
 t_token	*ft_lexer(char *l)
 {

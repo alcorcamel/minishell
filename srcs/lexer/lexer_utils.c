@@ -6,11 +6,11 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 20:40:55 by rbourdon          #+#    #+#             */
-/*   Updated: 2026/01/07 21:55:04 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/08 13:10:05 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell_remi.h"
+#include "lexer.h"
 
 int	ft_isspaces(char c)
 {
