@@ -9,6 +9,7 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <signal.h>
+# include <fcntl.h>
 
 typedef enum e_bool
 {
@@ -52,9 +53,8 @@ typedef struct s_ast {
 	struct s_ast	*left;
 	struct s_ast	*right;
 	char			**args; // argument pour la commande
-	int				infile;
-	int				outfile;
-	char			filename;
+	char			*limiter;
+	char			*filename;
 }	t_ast;
 
 typedef struct s_shell

@@ -2,12 +2,12 @@
 
 int	ft_exec_cmd(t_ast *node, t_shell *shell)
 {
-	int	pid;
-	int	status;
-	int	res;
+	pid_t	pid;
+	int		status;
+	int		res;
 
 	if (ft_is_builtin(node))
-		return (ft_exec_builtin(node, shell->envp));
+		return (ft_exec_builtin(node, shell));
 	pid = fork();
 	if (pid == -1)
 		exit(1);

@@ -1,5 +1,10 @@
 #include "executor.h"
 
+// a mettre avant d executer cette fonction
+// signal(SIGNINT, SIG_IGN)
+// permet d ignorer le signal dans le process parent
+// on le restaura dans les differentes commandes
+
 int	ft_exec_ast(t_ast *node, t_shell *shell)
 {
 	if (node->type == NODE_PIPE)
