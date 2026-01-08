@@ -1,23 +1,24 @@
 #include "executor.h"
 
-void	ft_exec_ast(t_ast *node)
+int	ft_exec_ast(t_ast *node, t_shell *shell)
 {
 	if (node->type == NODE_PIPE)
-		ft_exec_pipe(node);
+		return (ft_exec_pipe(node, shell));
 	if (node->type == NODE_CMD)
-		ft_exec_cmd(node);
+		return (ft_exec_cmd(node, shell));
 	if (node->type == NODE_SUBSHELL)
-		ft_exec_subshell(node);
+		return (ft_exec_subshell(node, shell));
 	if (node->type == NODE_AND)
-		ft_exec_and(node);
+		return (ft_exec_and(node, shell));
 	if (node->type == NODE_OR)
-		ft_exec_or(node);
+		return (ft_exec_or(node, shell));
 	if (node->type == NODE_HEREDOC)
-		ft_exec_heredoc(node);
+		return (ft_exec_heredoc(node, shell));
 	if (node->type == NODE_REDIR_IN)
-		ft_exec_redirect_in(node);
+		return (ft_exec_redirect_in(node, shell));
 	if (node->type == NODE_REDIR_OUT)
-		ft_exec_redirect_out(node);
+		return (ft_exec_redirect_out(node, shell));
 	if (node->type == NODE_REDIR_APPEND)
-		ft_exec_redirect_append(node);
+		return (ft_exec_redirect_append(node, shell));
+	return (1);
 }

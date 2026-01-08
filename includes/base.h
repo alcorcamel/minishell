@@ -1,12 +1,19 @@
 #ifndef TYPES_H
 # define TYPES_H
 
-#include "./libft/libft.h"
+# include "./libft/libft.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <sys/wait.h>
+# include <signal.h>
 
 typedef enum e_bool
 {
-	TRUE,
 	FALSE,
+	TRUE
 }	t_bool;
 
 typedef enum e_token_type {
@@ -49,5 +56,11 @@ typedef struct s_ast {
 	int				outfile;
 	char			filename;
 }	t_ast;
+
+typedef struct s_shell
+{
+	char	**envp;
+	t_bool	in_pipeline;
+}	t_shell;
 
 #endif
