@@ -1,12 +1,19 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   executor.h                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/08 11:55:58 by demane            #+#    #+#             */
-/*   Updated: 2026/01/08 11:55:59 by demane           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#ifndef EXECUTOR_H
+# define EXECUTOR_H
 
+#include "base.h"
+#include "../lexer/lexer.h"
+#include "../parser/parser.h"
+#include "../builtins/builtins.h"
+
+void	ft_exec_pipe(t_ast *ast);
+void	ft_exec_cmd(t_ast *ast);
+void	ft_exec_subshell(t_ast *ast);
+void	ft_exec_or(t_ast *ast);
+void	ft_exec_heredoc(t_ast *ast);
+void	ft_exec_redirect_in(t_ast *ast);
+void	ft_exec_redirect_out(t_ast *ast);
+void	ft_exec_redirect_append(t_ast *ast);
+void	ft_exec_builtin(t_ast *ast);
+
+#endif
