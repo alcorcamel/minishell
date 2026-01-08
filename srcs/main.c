@@ -6,7 +6,7 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 13:24:02 by demane            #+#    #+#             */
-/*   Updated: 2026/01/08 00:58:36 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/08 01:11:12 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	main(int ac, char **av)
 
 	while (1)
 	{
-		line = readline("minishell$ ");
+		line = readline("JARVIS$ ");
 		if (!line)
 			return (1);// en realite erreur sans quitter
 		//fonction pour ajouter a l'historique: ft_add_history(line);
