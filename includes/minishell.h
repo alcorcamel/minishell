@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 13:23:59 by demane            #+#    #+#             */
-/*   Updated: 2026/01/06 16:32:21 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/06 17:54:19 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,12 @@ typedef enum e_node_type {
 }	t_node_type;
 
 typedef struct s_ast {
-	t_node_type		type;
+	t_node_type		type; // type de noeud
 	struct s_ast	*left;
 	struct s_ast	*right;
-	char			**args;
+	char			**args; // argument pour la commande
+	int				infile;
+	int				outfile;
 	char			filename;
 }	t_ast;
 
