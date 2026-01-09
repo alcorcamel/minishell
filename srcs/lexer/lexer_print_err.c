@@ -6,7 +6,7 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 09:17:17 by rbourdon          #+#    #+#             */
-/*   Updated: 2026/01/09 11:26:30 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/09 14:46:10 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,6 @@ void	ft_lex_err(int i, char *s)
 		printf("Error: Expected '%s'\n", s);
 	if (i == 15)
 		printf("Error: Expected \"%s\"\n", s);
+	if (i == 16)
+		printf("Error: Not handled char '%s'\n", s);
 }

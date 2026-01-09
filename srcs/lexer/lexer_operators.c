@@ -6,7 +6,7 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 22:04:53 by rbourdon          #+#    #+#             */
-/*   Updated: 2026/01/09 11:26:56 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/09 17:32:47 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,12 @@
 
 static int	ft_add_op_helper2(t_token **lst, t_token *tok, char *s, int *i)
 {
-	if (s[*i] == '|')
+	if ((s[*i] == '>') && (s[*i + 1] == '|'))
+	{
+		tok = ft_toknew(TOKEN_REDIR_OUT);
+		(*i)++;
+	}
+	else if (s[*i] == '|')
 		tok = ft_toknew(TOKEN_PIPE);
 	else if (s[*i] == '<')
 		tok = ft_toknew(TOKEN_REDIR_IN);
@@ -70,9 +75,9 @@ int	ft_add_operator(t_token **lst, char *s, int *i)
 	int		ret;
 
 	if (s[*i] == ';')
-		return (ft_lex_err(13, ";"), 0);
+		return (ft_lex_err(16, ";"), 0);
 	if (s[*i] == '\\')
-		return (ft_lex_err(13, "\\"), 0);
+		return (ft_lex_err(16, "\\"), 0);
 	if (s[*i] == '|' && s[*i + 1] && s[*i + 1] == '|')
 		return (ft_lex_err(13, "||"), 0);
 	if (s[*i] == '&' && s[*i + 1] && s[*i + 1] == '&')
