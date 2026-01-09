@@ -6,7 +6,7 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 13:24:02 by demane            #+#    #+#             */
-/*   Updated: 2026/01/08 13:15:59 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/09 14:55:04 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	main(int ac, char **av)
 {
 	char	*line;
 	t_token	*tokens;
+	using_history();
 
 	while (1)
 	{
@@ -80,6 +81,9 @@ int	main(int ac, char **av)
 		//fonction pour ajouter a l'historique: ft_add_history(line);
 		tokens = ft_lexer(line);
 		ft_printer(tokens);
+
+
+		add_history (line);
 		free(line);
 		/*
 		parser
