@@ -6,7 +6,7 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 23:02:29 by rbourdon          #+#    #+#             */
-/*   Updated: 2026/01/08 13:09:50 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/09 11:18:06 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	ft_read_sq(char *s, int *i, t_seg **segs)
 	while (s[*i] && s[*i] != '\'')
 		(*i)++;
 	if (s[*i] != '\'')
-		return (0);
+		return (ft_lex_err(15, "\'"), 0);
 	if (!ft_add_seg(segs, SEG_SQ, s + start, *i - start))
 		return (0);
 	(*i)++;
@@ -38,7 +38,7 @@ static int	ft_read_dq(char *s, int *i, t_seg **segs)
 	while (s[*i] && s[*i] != '"')
 		(*i)++;
 	if (s[*i] != '"')
-		return (0);
+		return (ft_lex_err(14, "\""), 0);
 	if (!ft_add_seg(segs, SEG_DQ, s + start, *i - start))
 		return (0);
 	(*i)++;

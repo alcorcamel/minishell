@@ -6,7 +6,7 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 22:04:53 by rbourdon          #+#    #+#             */
-/*   Updated: 2026/01/09 11:10:23 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/09 11:26:56 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,10 @@ int	ft_add_operator(t_token **lst, char *s, int *i)
 	t_token	*tok;
 	int		ret;
 
+	if (s[*i] == ';')
+		return (ft_lex_err(13, ";"), 0);
+	if (s[*i] == '\\')
+		return (ft_lex_err(13, "\\"), 0);
 	if (s[*i] == '|' && s[*i + 1] && s[*i + 1] == '|')
 		return (ft_lex_err(13, "||"), 0);
 	if (s[*i] == '&' && s[*i + 1] && s[*i + 1] == '&')

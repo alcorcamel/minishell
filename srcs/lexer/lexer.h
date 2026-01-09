@@ -6,7 +6,7 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 11:55:36 by demane            #+#    #+#             */
-/*   Updated: 2026/01/08 20:43:15 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/09 09:25:37 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,6 @@ int			ft_is_an_operator(char c);
 int			ft_is_sep(char c);
 char		*ft_strndup(const char *s, int n);
 t_token		*ft_lexer(char *l);
+void		ft_lex_err(int i, char *s);
 
 #endif
