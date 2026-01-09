@@ -1,8 +1,8 @@
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
-#include "base.h"
-#include "../lexer/lexer.h"
+#include "../../includes/base.h"
+// #include "../lexer/lexer.h"
 #include "../parser/parser.h"
 #include "../builtins/builtins.h"
 

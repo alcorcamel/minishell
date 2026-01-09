@@ -1,13 +1,15 @@
 #include "executor.h"
 
+// pas gerer le cas de pid =-1 , status d exit a reveriifer
+
 int	ft_exec_cmd(t_ast *node, t_shell *shell)
 {
 	pid_t	pid;
 	int		status;
 	int		res;
 
-	if (ft_is_builtin(node))
-		return (ft_exec_builtin(node, shell));
+	// if (ft_is_builtin(node))
+	// 	return (ft_exec_builtin(node, shell));
 	pid = fork();
 	if (pid == -1)
 		exit(1);

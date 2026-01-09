@@ -1,0 +1,3 @@
+hello
+✅ SUBSHELL (echo) > file (return = 0)
+==========================
