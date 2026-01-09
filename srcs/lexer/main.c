@@ -6,11 +6,11 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 13:24:02 by demane            #+#    #+#             */
-/*   Updated: 2026/01/09 15:04:06 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/09 17:48:25 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer/lexer.h"
+#include "lexer.h"
 
 static char	*ft_type_printer(t_token_type t)
 {
@@ -66,6 +66,7 @@ static void	ft_printer(t_token *lst)
 }
 
 //clear; cc ./srcs/main.c ./srcs/lexer/*.c ./srcs/lexer/lexer.h -lreadline -lhistory -lncurses
+// clear; cc ./srcs/lexer/* -lreadline -lhistory -lncurses
 
 int	main(int ac, char **av)
 {
@@ -79,8 +80,6 @@ int	main(int ac, char **av)
 			return (1);// en realite erreur sans quitter
 		tokens = ft_lexer(line);
 		ft_printer(tokens);
-
-
 		add_history (line);
 		free(line);
 		/*

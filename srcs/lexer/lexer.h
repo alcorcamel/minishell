@@ -6,7 +6,7 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 11:55:36 by demane            #+#    #+#             */
-/*   Updated: 2026/01/09 09:25:37 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/09 17:24:16 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,24 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+/*
+(depuis le lexer?)
+>|  ==  >
+*/
+
 typedef enum e_segtype
 {
-	SEG_RAW,// hors quotes
-	SEG_SQ,// '...'
-	SEG_DQ // "..."
+	SEG_RAW,
+	SEG_SQ,
+	SEG_DQ
 }	t_segtype;
 
-typedef struct	s_seg
+typedef struct s_seg
 {
 	t_segtype		type;
-	char			*text;// contenu SANS les quotes
+	char			*text;
 	struct s_seg	*next;
-} t_seg;
+}	t_seg;
 
 typedef enum e_token_type
 {
@@ -56,15 +61,15 @@ typedef struct s_token
 
 typedef enum e_node_type
 {
-	NODE_CMD,// word
-	NODE_PIPE,// |
-	NODE_REDIR_IN,// <
-	NODE_REDIR_OUT,// >
-	NODE_REDIR_APPEND, // >>
-	NODE_HEREDOC, // <<
-	NODE_AND,// &&
-	NODE_OR,// ||
-	NODE_SUBSHELL,// (...word or pipe etc...)
+	NODE_CMD,
+	NODE_PIPE,
+	NODE_REDIR_IN,
+	NODE_REDIR_OUT,
+	NODE_REDIR_APPEND,
+	NODE_HEREDOC,
+	NODE_AND,
+	NODE_OR,
+	NODE_SUBSHELL,
 }	t_node_type;
 
 typedef struct s_ast {
