@@ -6,7 +6,7 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 13:24:02 by demane            #+#    #+#             */
-/*   Updated: 2026/01/09 17:48:25 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/10 17:19:25 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,12 @@ int	main(int ac, char **av)
 		if (!line)
 			return (1);// en realite erreur sans quitter
 		tokens = ft_lexer(line);
-		ft_printer(tokens);
+		//ft_printer(tokens);
 		add_history (line);
+		ft_parser(tokens);
 		free(line);
-		/*
-		parser
-		executeur
-		*/
+		// if (ft_paser(tokens) == 1)
+		// 	exec!
 	}
 	return (0);
 }
