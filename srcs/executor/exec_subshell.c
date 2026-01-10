@@ -15,10 +15,13 @@ int		ft_exec_subshell(t_ast *node, t_shell *shell)
 		status_child = ft_exec_ast(node->left, shell);
 		exit(status_child);
 	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
-	return (0);
+	if (shell->in_pipeline == FALSE)
+	{
+		res = waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
+		if (WIFSIGNALED(status))
+			return (128 + WTERMSIG(status));
+	}
+	return (pid);
 }
