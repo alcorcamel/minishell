@@ -6,9 +6,62 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 11:55:36 by demane            #+#    #+#             */
-/*   Updated: 2026/01/10 17:23:47 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/11 22:50:33 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+========PARSER========
+
+struct t_arg qui stocke les segs
+struct t_redirs qui stocke le type de l'op, les segs, hd_exp (0/1 si limiter entre quote ou pas)
+
+------build_pipe------
+commence par appeler parse_cmd (qui va forcement s arreter sur | (ou autre op sup) si trouve)
+while (|)
+{ il avance, right = parse_cmd, construit un nouveau noeud, le met au dessus }
+retourne left, la racine du pipe construit
+
+------parse_cmd-------
+
+solution preferee:
+une fonction parse la liste sans modifier le * cur principal, pour voir si (
+si aucun, elle appelle parser_simple
+sinon:
+- sur redir + WORD (obligatoire), stocke ds les struct respectives
+- sur redir_hd + WORD (limiter), stocke ds les struct resp ac hd_exp (0/1 si limiter entre quote ou pas)
+si ( il appelle &&_|| qui creent inside (t_ast)
+il se retrouve ensuite sur ), le passe
+
+il a déjà inside = AST renvoyé par parse_and_or
+il fabrique :
+root = NODE_SUBSHELL(left = inside)
+
+- sur redir + WORD (obligatoire), stocke ds les struct respectives
+- sur redir_hd + WORD (limiter), stocke ds les struct resp ac hd_exp (0/1 si limiter entre quote ou pas)
+il transfo chaque redir en noeud unaire:
+root = REDIR(op, target_segs, left = root)
+
+-----parse_simple-----
+stop sur un tok sup: | && || ) ou NULL
+- sur WORD il prend le token->segs (et eventuellement sa value)
+(via un fnct qui copie le pointeur et met token->segs a NULL)
+- sur redir + WORD (obligatoire), stocke ds les struct respectives
+- sur redir_hd + WORD (limiter), stocke ds les struct resp ac hd_exp (0/1 si limiter entre quote ou pas)
+
+FAUT FAIRE UN PUSH FRONT SUR LA LISTE DE REDIRS POUR QUE L EXECUTEUR LES LISE A LENVERS ET LES EXEC CORRECTEMENT
+FAUT GERER > out sans args ds le NODE_CMD
+
+Au stop il cree le NODE_CMD ac une liste de t_arg contenant les listes de T-seg de chaque WORD
+pour que: cmd > a > b
+devienne:
+REDIR_OUT(a,
+  left = REDIR_OUT(b,
+          left = CMD(cmd)))
+root = REDIR(b, root)
+root = REDIR(a, root)
+
+*/
 
 #ifndef LEXER_H
 # define LEXER_H
@@ -76,8 +129,9 @@ typedef struct s_ast {
 	t_node_type		type;
 	struct s_ast	*left;
 	struct s_ast	*right;
-	char			**args;
-	char			*filename;
+	t_seg			*args;
+	t_seg			*filename;
+	t_seg			*limiter
 }	t_ast;
 
 t_token		*ft_lexer(char *input);
