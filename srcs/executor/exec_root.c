@@ -5,13 +5,11 @@
 // permet d ignorer le signal dans le process parent
 // on le restaura dans les differentes commandes
 
-int	ft_exec_root(t_ast *node, char **envp)
+int	ft_exec_root(t_ast *node, t_shell *shell)
 {
-	t_shell	shell;
 	pid_t	pid;
 	int		status;
 
-	shell.envp = envp;
 	pid = fork();
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
@@ -21,7 +19,7 @@ int	ft_exec_root(t_ast *node, char **envp)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		status = ft_exec_ast(node, &shell);
+		status = ft_exec_ast(node, shell);
 		exit(status);
 	}
 	waitpid(pid, &status, 0);
