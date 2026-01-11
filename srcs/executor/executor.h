@@ -6,6 +6,7 @@
 #include "../parser/parser.h"
 #include "../builtins/builtins.h"
 
+int		ft_exec_root(t_ast *node, char **envp);
 int		ft_exec_pipe(t_ast *node, t_shell *shell);
 int		ft_exec_cmd(t_ast *node, t_shell *shell);
 int		ft_exec_subshell(t_ast *node, t_shell *shell);

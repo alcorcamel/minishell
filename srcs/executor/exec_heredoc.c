@@ -19,11 +19,7 @@ int		ft_exec_heredoc(t_ast *node, t_shell *shell)
 		close(fd[0]);
 		close(fd[1]);
 		status_child = ft_exec_ast(node->left, shell);
-		if (WIFEXITED(status_child))
-			 exit(WEXITSTATUS(status_child));
-		else if(WIFSIGNALED(status_child))
-			exit(128 + WTERMSIG(status_child));
-		exit(0);
+		exit(status);
 	}
 	text = NULL;
 	signal(SIGINT, SIG_IGN);

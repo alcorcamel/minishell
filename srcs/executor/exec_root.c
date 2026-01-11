@@ -1,20 +1,27 @@
 #include "executor.h"
-// pas gerer le cas pid == -1
 
-int		ft_exec_subshell(t_ast *node, t_shell *shell)
+// a mettre avant d executer cette fonction
+// signal(SIGNINT, SIG_IGN)
+// permet d ignorer le signal dans le process parent
+// on le restaura dans les differentes commandes
+
+int	ft_exec_root(t_ast *node, char **envp)
 {
+	t_shell	shell;
 	pid_t	pid;
-	int		status_child;
 	int		status;
 
+	shell.envp = envp;
 	pid = fork();
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
+	if (pid == -1)
+		return (-1);
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		status = ft_exec_ast(node->left, shell);
+		status = ft_exec_ast(node, &shell);
 		exit(status);
 	}
 	waitpid(pid, &status, 0);
