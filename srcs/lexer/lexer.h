@@ -6,7 +6,7 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 11:55:36 by demane            #+#    #+#             */
-/*   Updated: 2026/01/12 21:19:32 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/13 00:01:25 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,11 @@ REDIR_OUT(a,
 root = REDIR(b, root)
 root = REDIR(a, root)
 
+
+
+
+DS LE PARSER, REFUSER REDIRS + SUBSHELL
+
 */
 
 #ifndef LEXER_H
@@ -75,7 +80,8 @@ typedef enum e_segtype
 {
 	SEG_RAW,
 	SEG_SQ,
-	SEG_DQ
+	SEG_DQ,
+	SEG_SEP
 }	t_segtype;
 
 typedef struct s_seg
