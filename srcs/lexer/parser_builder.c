@@ -13,7 +13,7 @@ static t_ast *ft_ast_new(t_node_type type)
 
 static t_ast *ft_ast_new_bin(t_node_type type, t_ast *left, t_ast *right)
 {
-	t_ast	*n = ast_new(type);
+	t_ast	*n = ft_ast_new(type);
 
 	if (!n)
 		return (NULL);
@@ -24,7 +24,7 @@ static t_ast *ft_ast_new_bin(t_node_type type, t_ast *left, t_ast *right)
 
 static t_ast *ft_ast_new_cmd(t_seg *segs)
 {
-	t_ast	*n = ast_new(NODE_CMD);
+	t_ast	*n = ft_ast_new(NODE_CMD);
 
 	if (!n)
 		return (NULL);
@@ -34,7 +34,7 @@ static t_ast *ft_ast_new_cmd(t_seg *segs)
 
 static t_ast *ft_ast_new_subshell(t_ast *inside)
 {
-	t_ast	*n = ast_new(NODE_SUBSHELL);
+	t_ast	*n = ft_ast_new(NODE_SUBSHELL);
 
 	if (!n)
 		return (NULL);
@@ -57,13 +57,13 @@ static t_ast *ft_ast_new_redir(t_token_type op, t_seg *segs, t_ast *left)
 	t_ast	*n;
 
 	if (op == TOKEN_REDIR_IN)
-		n = ast_new(NODE_REDIR_IN);
+		n = ft_ast_new(NODE_REDIR_IN);
 	else if (op == TOKEN_REDIR_OUT)
-		n = ast_new(NODE_REDIR_OUT);
+		n = ft_ast_new(NODE_REDIR_OUT);
 	else if (op == TOKEN_APPEND)
-		n = ast_new(NODE_REDIR_APPEND);
+		n = ft_ast_new(NODE_REDIR_APPEND);
 	else
-		n = ast_new(NODE_HEREDOC);
+		n = ft_ast_new(NODE_HEREDOC);
 	if (!n)
 		return (NULL);
 	n->left = left;
@@ -85,13 +85,13 @@ t_ast	*ft_build_and_or(t_token **cur)
 	t_ast			*right;
 	t_token_type	op;
 
-	left = build_pipe(cur);
+	left = ft_build_pipe(cur);
 	while (*cur && ((*cur)->type == TOKEN_AND || (*cur)->type == TOKEN_OR))
 	{
 		op = (*cur)->type;
 		*cur = (*cur)->next;
 		right = build_pipe(cur);
-		left = new_bin(op, left, right);
+		left = ft_new_bin(op, left, right);
 	}
 	return (left);
 }
@@ -102,13 +102,13 @@ t_ast	*ft_build_pipe(t_token **cur)
 	t_ast			*right;
 	t_token_type	op;
 
-	left = build_subshell(cur);
+	left = ft_build_subshell(cur);
 	while (*cur && ((*cur)->type == TOKEN_PIPE))
 	{
 		op = (*cur)->type;
 		*cur = (*cur)->next;
 		right = build_subshell(cur);
-		left = new_bin(op, left, right);
+		left = ft_new_bin(op, left, right);
 	}
 	return (left);
 }
