@@ -6,7 +6,7 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 11:55:36 by demane            #+#    #+#             */
-/*   Updated: 2026/01/12 15:32:22 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/12 21:19:32 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ typedef enum e_token_type
 	TOKEN_HEREDOC,
 	TOKEN_AND,
 	TOKEN_OR,
-	TOKEN_LBRACKET,
-	TOKEN_RBRACKET,
+	TOKEN_LPAREN,
+	TOKEN_RPAREN,
 }	t_token_type;
 
 typedef struct s_token
