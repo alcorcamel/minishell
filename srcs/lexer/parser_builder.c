@@ -42,11 +42,13 @@ static t_ast *ft_ast_new_subshell(t_ast *inside)
 	return (n);
 }
 
-static int	ft_is_op(t_token **cur)
+static int	ft_is_op(t_token *cur)
 {
 	t_token_type	op;
 
-	op = (*cur)->type;
+	if (!cur)
+		return (0);
+	op = cur->type;
 	if (op == TOKEN_OR || op == TOKEN_AND || op == TOKEN_PIPE)
 		return (1);
 	return (0);
@@ -71,10 +73,12 @@ static t_ast *ft_ast_new_redir(t_token_type op, t_seg *segs, t_ast *left)
 	return (n);
 }
 
-static int	ft_is_redir(t_token **cur)
+static int	ft_is_redir(t_token *cur)
 {
-	if ((*cur)->type == TOKEN_REDIR_IN || (*cur)->type == TOKEN_REDIR_OUT
-		|| (*cur)->type == TOKEN_APPEND || (*cur)->type == TOKEN_HEREDOC)
+	if (!cur)
+		return (0);
+	if (cur->type == TOKEN_REDIR_IN || cur->type == TOKEN_REDIR_OUT
+		|| cur->type == TOKEN_APPEND || cur->type == TOKEN_HEREDOC)
 		return (1);
 	return (0);
 }
@@ -91,7 +95,10 @@ t_ast	*ft_build_and_or(t_token **cur)
 		op = (*cur)->type;
 		*cur = (*cur)->next;
 		right = build_pipe(cur);
-		left = ft_new_bin(op, left, right);
+		if (op == TOKEN_OR)
+			left = ft_new_bin(NODE_OR, left, right);
+		else if (op == TOKEN_AND)
+			left = ft_new_bin(NODE_AND, left, right);
 	}
 	return (left);
 }
@@ -108,39 +115,15 @@ t_ast	*ft_build_pipe(t_token **cur)
 		op = (*cur)->type;
 		*cur = (*cur)->next;
 		right = build_subshell(cur);
-		left = ft_new_bin(op, left, right);
+		left = ft_new_bin(NODE_PIPE, left, right);
 	}
 	return (left);
 }
 
-int	ft_lbracket_checker(t_token **cur)
-{
-	t_token	*tmp;
-
-	tmp = (*cur);
-	while (!ft_is_op(&tmp))
-	{
-		if (tmp->type == TOKEN_LBRACKET)
-			return (1);
-		tmp = tmp->next;
-	}
-	return (0);
-}
 
 t_ast	*ft_build_subshell(t_token **cur)
 {
 	t_ast	*left;
 	t_ast	*right;
 
-	if (ft_lbracket_checker(cur))
-		ft_simple_parser(cur);
-	else
-	{
-		if (ft_is_redir(cur))
-
-
-
-
-
-	}
 }
