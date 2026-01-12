@@ -6,7 +6,7 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 11:55:36 by demane            #+#    #+#             */
-/*   Updated: 2026/01/11 22:50:33 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/12 15:32:22 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,6 @@ root = REDIR(a, root)
 # include <readline/readline.h>
 # include <readline/history.h>
 
-/*
-(depuis le lexer?)
->|  ==  >
-*/
-
 typedef enum e_segtype
 {
 	SEG_RAW,
@@ -125,16 +120,18 @@ typedef enum e_node_type
 	NODE_SUBSHELL,
 }	t_node_type;
 
-typedef struct s_ast {
+typedef struct s_ast
+{
 	t_node_type		type;
 	struct s_ast	*left;
 	struct s_ast	*right;
-	t_seg			*args;
-	t_seg			*filename;
-	t_seg			*limiter
+	char			**args;
+	t_seg			*segs;
+	char			*filename;
+	char			*limiter;
 }	t_ast;
 
-t_token		*ft_lexer(char *input);
+t_token				*ft_lexer(char *input);
 void		ft_free_segs(t_seg *seg);
 void		ft_free_tokens(t_token *tok);
 int			ft_add_operator(t_token **lst, char *s, int *i);
