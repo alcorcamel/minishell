@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/10 15:06:14 by rbourdon          #+#    #+#             */
-/*   Updated: 2026/01/12 21:19:23 by rbourdon         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "lexer.h"
 
 static int	ft_first_tok_checker(t_token *tok)
@@ -25,7 +13,7 @@ static int	ft_first_tok_checker(t_token *tok)
 	return (1);
 }
 
-static int	ft_after_rPAREN(t_token *tok, t_token_type prev)
+static int	ft_after_rparen(t_token *tok, t_token_type prev)
 {
 	if (tok->type == TOKEN_WORD)
 		return (ft_pars_err(1, tok->value), 0);
@@ -79,7 +67,7 @@ static int ft_in_checker(t_token *tok, t_token_type prev)
 	else if (prev == TOKEN_LPAREN)
 		return (ft_first_tok_checker(tok));
 	else if (prev == TOKEN_RPAREN)
-		return (ft_after_rPAREN(tok, prev));
+		return (ft_after_rparen(tok, prev));
 	return (1);
 }
 
