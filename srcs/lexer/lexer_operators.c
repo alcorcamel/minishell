@@ -36,6 +36,24 @@ static int	ft_add_op_helper(t_token **lst, t_token *tok, char *s, int *i)
 		return (ft_lex_err(11, "<"), 0);
 	if (s[*i] == '>' && s[*i + 1] == '>' && s[*i + 2] == '>')
 		return (ft_lex_err(11, ">"), 0);
+	if (s[*i] == '&' && s[*i + 1] == '&')
+	{
+		tok = ft_toknew(TOKEN_AND);
+		if (!tok)
+			return (0);
+		ft_tokadd_back(lst, tok);
+		(*i) += 2;
+		return (1);
+	}
+	if (s[*i] == '|' && s[*i + 1] == '|')
+	{
+		tok = ft_toknew(TOKEN_OR);
+		if (!tok)
+			return (0);
+		ft_tokadd_back(lst, tok);
+		(*i) += 2;
+		return (1);
+	}
 	if (s[*i] == '<' && s[*i + 1] == '<')
 	{
 		tok = ft_toknew(TOKEN_HEREDOC);
@@ -66,10 +84,10 @@ int	ft_add_operator(t_token **lst, char *s, int *i)
 		return (ft_lex_err(16, ";"), 0);
 	if (s[*i] == '\\')
 		return (ft_lex_err(16, "\\"), 0);
-	if (s[*i] == '|' && s[*i + 1] && s[*i + 1] == '|')
-		return (ft_lex_err(13, "||"), 0);
-	if (s[*i] == '&' && s[*i + 1] && s[*i + 1] == '&')
-		return (ft_lex_err(13, "&&"), 0);
+	// if (s[*i] == '|' && s[*i + 1] && s[*i + 1] == '|')
+	// 	return (ft_lex_err(13, "||"), 0);
+	// if (s[*i] == '&' && s[*i + 1] && s[*i + 1] == '&')
+	// 	return (ft_lex_err(13, "&&"), 0);
 	ret = ft_add_op_helper(lst, tok, s, i);
 	if (ret == 1)
 		return (1);
