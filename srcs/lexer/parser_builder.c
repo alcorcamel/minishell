@@ -102,7 +102,6 @@ t_ast	*ft_parse_simple(t_token **cur)
 	t_ast			*cmd;
 	t_ast			*root;
 	t_ast			*redir;
-	t_seg			*sep;
 	t_seg			*redir_arg;
 	t_token_type	op;
 
@@ -118,11 +117,6 @@ t_ast	*ft_parse_simple(t_token **cur)
 			if (!seg_append_words(&cmd->segs, (*cur)->segs))
 				return (free_ast(&root), NULL);
 			(*cur)->segs = NULL;
-			sep = seg_word_separator();
-			if (!sep)
-				return (free_ast(&root), NULL);
-			if (!seg_append_words(&cmd->segs, sep))
-				return (free_segs(sep), free_ast(&root), NULL);
 			*cur = (*cur)->next;
 		}
 		else if (ft_is_redir(*cur))

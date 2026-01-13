@@ -77,7 +77,7 @@ static void	ft_join_segs_helper(t_seg *temp, size_t *size)
 {
 	while (temp)
 	{
-		if (temp->text)
+		if (temp->type != SEG_SEP && temp->text)
 			*size += ft_strlen(temp->text);
 		temp = temp->next;
 	}
@@ -100,7 +100,7 @@ char	*ft_join_segs(t_seg *seg)
 	temp = seg;
 	while (temp)
 	{
-		if (temp->text)
+		if (temp->type != SEG_SEP && temp->text)
 		{
 			size = ft_strlen(temp->text);
 			ft_memcpy(ret + i, temp->text, size);

@@ -79,6 +79,8 @@ int	ft_read_word(t_token **lst, char *s, int *i)
 		if (ft_read_word_helper(s, i, &segs, tok) == 0)
 			return (0);
 	}
+	if (!ft_add_seg(&segs, SEG_SEP, "", 0))
+		return (ft_free_segs(segs), free(tok), 0);
 	tok->segs = segs;
 	tok->value = ft_join_segs(segs);
 	if (!tok->value)

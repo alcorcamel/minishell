@@ -5,21 +5,17 @@ static void	ft_free_args(char **args)
 {
 	int	i;
 
-	if (!(*args) || !args)
+	if (!args)
 		return ;
 	i = -1;
 	while (args[++i])
-	{
 		free(args[i]);
-		args[i] = NULL;
-	}
 	free(args);
-	args = NULL;
 }
 
 static void	ft_join_segs_until_sep_helper(t_seg *temp, size_t *size)
 {
-	while (temp)
+	while (temp && temp->type != SEG_SEP)
 	{
 		if (temp->text)
 			*size += ft_strlen(temp->text);
@@ -42,7 +38,7 @@ static char	*ft_join_segs_until_sep(t_seg *seg)
 		return (NULL);
 	i = 0;
 	temp = seg;
-	while (temp->type != SEG_SEP)
+	while (temp && temp->type != SEG_SEP)
 	{
 		if (temp->text)
 		{
@@ -66,8 +62,10 @@ static int	ft_words_filler(char **args, t_ast *n, int words)
 	{
 		n->args[i] = ft_join_segs_until_sep(temp);
 		if (!n->args[i])
-			ft_free_args(n->args);
-		while (temp->type != SEG_SEP)
+			return (ft_free_args(n->args), 0);
+		while (temp && temp->type != SEG_SEP)
+			temp = temp->next;
+		if (temp->type == SEG_SEP && temp->next)
 			temp = temp->next;
 	}
 	return (1);
@@ -103,7 +101,7 @@ static int	ft_cmd_expander(t_ast *n)
 	if (!segs)
 		return (0);
 	words = ft_words_counter(n);
-	n->args = (char **)malloc((words + 1) * sizeof(char *));
+	n->args = calloc(words + 1, sizeof(char *));
 	if (!n->args)
 		return (ft_free_args(n->args), 0);
 	n->args[words] = NULL;

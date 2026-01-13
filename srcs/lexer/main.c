@@ -74,6 +74,7 @@ int	main(int ac, char **av, char **envp)
 		//ft_printer(tokens);
 		add_history (line);
 		ft_parser(tokens);
+		//ft_printer(tokens);
 		root = ft_build_and_or(&tokens);
 		//ast_print(root);
 		ft_explore_ast(&root);
