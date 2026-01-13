@@ -56,14 +56,22 @@ root = REDIR(a, root)
 DS LE PARSER, REFUSER REDIRS + SUBSHELL
 
 */
-
 #ifndef LEXER_H
 # define LEXER_H
+# include "../../../libft/libft.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/wait.h>
+# include <signal.h>
+# include <fcntl.h>
+
+typedef struct s_shell
+{
+	char	**envp;
+}	t_shell;
 
 typedef enum e_segtype
 {
@@ -72,6 +80,12 @@ typedef enum e_segtype
 	SEG_DQ,
 	SEG_SEP
 }	t_segtype;
+
+typedef enum e_bool
+{
+	FALSE,
+	TRUE
+}	t_bool;
 
 typedef struct s_seg
 {
@@ -126,6 +140,8 @@ typedef struct s_ast
 	char			*limiter;
 }	t_ast;
 
+// clear; cc ./srcs/lexer/*.c ./srcs/lexer/*.h ./includes/libft/libft.h ./includes/libft/*.c -lreadline -lhistory -lncurses
+
 t_token		*ft_lexer(char *input);
 void		ft_free_segs(t_seg *seg);
 void		ft_free_tokens(t_token *tok);
@@ -145,7 +161,7 @@ void		ft_lex_err(int i, char *s);
 int			ft_parser(t_token *tokens);
 void		ft_pars_err(int i, char *s);
 /*-------------parser--------------*/
-void		 free_segs(t_seg *s);
+void		free_segs(t_seg *s);
 t_seg		*seg_last(t_seg *s);
 int			seg_append_words(t_seg **dst, t_seg *src);
 t_seg		*seg_word_separator(void);
@@ -157,13 +173,26 @@ t_ast		*ft_ast_new_bin(t_node_type type, t_ast *left, t_ast *right);
 t_ast		*ft_ast_new_cmd(t_seg *segs);
 t_ast		*ft_ast_new_subshell(t_ast *subshell);
 t_ast		*ft_ast_new_redir(t_token_type op, t_seg *segs, t_ast *left);
-void		*ft_calloc(size_t elementCount, size_t elementSize);
 t_ast		*ft_build_and_or(t_token **cur);
 t_ast		*ft_build_pipe(t_token **cur);
 t_ast		*ft_build_subshell(t_token **cur);
 t_ast		*ft_parse_subshell(t_token **cur);
 t_ast		*ft_parse_simple(t_token **cur);
 void		free_ast(t_ast **root);
+/*--------------executor-------------*/
+int			ft_exec_root(t_ast *node, t_shell *shell);
+int			ft_exec_pipe(t_ast *node, t_shell *shell);
+int			ft_exec_cmd(t_ast *node, t_shell *shell);
+int			ft_exec_subshell(t_ast *node, t_shell *shell);
+int			ft_exec_or(t_ast *node, t_shell *shell);
+int			ft_exec_heredoc(t_ast *node, t_shell *shell);
+int			ft_exec_redirect_in(t_ast *node, t_shell *shell);
+int			ft_exec_redirect_out(t_ast *node, t_shell *shell);
+int			ft_exec_redirect_append(t_ast *node, t_shell *shell);
+int			ft_exec_builtin(t_ast *node, t_shell *shell);
+int			ft_exec_and(t_ast *node, t_shell *shell);
+int			ft_exec_or(t_ast *node, t_shell *shell);
+int			ft_exec_ast(t_ast *node, t_shell *shell);
 
 void		ast_print(const t_ast *root);
 

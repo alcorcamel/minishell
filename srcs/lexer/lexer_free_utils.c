@@ -1,3 +1,4 @@
+
 #include "lexer.h"
 
 void	ft_free_segs(t_seg *seg)

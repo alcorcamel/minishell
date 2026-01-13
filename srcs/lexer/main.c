@@ -1,3 +1,4 @@
+
 #include "lexer.h"
 
 static char	*ft_type_printer(t_token_type t)
@@ -56,12 +57,14 @@ static void	ft_printer(t_token *lst)
 //clear; cc ./srcs/main.c ./srcs/lexer/*.c ./srcs/lexer/lexer.h -lreadline -lhistory -lncurses
 // clear; cc ./srcs/lexer/* -lreadline -lhistory -lncurses
 
-int	main(int ac, char **av)
+int	main(int ac, char **av, char **envp)
 {
 	char	*line;
 	t_token	*tokens;
 	t_ast	*root;
+	t_shell	shell;
 
+	shell.envp = envp;
 	while (1)
 	{
 		line = readline("JARVIS$ ");
@@ -72,7 +75,8 @@ int	main(int ac, char **av)
 		add_history (line);
 		ft_parser(tokens);
 		root = ft_build_and_or(&tokens);
-		ast_print(root);
+		//ast_print(root);
+		ft_exec_root(root, &shell);
 		free(line);
 		// if (ft_paser(tokens) == 1)
 		// 	exec!
