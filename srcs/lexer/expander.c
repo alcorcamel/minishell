@@ -28,17 +28,19 @@ static char	*ft_envp_finder(char **envp, char *s)
 	{
 		if (ft_strncmp(envp[i], str, ft_strlen(str)) == 0)
 		{
-			ret = ft_strchr(envp[i], '=');
-			return (free(str), ret + 1);
+			ret = ft_strdup(ft_strchr(envp[i], '=') + 1);
+			if (!ret)
+				return (free(str), NULL);
+			return (free(str), ret);
 		}
 	}
 	free(str);
 	return (NULL);
 }
 
-static void	ft_varsadd_back(t_seg **lst, t_seg *newvars)
+static void	ft_varsadd_back(t_vars **lst, t_vars *newvars)
 {
-	t_seg	*tmp;
+	t_vars	*tmp;
 
 	if (!lst || !newvars)
 		return ;
@@ -129,7 +131,7 @@ static int	ft_words_filler(char **args, t_ast *n, int words)
 			return (ft_free_args(n->args), 0);
 		while (temp && temp->type != SEG_SEP)
 			temp = temp->next;
-		if (temp->type == SEG_SEP && temp->next)
+		if (temp && temp->type == SEG_SEP && temp->next)
 			temp = temp->next;
 	}
 	return (1);
@@ -163,7 +165,7 @@ static char	*ft_valid_filename_finder(void)
 	nb = ft_itoa(i);
 	if (!nb)
 		return (NULL);
-	file = ft_strjoin("./coucou", nb);
+	file = ft_strjoin("./.coucou", nb);
 	if (!file)
 		return (free(nb), NULL);
 	while (access(file, F_OK) == 0)
@@ -246,20 +248,25 @@ static	char	*ft_find_vars(char *s, t_shell *shell)
 	int		i;
 	t_shell	*tmp_shell;
 	t_vars	*tmp_vars;
+	char	*ret;
 
 	i = 0;
 	tmp_shell = shell;
 	tmp_vars = tmp_shell->vars;
 	while (tmp_vars)
 	{
-		if (ft_strncmp(s, tmp_vars->key, ft_strlen(tmp_vars->key)) == 0)
-			return (tmp_vars->value);
+		if (ft_strncmp(s, tmp_vars->key, ft_strlen(tmp_vars->key)) == 0
+			&& ft_strlen(s) == ft_strlen(tmp_vars->key))
+		{
+			ret = ft_strdup(tmp_vars->value);
+			return (ret);
+		}
 		tmp_vars = tmp_vars->next;
 	}
 	return (ft_envp_finder(shell->envp, s));
 }
 
-static int ft_var_translator(t_seg *segs, t_shell *shell)
+static char *ft_var_translator(t_seg *segs, t_shell *shell)
 {
 	t_seg	*temp;
 	char	c;
@@ -274,13 +281,13 @@ static int ft_var_translator(t_seg *segs, t_shell *shell)
 		{
 			s = ft_strchr(temp->text, (int)c);
 			if (s)
-				return (ft_find_vars(s, shell));
+				return (ft_find_vars(s + 1, shell));
 			else
-				return (0);
+				return (NULL);
 		}
 		temp = temp->next;
 	}
-	return (1);
+	return (NULL);
 }
 
 static int	ft_cmd_expander(t_ast *n)
@@ -297,7 +304,7 @@ static int	ft_cmd_expander(t_ast *n)
 	words = ft_words_counter(n);
 	n->args = calloc(words + 1, sizeof(char *));
 	if (!n->args)
-		return (ft_free_args(n->args), 0);
+		return (0);
 	n->args[words] = NULL;
 	if (!ft_words_filler(n->args, n, words))
 		return (ft_free_args(n->args), 0);
