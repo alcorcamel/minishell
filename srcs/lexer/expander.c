@@ -101,6 +101,34 @@ static int	ft_words_counter(t_ast *n)
 	return (ret);
 }
 
+static char	*ft_valid_filename_finder(void)
+{
+	int		i;
+	char	*nb;
+	char	*file;
+
+	i = 0;
+	nb = ft_itoa(i);
+	if (!nb)
+		return (NULL);
+	file = ft_strjoin("./coucou", nb);
+	if (!file)
+		return (free(nb), NULL);
+	while (access(file, F_OK) == 0)
+	{
+		free(file);
+		free(nb);
+		i++;
+		nb = ft_itoa(i);
+		if (!nb)
+			return (NULL);
+		file = ft_strjoin("./.coucou", nb);
+		if (!file)
+			return (free(nb), NULL);
+	}
+	return (free(nb), file);
+}
+
 static int	ft_heredoc_expander(t_ast *n)
 {
 	t_seg	*segs;
@@ -115,7 +143,10 @@ static int	ft_heredoc_expander(t_ast *n)
 	n->limiter = ft_join_segs_until_sep(segs);
 	if (!n->limiter)
 		return (0);
-	fd = open("./cocuou", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	n->filename = ft_valid_filename_finder();
+	if (!n->filename)
+		return (0);
+	fd = open(n->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 		return (0);
 	while (1)
