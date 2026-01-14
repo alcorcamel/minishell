@@ -193,10 +193,11 @@ static int ft_var_translator(t_seg *segs)
 	{
 		if (temp->type == SEG_RAW && temp->text)
 		{
-			if (ft_strchr(temp->text, (int)c))
+			// if (ft_strchr(temp->text, (int)c))
 		}
 		temp = temp->next;
 	}
+	return (1);
 }
 
 static int	ft_cmd_expander(t_ast *n)

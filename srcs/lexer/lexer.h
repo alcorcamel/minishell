@@ -195,6 +195,7 @@ int			ft_exec_builtin(t_ast *node, t_shell *shell);
 int			ft_exec_and(t_ast *node, t_shell *shell);
 int			ft_exec_or(t_ast *node, t_shell *shell);
 int			ft_exec_ast(t_ast *node, t_shell *shell);
+char		*ft_get_path(t_ast *node, t_shell *shell);
 /*--------------expander-------------*/
 void		ft_explore_ast(t_ast **root);
 

@@ -3,6 +3,7 @@
 
 void	ft_free(void **p);
 char	*ft_strjoin_sep(char *s1, char *s2, char sep);
+int		ft_str_is_space(char *str);
 
 int	ft_get_index_path(char **envp)
 {
