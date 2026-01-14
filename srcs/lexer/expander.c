@@ -182,6 +182,23 @@ static int	ft_redir_expander(t_ast *n)
 	return (1);
 }
 
+static int ft_var_translator(t_seg *segs)
+{
+	t_seg	*temp;
+	char	c;
+
+	c = '$';
+	temp = segs;
+	while (temp && temp->type != SEG_SEP)
+	{
+		if (temp->type == SEG_RAW && temp->text)
+		{
+			if (ft_strchr(temp->text, (int)c))
+		}
+		temp = temp->next;
+	}
+}
+
 static int	ft_cmd_expander(t_ast *n)
 {
 	t_seg	*segs;
