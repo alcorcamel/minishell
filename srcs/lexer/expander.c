@@ -264,6 +264,7 @@ static int ft_var_translator(t_seg *segs, t_shell *shell)
 	t_seg	*temp;
 	char	c;
 	char	*s;
+	char	*ret;
 
 	c = '$';
 	temp = segs;
@@ -273,14 +274,9 @@ static int ft_var_translator(t_seg *segs, t_shell *shell)
 		{
 			s = ft_strchr(temp->text, (int)c);
 			if (s)
-			{
-				if (!ft_find_vars(s, shell))
-					return (0);
-
-
-			}
-
-			// if (ft_strchr(temp->text, (int)c))
+				return (ft_find_vars(s, shell));
+			else
+				return (0);
 		}
 		temp = temp->next;
 	}
