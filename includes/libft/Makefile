@@ -6,7 +6,7 @@
 #    By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/10 11:33:07 by demane            #+#    #+#              #
-#    Updated: 2026/01/01 14:12:01 by demane           ###   ########.fr        #
+#    Updated: 2026/01/14 13:28:17 by demane           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SRCS = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \
 	   ft_strlcpy.c ft_strlen.c ft_strmapi.c ft_strncmp.c ft_strnstr.c \
 	   ft_strrchr.c ft_strtrim.c ft_substr.c ft_tolower.c ft_toupper.c \
 	   ft_intlen.c ft_maxint.c ft_minint.c ft_has_duplicates.c ft_putnbr_base_fd.c \
-	   ft_atol.c ft_free.c ft_strjoin_sep.c
+	   ft_atol.c ft_free.c ft_strjoin_sep.c ft_str_is_space.c
 
 SRCS_PRINTF = printf/ft_printf.c printf/ft_char_utils.c printf/ft_format_parser.c printf/ft_hex_utils.c printf/ft_int_utils.c \
 	   printf/ft_printf_utils.c printf/ft_ptr_utils.c printf/ft_str_utils.c printf/ft_unsignedint_utils.c		\

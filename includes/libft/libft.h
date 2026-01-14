@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 14:01:46 by demane            #+#    #+#             */
-/*   Updated: 2026/01/01 13:51:06 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/14 13:28:04 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ char	**ft_split(char const *s, char c);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 int		ft_has_duplicates(char c, int index, char *str);
+int		ft_str_is_space(char *str);
 
 /* Fonctions de conversion */
 int		ft_atoi(const char *str);
