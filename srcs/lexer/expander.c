@@ -89,6 +89,36 @@ static int	ft_words_counter(t_ast *n)
 	return (ret);
 }
 
+static int	ft_redirout_expander(t_ast *n)
+{
+	t_seg	*segs;
+	int		quotes;
+
+	quotes = 0;
+	segs = n->segs;
+	if (!segs)
+		return (0);
+	n->filename = ft_join_segs_until_sep(segs);
+	if (!n->filename)
+		return (0);
+	return (1);
+}
+
+static int	ft_redirin_expander(t_ast *n)
+{
+	t_seg	*segs;
+	int		quotes;
+
+	quotes = 0;
+	segs = n->segs;
+	if (!segs)
+		return (0);
+	n->filename = ft_join_segs_until_sep(segs);
+	if (!n->filename)
+		return (0);
+	return (1);
+}
+
 static int	ft_cmd_expander(t_ast *n)
 {
 	t_seg	*segs;
@@ -115,6 +145,16 @@ static int	ft_expand_node(t_ast *n)
 	if (n->type == NODE_CMD)
 	{
 		if (!ft_cmd_expander(n))
+			return (0);	// gestion erreur
+	}
+	if (n->type == NODE_REDIR_IN)
+	{
+		if (!ft_redirin_expander(n))
+			return (0);	// gestion erreur
+	}
+	if (n->type == NODE_REDIR_OUT)
+	{
+		if (!ft_redirout_expander(n))
 			return (0);	// gestion erreur
 	}
 	return (1);

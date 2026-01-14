@@ -71,6 +71,7 @@ t_ast	*ft_parse_subshell(t_token **cur)
 	t_ast			*subshell;
 	t_ast			*root;
 	t_ast			*redir;
+	t_ast			*redir_last;
 	t_seg			*redir_arg;
 	t_token_type	op;
 
@@ -78,6 +79,7 @@ t_ast	*ft_parse_subshell(t_token **cur)
 	subshell = ft_build_and_or(cur);
 	if (!subshell)
 		return (NULL);
+	redir_last = NULL;
 	*cur = (*cur)->next;
 	root = ft_ast_new_subshell(subshell);
 	if (!root)
@@ -89,10 +91,17 @@ t_ast	*ft_parse_subshell(t_token **cur)
 		redir_arg = (*cur)->segs;
 		(*cur)->segs = NULL;
 		*cur = (*cur)->next;
-		redir = ft_ast_new_redir(op, redir_arg, root);
+		if (!redir_last)
+			redir = ft_ast_new_redir(op, redir_arg, root);
+		else
+			redir = ft_ast_new_redir(op, redir_arg, redir_last->left);
 		if (!redir)
 			return (free_segs(redir_arg), free_ast(&root), NULL);
-		root = redir;
+		if (redir_last)
+			redir_last->left = redir;
+		else
+			root = redir;
+		redir_last = redir;
 	}
 	return (root);
 }
@@ -102,12 +111,14 @@ t_ast	*ft_parse_simple(t_token **cur)
 	t_ast			*cmd;
 	t_ast			*root;
 	t_ast			*redir;
+	t_ast			*redir_last;
 	t_seg			*redir_arg;
 	t_token_type	op;
 
 	cmd = ft_ast_new_cmd(NULL);
 	if (!cmd)
 		return (NULL);
+	redir_last = NULL;
 	root = cmd;
 	while (*cur && !ft_is_operator(*cur) && (*cur)->type != TOKEN_RPAREN
 		&& (*cur)->type != TOKEN_LPAREN)
@@ -126,10 +137,17 @@ t_ast	*ft_parse_simple(t_token **cur)
 			redir_arg = (*cur)->segs;
 			(*cur)->segs = NULL;
 			*cur = (*cur)->next;
-			redir = ft_ast_new_redir(op, redir_arg, root);
+			if (!redir_last)
+				redir = ft_ast_new_redir(op, redir_arg, root);
+			else
+				redir = ft_ast_new_redir(op, redir_arg, redir_last->left);
 			if (!redir)
 				return (free_segs(redir_arg), free_ast(&root), NULL);
-			root = redir;
+			if (redir_last)
+				redir_last->left = redir;
+			else
+				root = redir;
+			redir_last = redir;
 		}
 	}
 	return (root);
