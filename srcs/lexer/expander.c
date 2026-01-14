@@ -167,22 +167,7 @@ static int	ft_heredoc_expander(t_ast *n)
 	return (1);
 }
 
-static int	ft_redirout_expander(t_ast *n)
-{
-	t_seg	*segs;
-	int		quotes;
-
-	quotes = 0;
-	segs = n->segs;
-	if (!segs)
-		return (0);
-	n->filename = ft_join_segs_until_sep(segs);
-	if (!n->filename)
-		return (0);
-	return (1);
-}
-
-static int	ft_redirin_expander(t_ast *n)
+static int	ft_redir_expander(t_ast *n)
 {
 	t_seg	*segs;
 	int		quotes;
@@ -225,14 +210,10 @@ static int	ft_expand_node(t_ast *n)
 		if (!ft_cmd_expander(n))
 			return (0);	// gestion erreur
 	}
-	if (n->type == NODE_REDIR_IN)
+	if (n->type == NODE_REDIR_IN || n->type == NODE_REDIR_OUT
+		|| n->type == NODE_REDIR_APPEND)
 	{
-		if (!ft_redirin_expander(n))
-			return (0);	// gestion erreur
-	}
-	if (n->type == NODE_REDIR_OUT)
-	{
-		if (!ft_redirout_expander(n))
+		if (!ft_redir_expander(n))
 			return (0);	// gestion erreur
 	}
 	if (n->type == NODE_HEREDOC)
