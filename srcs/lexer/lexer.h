@@ -59,6 +59,7 @@ DS LE PARSER, REFUSER REDIRS + SUBSHELL
 #ifndef LEXER_H
 # define LEXER_H
 # include "../../../libft/libft.h"
+# include "../../../libft/get_next_line/get_next_line.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -67,6 +68,7 @@ DS LE PARSER, REFUSER REDIRS + SUBSHELL
 # include <sys/wait.h>
 # include <signal.h>
 # include <fcntl.h>
+# include <errno.h>
 
 typedef struct s_shell
 {
@@ -140,7 +142,7 @@ typedef struct s_ast
 	char			*limiter;
 }	t_ast;
 
-// clear; cc ./srcs/lexer/*.c ./srcs/lexer/*.h ./includes/libft/libft.h ./includes/libft/*.c -lreadline -lhistory -lncurses
+// clear; cc ./srcs/lexer/*.c ./srcs/lexer/*.h ./includes/libft/libft.h ./includes/libft/libft.a -lreadline -lhistory -lncurses
 
 t_token		*ft_lexer(char *input);
 void		ft_free_segs(t_seg *seg);
@@ -195,9 +197,5 @@ int			ft_exec_or(t_ast *node, t_shell *shell);
 int			ft_exec_ast(t_ast *node, t_shell *shell);
 /*--------------expander-------------*/
 void		ft_explore_ast(t_ast **root);
-
-
-
-void		ast_print(const t_ast *root);
 
 #endif

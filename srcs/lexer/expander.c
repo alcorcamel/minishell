@@ -1,6 +1,18 @@
 
 #include "lexer.h"
 
+static int	ft_is_limiter(char *line, char *limiter)
+{
+	size_t	len;
+
+	if (!line || !limiter)
+		return (0);
+	len = ft_strlen(limiter);
+	return (ft_strncmp(line, limiter, len) == 0
+		&& line[len] == '\n'
+		&& line[len + 1] == '\0');
+}
+
 static void	ft_free_args(char **args)
 {
 	int	i;
@@ -89,6 +101,41 @@ static int	ft_words_counter(t_ast *n)
 	return (ret);
 }
 
+static int	ft_heredoc_expander(t_ast *n)
+{
+	t_seg	*segs;
+	int		quotes;
+	int		fd;
+	char	*line;
+
+	quotes = 0;
+	segs = n->segs;
+	if (!segs)
+		return (0);
+	n->limiter = ft_join_segs_until_sep(segs);
+	if (!n->limiter)
+		return (0);
+	fd = open("./cocuou", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd < 0)
+		return (0);
+	while (1)
+	{
+		write(1, "heredoc> ", 9);
+		line = get_next_line(0);
+		if (!line)
+			break ;
+		if (ft_is_limiter(line, n->limiter))
+		{
+			free(line);
+			break ;
+		}
+		write(fd, line, ft_strlen(line));
+		free(line);
+	}
+	close(fd);
+	return (1);
+}
+
 static int	ft_redirout_expander(t_ast *n)
 {
 	t_seg	*segs;
@@ -155,6 +202,11 @@ static int	ft_expand_node(t_ast *n)
 	if (n->type == NODE_REDIR_OUT)
 	{
 		if (!ft_redirout_expander(n))
+			return (0);	// gestion erreur
+	}
+	if (n->type == NODE_HEREDOC)
+	{
+		if (!ft_heredoc_expander(n))
 			return (0);	// gestion erreur
 	}
 	return (1);
