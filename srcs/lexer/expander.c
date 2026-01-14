@@ -1,6 +1,36 @@
 
 #include "lexer.h"
 
+static t_vars	*ft_varsnew(char *key, char *value)
+{
+	t_vars	*ret;
+
+	ret = (t_vars *)malloc(sizeof(t_vars));
+	if (!ret)
+		return (NULL);
+	ret->key = key;
+	ret->value = value;
+	ret->next = NULL;
+	return (ret);
+}
+
+static void	ft_varsadd_back(t_seg **lst, t_seg *newvars)
+{
+	t_seg	*tmp;
+
+	if (!lst || !newvars)
+		return ;
+	if (!*lst)
+	{
+		*lst = newvars;
+		return ;
+	}
+	tmp = *lst;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = newvars;
+}
+
 static int	ft_is_limiter(char *line, char *limiter)
 {
 	size_t	len;
@@ -193,6 +223,12 @@ static int ft_var_translator(t_seg *segs)
 	{
 		if (temp->type == SEG_RAW && temp->text)
 		{
+			if (temp->type == SEG_RAW || temp->type == SEG_DQ)
+			{
+
+
+
+			}
 			// if (ft_strchr(temp->text, (int)c))
 		}
 		temp = temp->next;
@@ -242,7 +278,7 @@ static int	ft_expand_node(t_ast *n)
 	return (1);
 }
 
-void	ft_explore_ast(t_ast **root)
+void	ft_explore_ast(t_ast **root, t_shell *vars)
 {
 	t_ast	*n;
 
@@ -252,8 +288,8 @@ void	ft_explore_ast(t_ast **root)
 	if (!ft_expand_node(n))
 		return ;
 	if (n->left)
-		ft_explore_ast(&n->left);
+		ft_explore_ast(&n->left, vars);
 	if (n->right)
-		ft_explore_ast(&n->right);
+		ft_explore_ast(&n->right, vars);
 }
 

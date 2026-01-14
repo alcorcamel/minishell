@@ -70,9 +70,17 @@ DS LE PARSER, REFUSER REDIRS + SUBSHELL
 # include <fcntl.h>
 # include <errno.h>
 
+typedef struct s_vars
+{
+	char			*key;
+	char			*value;
+	struct s_vars	*next;
+}	t_vars;
+
 typedef struct s_shell
 {
 	char	**envp;
+	t_vars	*vars;
 }	t_shell;
 
 typedef enum e_segtype
@@ -147,7 +155,7 @@ typedef struct s_ast
 t_token		*ft_lexer(char *input);
 void		ft_free_segs(t_seg *seg);
 void		ft_free_tokens(t_token *tok);
-int			ft_add_operator(t_token **lst, char *s, int *i);
+int			ft_add_operator(t_token **lst, char *s, int *i, int *brace);
 int			ft_read_word(t_token **lst, char *s, int *i);
 t_token		*ft_toknew(t_token_type type);
 void		ft_tokadd_back(t_token **lst, t_token *new);
@@ -197,6 +205,6 @@ int			ft_exec_or(t_ast *node, t_shell *shell);
 int			ft_exec_ast(t_ast *node, t_shell *shell);
 char		*ft_get_path(t_ast *node, t_shell *shell);
 /*--------------expander-------------*/
-void		ft_explore_ast(t_ast **root);
+void		ft_explore_ast(t_ast **root, t_shell *vars);
 
 #endif

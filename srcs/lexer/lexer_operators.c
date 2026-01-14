@@ -1,6 +1,5 @@
-#include "lexer.h"
 
-/*pour || et && a ajouter pour le bonus*/
+#include "lexer.h"
 
 static int	ft_add_op_helper2(t_token **lst, t_token *tok, char *s, int *i)
 {
@@ -16,9 +15,9 @@ static int	ft_add_op_helper2(t_token **lst, t_token *tok, char *s, int *i)
 	else if (s[*i] == '>')
 		tok = ft_toknew(TOKEN_REDIR_OUT);
 	else if (s[*i] == '(')
-		return (ft_lex_err(11, "("), 0);
+		tok = ft_toknew(TOKEN_LPAREN);
 	else if (s[*i] == ')')
-		return (ft_lex_err(11, ")"), 0);
+		tok = ft_toknew(TOKEN_RPAREN);
 	else if (s[*i] == '&')
 		return (ft_lex_err(12, "&"), 0);
 	else
@@ -75,19 +74,19 @@ static int	ft_add_op_helper(t_token **lst, t_token *tok, char *s, int *i)
 	return (2);
 }
 
-int	ft_add_operator(t_token **lst, char *s, int *i)
+int	ft_add_operator(t_token **lst, char *s, int *i, int *brace)
 {
 	t_token	*tok;
 	int		ret;
 
+	if (s[*i] == '(')
+		(*brace)++;
+	if (s[*i] == ')')
+		(*brace)--;
 	if (s[*i] == ';')
 		return (ft_lex_err(16, ";"), 0);
 	if (s[*i] == '\\')
 		return (ft_lex_err(16, "\\"), 0);
-	// if (s[*i] == '|' && s[*i + 1] && s[*i + 1] == '|')
-	// 	return (ft_lex_err(13, "||"), 0);
-	// if (s[*i] == '&' && s[*i + 1] && s[*i + 1] == '&')
-	// 	return (ft_lex_err(13, "&&"), 0);
 	ret = ft_add_op_helper(lst, tok, s, i);
 	if (ret == 1)
 		return (1);
