@@ -11,7 +11,6 @@ int		ft_exec_pipe(t_ast *node, t_shell *shell);
 int		ft_exec_cmd(t_ast *node, t_shell *shell);
 int		ft_exec_subshell(t_ast *node, t_shell *shell);
 int		ft_exec_or(t_ast *node, t_shell *shell);
-int		ft_exec_heredoc(t_ast *node, t_shell *shell);
 int		ft_exec_redirect_in(t_ast *node, t_shell *shell);
 int		ft_exec_redirect_out(t_ast *node, t_shell *shell);
 int		ft_exec_redirect_append(t_ast *node, t_shell *shell);
