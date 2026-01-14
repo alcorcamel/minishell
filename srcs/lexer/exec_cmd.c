@@ -12,8 +12,7 @@ int	ft_exec_cmd(t_ast *node, t_shell *shell)
 	signal(SIGQUIT, SIG_DFL);
 	path = ft_get_path(node, shell);
 	execve(path, node->args, shell->envp);
-	perror(path);
-	exit(127);
+	ft_throw_error(path);
 	return (0);
 	// if (shell->in_pipeline == FALSE)
 	// {

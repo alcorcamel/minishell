@@ -14,6 +14,28 @@ static t_vars	*ft_varsnew(char *key, char *value)
 	return (ret);
 }
 
+static char	*ft_envp_finder(char **envp, char *s)
+{
+	int		i;
+	char	*str;
+	char	*ret;
+
+	i = -1;
+	str = ft_strjoin(s, "=");
+	if (!str)
+		return (NULL);
+	while (envp[++i])
+	{
+		if (ft_strncmp(envp[i], str, ft_strlen(str)) == 0)
+		{
+			ret = ft_strchr(envp[i], '=');
+			return (free(str), ret + 1);
+		}
+	}
+	free(str);
+	return (NULL);
+}
+
 static void	ft_varsadd_back(t_seg **lst, t_seg *newvars)
 {
 	t_seg	*tmp;
@@ -212,10 +234,36 @@ static int	ft_redir_expander(t_ast *n)
 	return (1);
 }
 
-static int ft_var_translator(t_seg *segs)
+// static char	*ft_find_in_envp(char *s, t_shell *shell)
+// {
+
+
+
+// }
+
+static	char	*ft_find_vars(char *s, t_shell *shell)
+{
+	int		i;
+	t_shell	*tmp_shell;
+	t_vars	*tmp_vars;
+
+	i = 0;
+	tmp_shell = shell;
+	tmp_vars = tmp_shell->vars;
+	while (tmp_vars)
+	{
+		if (ft_strncmp(s, tmp_vars->key, ft_strlen(tmp_vars->key)) == 0)
+			return (tmp_vars->value);
+		tmp_vars = tmp_vars->next;
+	}
+	return (ft_envp_finder(shell->envp, s));
+}
+
+static int ft_var_translator(t_seg *segs, t_shell *shell)
 {
 	t_seg	*temp;
 	char	c;
+	char	*s;
 
 	c = '$';
 	temp = segs;
@@ -223,12 +271,15 @@ static int ft_var_translator(t_seg *segs)
 	{
 		if (temp->type == SEG_RAW && temp->text)
 		{
-			if (temp->type == SEG_RAW || temp->type == SEG_DQ)
+			s = ft_strchr(temp->text, (int)c);
+			if (s)
 			{
-
+				if (!ft_find_vars(s, shell))
+					return (0);
 
 
 			}
+
 			// if (ft_strchr(temp->text, (int)c))
 		}
 		temp = temp->next;
@@ -278,7 +329,7 @@ static int	ft_expand_node(t_ast *n)
 	return (1);
 }
 
-void	ft_explore_ast(t_ast **root, t_shell *vars)
+void	ft_explore_ast(t_ast **root, t_shell *shell)
 {
 	t_ast	*n;
 
@@ -288,8 +339,8 @@ void	ft_explore_ast(t_ast **root, t_shell *vars)
 	if (!ft_expand_node(n))
 		return ;
 	if (n->left)
-		ft_explore_ast(&n->left, vars);
+		ft_explore_ast(&n->left, shell);
 	if (n->right)
-		ft_explore_ast(&n->right, vars);
+		ft_explore_ast(&n->right, shell);
 }
 
