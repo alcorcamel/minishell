@@ -32,12 +32,12 @@ static t_seg	*ft_segnew(t_segtype type, char *text)
 {
 	t_seg	*ret;
 
-	ret = (t_seg *)malloc(sizeof(t_seg));
+	ret = (t_seg *)ft_calloc(1, sizeof(t_seg));
 	if (!ret)
 		return (NULL);
 	ret->type = type;
 	ret->text = text;
-	ret->next = NULL;
+	n->next = NULL;
 	return (ret);
 }
 

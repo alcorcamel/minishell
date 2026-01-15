@@ -65,6 +65,7 @@ int	main(int ac, char **av, char **envp)
 	t_shell	shell;
 
 	shell.envp = envp;
+	shell.vars = NULL;
 	while (1)
 	{
 		line = readline("JARVIS$ ");

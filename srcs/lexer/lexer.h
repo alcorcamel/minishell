@@ -148,6 +148,7 @@ typedef struct s_ast
 	t_seg			*segs;
 	char			*filename;
 	char			*limiter;
+	int				expanded;
 }	t_ast;
 
 // clear; cc ./srcs/lexer/*.c ./srcs/lexer/*.h ./includes/libft/libft.h ./includes/libft/libft.a -lreadline -lhistory -lncurses

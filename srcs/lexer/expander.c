@@ -1,6 +1,34 @@
 
 #include "lexer.h"
 
+static int	ft_is_var_start(char c)
+{
+	if ((c >= 'A' && c <= 'Z')
+		|| (c >= 'a' && c <= 'z')
+		|| c == '_')
+		return (1);
+	return (0);
+}
+
+static int	ft_is_var_char(char c)
+{
+	if (ft_is_var_start(c) || (c >= '0' && c <= '9'))
+		return (1);
+	return (0);
+}
+
+static int	ft_var_name_len(char *s)
+{
+	int	i;
+
+	if (!s || !ft_is_var_start(s[0]))
+		return (0);
+	i = 0;
+	while (s[i] && ft_is_var_char(s[i]))
+		i++;
+	return (i);
+}
+
 static t_vars	*ft_varsnew(char *key, char *value)
 {
 	t_vars	*ret;
@@ -236,32 +264,47 @@ static int	ft_redir_rebuild(t_ast *n)
 	return (1);
 }
 
-static int	ft_replace_var(char *s, t_seg *segs, t_shell *shell)
+/*CMD EXPANDER*/
+
+static char	*ft_replace_var_helper(t_seg *segs, char *s, int j, int name_len)
 {
+	int		s_len;
+	int		after_len;
+	char	*ret;
 	int		i;
-	char	c;
+
+	s_len = ft_strlen(s);
+	after_len = ft_strlen(segs->text + j + 1 + name_len);
+	ret = (char *)malloc(j + s_len + after_len + 1);
+	if (!ret)
+		return (NULL);
+	i = -1;
+	while (++i < j)
+		ret[i] = segs->text[i];
+	ft_memcpy(ret + i, s, s_len);
+	i += s_len;
+	ft_memcpy(ret + i, segs->text + j + 1 + name_len, after_len);
+	i += after_len;
+	ret[i] = '\0';
+	return (ret);
+}
+
+static int	ft_replace_var(char *s, t_seg *segs, int name_len)
+{
+	int		j;
 	char	*ret;
 
-	i = 0;
-	c = '$';
-	while (segs->text[i] && segs->text[i] != c)
-		i++;
-	i += ft_strlen(s);
-	ret = (char *)malloc((i + 1) * sizeof(char));
+	if (!segs || !segs->text || !s || name_len < 0)
+		return (0);
+	j = 0;
+	while (segs->text[j] && segs->text[j] != '$')
+		j++;
+	if (segs->text[j] != '$')
+		return (1);
+	ret = ft_replace_var_helper(segs, s, j, name_len);
 	if (!ret)
 		return (0);
-	i = 0;
-	while (segs->text[i] && segs->text[i] != c)
-	{
-		ret[i] = segs->text[i];
-		i++;
-	}
-	ft_memcpy(ret + i, s, ft_strlen(s));
-	if (segs->text)
-	{
-		free(segs->text);
-		segs->text = NULL;
-	}
+	free(segs->text);
 	segs->text = ret;
 	return (1);
 }
@@ -289,31 +332,59 @@ static	char	*ft_find_vars(char *s, t_shell *shell)
 	return (ft_envp_finder(shell->envp, s));
 }
 
-static void ft_var_translator(t_seg *segs, t_shell *shell)
+static char	*ft_expand_one_var_in_seg(t_seg *seg, t_shell *shell, char *s)
+{
+	char	*name;
+	char	*found;
+	int		len;
+
+	len = ft_var_name_len(s + 1);
+	if (len == 0)
+		return (ft_strchr(s + 1, '$'));
+	name = ft_strndup(s + 1, len);
+	if (!name)
+		return (NULL);
+	found = ft_find_vars(name, shell);
+	free(name);
+	if (!found)
+	{
+		found = ft_strdup("");
+		if (!found)
+			return (NULL);
+	}
+	if (!ft_replace_var(found, seg, len))
+		return (free(found), NULL);
+	free(found);
+	return (ft_strchr(seg->text, '$'));
+}
+
+static int	ft_expand_seg_vars(t_seg *seg, t_shell *shell)
+{
+	char	*s;
+
+	if (seg->type != SEG_RAW || !seg->text)
+		return (1);
+	s = ft_strchr(seg->text, '$');
+	while (s)
+	{
+		s = ft_expand_one_var_in_seg(seg, shell, s);
+		if (!s && ft_strchr(seg->text, '$'))
+			return (0);
+	}
+	return (1);
+}
+
+static void	ft_var_translator(t_seg *segs, t_shell *shell)
 {
 	t_seg	*temp;
-	char	c;
-	char	*s;
-	char	*ret;
 
-	c = '$';
 	temp = segs;
-	while (temp && temp->type != SEG_SEP)
+	while (temp)
 	{
-		if (temp->type == SEG_RAW && temp->text)
-		{
-			s = ft_strchr(temp->text, (int)c);
-			if (s)
-			{
-				ft_replace_var(s + 1, temp, shell);
-				return ;
-			}
-			else
-				return ;
-		}
+		if (!ft_expand_seg_vars(temp, shell))
+			return ;
 		temp = temp->next;
 	}
-	return ;
 }
 
 static int	ft_cmd_rebuild(t_ast *n)
@@ -347,7 +418,6 @@ static int	ft_cmd_expand(t_ast *n, t_shell *shell)
 	ft_var_translator(segs, shell);
 	return (1);
 }
-
 
 static int	ft_rebuild_node(t_ast *n)
 {
