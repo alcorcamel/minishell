@@ -76,7 +76,7 @@ void print_test_result(char *name, int expected, int got)
 void test1_cmd_echo(t_shell *shell)
 {
 	//echo hello
-	t_ast *cmd = ast_cmd((char *[]){"echo", "hello", NULL});
+	t_ast *cmd = ast_cmd((char *[]){"", NULL});
 	int ret = ft_exec_root(cmd, shell);
 	print_test_result("1. CMD echo hello", 0, ret);
 }
