@@ -37,7 +37,7 @@ static t_seg	*ft_segnew(t_segtype type, char *text)
 		return (NULL);
 	ret->type = type;
 	ret->text = text;
-	n->next = NULL;
+	ret->next = NULL;
 	return (ret);
 }
 
