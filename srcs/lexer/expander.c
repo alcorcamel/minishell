@@ -183,7 +183,7 @@ static char	*ft_valid_filename_finder(void)
 	return (free(nb), file);
 }
 
-static int	ft_heredoc_expander(t_ast *n)
+static int	ft_heredoc_rebuild(t_ast *n)
 {
 	t_seg	*segs;
 	int		quotes;
@@ -221,7 +221,7 @@ static int	ft_heredoc_expander(t_ast *n)
 	return (1);
 }
 
-static int	ft_redir_expander(t_ast *n)
+static int	ft_redir_rebuild(t_ast *n)
 {
 	t_seg	*segs;
 	int		quotes;
@@ -236,12 +236,35 @@ static int	ft_redir_expander(t_ast *n)
 	return (1);
 }
 
-// static char	*ft_find_in_envp(char *s, t_shell *shell)
-// {
+static int	ft_replace_var(char *s, t_seg *segs, t_shell *shell)
+{
+	int		i;
+	char	c;
+	char	*ret;
 
-
-
-// }
+	i = 0;
+	c = '$';
+	while (segs->text[i] && segs->text[i] != c)
+		i++;
+	i += ft_strlen(s);
+	ret = (char *)malloc((i + 1) * sizeof(char));
+	if (!ret)
+		return (0);
+	i = 0;
+	while (segs->text[i] && segs->text[i] != c)
+	{
+		ret[i] = segs->text[i];
+		i++;
+	}
+	ft_memcpy(ret + i, s, ft_strlen(s));
+	if (segs->text)
+	{
+		free(segs->text);
+		segs->text = NULL;
+	}
+	segs->text = ret;
+	return (1);
+}
 
 static	char	*ft_find_vars(char *s, t_shell *shell)
 {
@@ -266,7 +289,7 @@ static	char	*ft_find_vars(char *s, t_shell *shell)
 	return (ft_envp_finder(shell->envp, s));
 }
 
-static char *ft_var_translator(t_seg *segs, t_shell *shell)
+static void ft_var_translator(t_seg *segs, t_shell *shell)
 {
 	t_seg	*temp;
 	char	c;
@@ -281,23 +304,24 @@ static char *ft_var_translator(t_seg *segs, t_shell *shell)
 		{
 			s = ft_strchr(temp->text, (int)c);
 			if (s)
-				return (ft_find_vars(s + 1, shell));
+			{
+				ft_replace_var(s + 1, temp, shell);
+				return ;
+			}
 			else
-				return (NULL);
+				return ;
 		}
 		temp = temp->next;
 	}
-	return (NULL);
+	return ;
 }
 
-static int	ft_cmd_expander(t_ast *n)
+static int	ft_cmd_rebuild(t_ast *n)
 {
 	t_seg	*segs;
-	int		quotes;
 	int		words;
 
 	words = 0;
-	quotes = 0;
 	segs = n->segs;
 	if (!segs)
 		return (0);
@@ -311,24 +335,59 @@ static int	ft_cmd_expander(t_ast *n)
 	return (1);
 }
 
-static int	ft_expand_node(t_ast *n)
+static int	ft_cmd_expand(t_ast *n, t_shell *shell)
+{
+	t_seg	*segs;
+	int		words;
+
+	words = 0;
+	segs = n->segs;
+	if (!segs)
+		return (0);
+	ft_var_translator(segs, shell);
+	return (1);
+}
+
+
+static int	ft_rebuild_node(t_ast *n)
 {
 	if (n->type == NODE_CMD)
 	{
-		if (!ft_cmd_expander(n))
+		if (!ft_cmd_rebuild(n))
 			return (0);	// gestion erreur
 	}
 	if (n->type == NODE_REDIR_IN || n->type == NODE_REDIR_OUT
 		|| n->type == NODE_REDIR_APPEND)
 	{
-		if (!ft_redir_expander(n))
+		if (!ft_redir_rebuild(n))
 			return (0);	// gestion erreur
 	}
 	if (n->type == NODE_HEREDOC)
 	{
-		if (!ft_heredoc_expander(n))
+		if (!ft_heredoc_rebuild(n))
 			return (0);	// gestion erreur
 	}
+	return (1);
+}
+
+static int	ft_expand_node(t_ast *n, t_shell *shell)
+{
+	if (n->type == NODE_CMD)
+	{
+		if (!ft_cmd_expand(n, shell))
+			return (0);	// gestion erreur
+	}
+	// if (n->type == NODE_REDIR_IN || n->type == NODE_REDIR_OUT
+	// 	|| n->type == NODE_REDIR_APPEND)
+	// {
+	// 	if (!ft_redir_expand(n))
+	// 		return (0);	// gestion erreur
+	// }
+	// if (n->type == NODE_HEREDOC)
+	// {
+	// 	if (!ft_heredoc_expand(n))
+	// 		return (0);	// gestion erreur
+	// }
 	return (1);
 }
 
@@ -339,11 +398,12 @@ void	ft_explore_ast(t_ast **root, t_shell *shell)
 	if (!root || !*root)
 		return ;
 	n = *root;
-	if (!ft_expand_node(n))
+	if (!ft_expand_node(n, shell))
+		return ;
+	if (!ft_rebuild_node(n))
 		return ;
 	if (n->left)
 		ft_explore_ast(&n->left, shell);
 	if (n->right)
 		ft_explore_ast(&n->right, shell);
 }
-

@@ -109,8 +109,10 @@ char	*ft_get_path(t_ast *node, t_shell *shell)
 	char	*cmd;
 
 	cmd = node->args[0];
-	if (!cmd || ft_strlen(cmd) == 0 || ft_str_is_space(cmd))
+	if (!cmd)
 		return (NULL);
+	if (ft_strlen(cmd) == 0 || ft_str_is_space(cmd))
+		return (ft_strdup(cmd));
 	if (ft_access_in_rep(&(cmd), *node, NULL))
 		return (ft_strdup(cmd));
 	index = ft_get_index_path(shell->envp);
