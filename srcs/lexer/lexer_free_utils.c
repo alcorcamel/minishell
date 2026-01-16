@@ -1,5 +1,5 @@
 
-#include "lexer.h"
+#include "../../includes/lexer.h"
 
 void	ft_free_segs(t_seg *seg)
 {

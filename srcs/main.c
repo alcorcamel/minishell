@@ -1,16 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/06 13:24:02 by demane            #+#    #+#             */
-/*   Updated: 2026/01/09 15:04:06 by rbourdon         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
-#include "lexer/lexer.h"
+#include "../includes/lexer.h"
+#include "../includes/parser.h"
+#include "../includes/executor.h"
+#include "../includes/expander.h"
 
 static char	*ft_type_printer(t_token_type t)
 {
@@ -26,9 +18,9 @@ static char	*ft_type_printer(t_token_type t)
 		return ("APPEND");
 	if (t == TOKEN_HEREDOC)
 		return ("HEREDOC");
-	if (t == TOKEN_LBRACKET)
+	if (t == TOKEN_LPAREN)
 		return ("LBRACKET");
-	if (t == TOKEN_RBRACKET)
+	if (t == TOKEN_RPAREN)
 		return ("RBRACKET");
 	return (NULL);
 }
@@ -66,27 +58,34 @@ static void	ft_printer(t_token *lst)
 }
 
 //clear; cc ./srcs/main.c ./srcs/lexer/*.c ./srcs/lexer/lexer.h -lreadline -lhistory -lncurses
+// clear; cc ./srcs/lexer/* -lreadline -lhistory -lncurses
 
-int	main(int ac, char **av)
+int	main(int ac, char **av, char **envp)
 {
 	char	*line;
 	t_token	*tokens;
+	t_ast	*root;
+	t_shell	shell;
 
+	shell.envp = envp;
+	shell.vars = NULL;
 	while (1)
 	{
 		line = readline("JARVIS$ ");
 		if (!line)
 			return (1);// en realite erreur sans quitter
 		tokens = ft_lexer(line);
-		ft_printer(tokens);
-
-
+		//ft_printer(tokens);
 		add_history (line);
+		ft_parser(tokens);
+		//ft_printer(tokens);
+		root = ft_build_and_or(&tokens);
+		//ast_print(root);
+		ft_explore_ast(&root, &shell);
+		ft_exec_root(root, &shell);
 		free(line);
-		/*
-		parser
-		executeur
-		*/
+		// if (ft_paser(tokens) == 1)
+		// 	exec!
 	}
 	return (0);
 }

@@ -58,100 +58,9 @@ DS LE PARSER, REFUSER REDIRS + SUBSHELL
 */
 #ifndef LEXER_H
 # define LEXER_H
-# include "../../../libft/libft.h"
-# include "../../../libft/get_next_line/get_next_line.h"
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <sys/wait.h>
-# include <signal.h>
-# include <fcntl.h>
-# include <errno.h>
 
-typedef struct s_vars
-{
-	char			*key;
-	char			*value;
-	struct s_vars	*next;
-}	t_vars;
-
-typedef struct s_shell
-{
-	char	**envp;
-	t_vars	*vars;
-}	t_shell;
-
-typedef enum e_segtype
-{
-	SEG_RAW,
-	SEG_SQ,
-	SEG_DQ,
-	SEG_SEP
-}	t_segtype;
-
-typedef enum e_bool
-{
-	FALSE,
-	TRUE
-}	t_bool;
-
-typedef struct s_seg
-{
-	t_segtype		type;
-	char			*text;
-	struct s_seg	*next;
-}	t_seg;
-
-typedef enum e_token_type
-{
-	TOKEN_WORD,
-	TOKEN_PIPE,
-	TOKEN_REDIR_IN,
-	TOKEN_REDIR_OUT,
-	TOKEN_APPEND,
-	TOKEN_HEREDOC,
-	TOKEN_AND,
-	TOKEN_OR,
-	TOKEN_LPAREN,
-	TOKEN_RPAREN,
-}	t_token_type;
-
-typedef struct s_token
-{
-	t_token_type	type;
-	char			*value;
-	t_seg			*segs;
-	struct s_token	*next;
-}	t_token;
-
-typedef enum e_node_type
-{
-	NODE_CMD,
-	NODE_PIPE,
-	NODE_REDIR_IN,
-	NODE_REDIR_OUT,
-	NODE_REDIR_APPEND,
-	NODE_HEREDOC,
-	NODE_AND,
-	NODE_OR,
-	NODE_SUBSHELL,
-}	t_node_type;
-
-typedef struct s_ast
-{
-	t_node_type		type;
-	struct s_ast	*left;
-	struct s_ast	*right;
-	char			**args;
-	t_seg			*segs;
-	char			*filename;
-	char			*limiter;
-	int				expanded;
-}	t_ast;
-
-// clear; cc ./srcs/lexer/*.c ./srcs/lexer/*.h ./includes/libft/libft.h ./includes/libft/libft.a -lreadline -lhistory -lncurses
+# include "../../includes/base.h"
+// clear; cc ./srcs/main.c ./srcs/executor/*.c ./srcs/lexer/*.c ./srcs/expander/* ./srcs/parser/* ./includes/lexer.h ./includes/parser.h ./includes/libft/libft.h ./includes/executor.h ./includes/libft/libft.a -lreadline -lhistory -lncurses
 
 t_token		*ft_lexer(char *input);
 void		ft_free_segs(t_seg *seg);
@@ -171,42 +80,5 @@ t_token		*ft_lexer(char *l);
 void		ft_lex_err(int i, char *s);
 int			ft_parser(t_token *tokens);
 void		ft_pars_err(int i, char *s);
-/*-------------parser--------------*/
-void		free_segs(t_seg *s);
-t_seg		*seg_last(t_seg *s);
-int			seg_append_words(t_seg **dst, t_seg *src);
-t_seg		*seg_word_separator(void);
-int			ft_is_operator(t_token *cur);
-int			ft_is_paren(t_token *cur);
-int			ft_is_redir(t_token *cur);
-t_ast		*ft_ast_new(t_node_type type);
-t_ast		*ft_ast_new_bin(t_node_type type, t_ast *left, t_ast *right);
-t_ast		*ft_ast_new_cmd(t_seg *segs);
-t_ast		*ft_ast_new_subshell(t_ast *subshell);
-t_ast		*ft_ast_new_redir(t_token_type op, t_seg *segs, t_ast *left);
-t_ast		*ft_build_and_or(t_token **cur);
-t_ast		*ft_build_pipe(t_token **cur);
-t_ast		*ft_build_subshell(t_token **cur);
-t_ast		*ft_parse_subshell(t_token **cur);
-t_ast		*ft_parse_simple(t_token **cur);
-void		free_ast(t_ast **root);
-/*--------------executor-------------*/
-int			ft_exec_root(t_ast *node, t_shell *shell);
-int			ft_exec_pipe(t_ast *node, t_shell *shell);
-int			ft_exec_cmd(t_ast *node, t_shell *shell);
-int			ft_exec_subshell(t_ast *node, t_shell *shell);
-int			ft_exec_or(t_ast *node, t_shell *shell);
-int			ft_exec_heredoc(t_ast *node, t_shell *shell);
-int			ft_exec_redirect_in(t_ast *node, t_shell *shell);
-int			ft_exec_redirect_out(t_ast *node, t_shell *shell);
-int			ft_exec_redirect_append(t_ast *node, t_shell *shell);
-int			ft_exec_builtin(t_ast *node, t_shell *shell);
-int			ft_exec_and(t_ast *node, t_shell *shell);
-int			ft_exec_or(t_ast *node, t_shell *shell);
-int			ft_exec_ast(t_ast *node, t_shell *shell);
-char		*ft_get_path(t_ast *node, t_shell *shell);
-void		ft_throw_error(char *err_p);
-/*--------------expander-------------*/
-void		ft_explore_ast(t_ast **root, t_shell *vars);
 
 #endif

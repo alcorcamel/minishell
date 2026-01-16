@@ -1,5 +1,5 @@
 
-#include "lexer.h"
+#include "../../includes/parser.h"
 
 t_ast *ft_ast_new(t_node_type type)
 {

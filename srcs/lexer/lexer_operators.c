@@ -1,5 +1,5 @@
 
-#include "lexer.h"
+#include "../../includes/lexer.h"
 
 static int	ft_add_op_helper2(t_token **lst, t_token *tok, char *s, int *i)
 {

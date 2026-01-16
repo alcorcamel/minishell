@@ -1,4 +1,5 @@
-#include "lexer.h"
+
+#include "../../includes/lexer.h"
 
 // static size_t	ft_strlen(const char *s)
 // {

@@ -1,4 +1,5 @@
-#include "executor.h"
+
+#include "../../includes/executor.h"
 
 int	ft_get_index_path(char **envp)
 {

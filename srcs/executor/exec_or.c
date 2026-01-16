@@ -1,4 +1,5 @@
-#include "executor.h"
+
+#include "../../includes/executor.h"
 
 int	ft_exec_or(t_ast *node, t_shell *shell)
 {

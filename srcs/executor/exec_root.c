@@ -1,4 +1,5 @@
-#include "executor.h"
+
+#include "../../includes/executor.h"
 
 // a mettre avant d executer cette fonction
 // signal(SIGNINT, SIG_IGN)

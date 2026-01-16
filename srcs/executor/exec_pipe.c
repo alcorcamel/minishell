@@ -1,4 +1,5 @@
-#include "executor.h"
+
+#include "../../includes/executor.h"
 
 int		ft_exec_pipe(t_ast *ast, t_shell *shell)
 {

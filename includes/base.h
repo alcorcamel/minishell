@@ -1,7 +1,8 @@
-#ifndef TYPES_H
-# define TYPES_H
+#ifndef BASE_H
+# define BASE_H
 
 # include "./libft/libft.h"
+# include "./libft/get_next_line/get_next_line.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -12,11 +13,39 @@
 # include <fcntl.h>
 # include <errno.h>
 
+typedef struct s_vars
+{
+	char			*key;
+	char			*value;
+	struct s_vars	*next;
+}	t_vars;
+
+typedef struct s_shell
+{
+	char	**envp;
+	t_vars	*vars;
+}	t_shell;
+
+typedef enum e_segtype
+{
+	SEG_RAW,
+	SEG_SQ,
+	SEG_DQ,
+	SEG_SEP
+}	t_segtype;
+
 typedef enum e_bool
 {
 	FALSE,
 	TRUE
 }	t_bool;
+
+typedef struct s_seg
+{
+	t_segtype		type;
+	char			*text;
+	struct s_seg	*next;
+}	t_seg;
 
 typedef enum e_token_type
 {
@@ -28,43 +57,42 @@ typedef enum e_token_type
 	TOKEN_HEREDOC,
 	TOKEN_AND,
 	TOKEN_OR,
-	TOKEN_LBRACKET,
-	TOKEN_RBRACKET
+	TOKEN_LPAREN,
+	TOKEN_RPAREN,
 }	t_token_type;
 
 typedef struct s_token
 {
 	t_token_type	type;
 	char			*value;
+	t_seg			*segs;
 	struct s_token	*next;
 }	t_token;
 
 typedef enum e_node_type
 {
-	NODE_CMD,// word
-	NODE_PIPE,// |
-	NODE_REDIR_IN,// <
-	NODE_REDIR_OUT,// >
-	NODE_REDIR_APPEND, // >>
-	NODE_HEREDOC, // <<
-	NODE_AND,// &&
-	NODE_OR,// ||
-	NODE_SUBSHELL,// (...word or pipe etc...)
+	NODE_CMD,
+	NODE_PIPE,
+	NODE_REDIR_IN,
+	NODE_REDIR_OUT,
+	NODE_REDIR_APPEND,
+	NODE_HEREDOC,
+	NODE_AND,
+	NODE_OR,
+	NODE_SUBSHELL,
 }	t_node_type;
 
 typedef struct s_ast
 {
-	t_node_type		type; // type de noeud
+	t_node_type		type;
 	struct s_ast	*left;
 	struct s_ast	*right;
-	char			**args; // argument pour la commande
-	char			*limiter;
+	char			**args;
+	t_seg			*segs;
 	char			*filename;
+	char			*limiter;
+	int				expanded;
 }	t_ast;
 
-typedef struct s_shell
-{
-	char	**envp;
-}	t_shell;
 
 #endif

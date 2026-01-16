@@ -1,4 +1,5 @@
-#include "executor.h"
+
+#include "../../includes/executor.h"
 
 //manque a gerer les erreurs de open et de dup2 au cas ou ca foire
 

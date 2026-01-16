@@ -1,4 +1,5 @@
-#include "lexer.h"
+
+#include "../../includes/lexer.h"
 
 void	ft_lex_err(int i, char *s)
 {

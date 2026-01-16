@@ -1,4 +1,5 @@
-#include "executor.h"
+
+#include "../../includes/executor.h"
 
 // pas gerer le cas de pid =-1 , status d exit a reveriifer
 

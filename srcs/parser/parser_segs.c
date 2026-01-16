@@ -1,5 +1,5 @@
 
-#include "lexer.h"
+#include "../../includes/parser.h"
 
 void free_segs(t_seg *s)
 {

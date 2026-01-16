@@ -1,5 +1,5 @@
 
-#include "lexer.h"
+#include "../../includes/parser.h"
 
 int	ft_is_operator(t_token *cur)
 {

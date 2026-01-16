@@ -1,4 +1,5 @@
-#include "lexer.h"
+
+#include "../../includes/parser.h"
 
 static int	ft_first_tok_checker(t_token *tok)
 {

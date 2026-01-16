@@ -1,5 +1,5 @@
 
-#include "lexer.h"
+#include "../../includes/expander.h"
 
 static int	ft_is_var_start(char c)
 {

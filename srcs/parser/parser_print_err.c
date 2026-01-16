@@ -1,4 +1,5 @@
-#include "lexer.h"
+
+#include "../../includes/parser.h"
 
 void	ft_pars_err(int i, char *s)
 {

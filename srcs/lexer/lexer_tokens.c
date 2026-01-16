@@ -1,4 +1,5 @@
-#include "lexer.h"
+
+#include "../../includes/lexer.h"
 
 t_token	*ft_toknew(t_token_type type)
 {
