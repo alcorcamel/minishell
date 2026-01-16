@@ -98,6 +98,7 @@ typedef struct s_ast
 	t_seg			*segs;
 	char			*filename;
 	char			*limiter;
+	t_bool			limiter_quoted;
 }	t_ast;
 
 
