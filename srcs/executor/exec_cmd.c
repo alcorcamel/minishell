@@ -10,7 +10,7 @@ int	ft_exec_cmd(t_ast *node, t_shell *shell)
 	// 	return (ft_exec_builtin(node, shell));
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	if (ft_is_builtin(node->args[0]) == TRUE)
+	if (ft_is_builtin(node, shell) == TRUE)
 		return (ft_exec_built(node, shell));
 	path = ft_get_path(node, shell);
 	execve(path, node->args, shell->envp);
