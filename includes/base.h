@@ -20,10 +20,18 @@ typedef struct s_vars
 	struct s_vars	*next;
 }	t_vars;
 
+typedef	struct s_exit
+{
+	int		status;
+	t_bool	is_exited;
+}	t_exit;
+
+
 typedef struct s_shell
 {
 	char	**envp;
 	t_vars	*vars;
+	t_exit	ctrl_exit;
 }	t_shell;
 
 typedef enum e_segtype
@@ -91,7 +99,6 @@ typedef struct s_ast
 	t_seg			*segs;
 	char			*filename;
 	char			*limiter;
-	int				expanded;
 }	t_ast;
 
 
