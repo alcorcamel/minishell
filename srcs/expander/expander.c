@@ -387,6 +387,28 @@ static void	ft_var_translator(t_seg *segs, t_shell *shell)
 	}
 }
 
+static int	ft_cmd_rebuild_bis(t_ast *n)
+{
+	t_seg	*segs;
+	char	*ret;
+
+	segs = n->segs;
+	if (!segs)
+		return (0);
+	while (segs)
+	{
+
+		ret = ft_join_segs_until_sep(segs);
+	}
+	if (!ret)
+		return (0);
+	printf("%s\n", ret);
+	n->args = ft_split(ret, ' ');
+	if (n->args)
+		return (ft_free_args(n->args), 0);
+	return (1);
+}
+
 static int	ft_cmd_rebuild(t_ast *n)
 {
 	t_seg	*segs;
@@ -403,6 +425,19 @@ static int	ft_cmd_rebuild(t_ast *n)
 	n->args[words] = NULL;
 	if (!ft_words_filler(n->args, n, words))
 		return (ft_free_args(n->args), 0);
+	return (1);
+}
+
+static int	ft_redir_expand(t_ast *n, t_shell *shell)
+{
+	t_seg	*segs;
+	int		words;
+
+	words = 0;
+	segs = n->segs;
+	if (!segs)
+		return (0);
+	ft_var_translator(segs, shell);
 	return (1);
 }
 
@@ -447,12 +482,12 @@ static int	ft_expand_node(t_ast *n, t_shell *shell)
 		if (!ft_cmd_expand(n, shell))
 			return (0);	// gestion erreur
 	}
-	// if (n->type == NODE_REDIR_IN || n->type == NODE_REDIR_OUT
-	// 	|| n->type == NODE_REDIR_APPEND)
-	// {
-	// 	if (!ft_redir_expand(n))
-	// 		return (0);	// gestion erreur
-	// }
+	if (n->type == NODE_REDIR_IN || n->type == NODE_REDIR_OUT
+		|| n->type == NODE_REDIR_APPEND)
+	{
+		if (!ft_redir_expand(n, shell))
+			return (0);	// gestion erreur
+	}
 	// if (n->type == NODE_HEREDOC)
 	// {
 	// 	if (!ft_heredoc_expand(n))

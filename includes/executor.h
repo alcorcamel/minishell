@@ -4,7 +4,7 @@
 #include "base.h"
 // #include "../lexer/lexer.h"
 #include "parser.h"
-// #include "../builtins/builtins.h"
+#include "builtins.h"
 
 int			ft_exec_root(t_ast *node, t_shell *shell);
 int			ft_exec_pipe(t_ast *node, t_shell *shell);

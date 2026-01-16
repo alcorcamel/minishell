@@ -60,7 +60,7 @@ DS LE PARSER, REFUSER REDIRS + SUBSHELL
 # define LEXER_H
 
 # include "base.h"
-// clear; cc ./srcs/lexer/*.c ./srcs/lexer/*.h ./includes/libft/libft.h ./includes/libft/libft.a -lreadline -lhistory -lncurses
+// clear; cc ./srcs/main.c ./srcs/executor/*.c ./srcs/lexer/*.c ./srcs/expander/*.c ./srcs/parser/* ./includes/lexer.h ./includes/parser.h ./includes/libft/libft.h ./includes/executor.h ./includes/libft/libft.a -lreadline -lhistory -lncurses
 
 t_token		*ft_lexer(char *input);
 void		ft_free_segs(t_seg *seg);
