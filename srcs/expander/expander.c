@@ -145,43 +145,43 @@ static char	*ft_join_segs_until_sep(t_seg *seg)
 	return (ret[i] = '\0', ret);
 }
 
-static int	ft_words_filler(char **args, t_ast *n, int words)
-{
-	int		i;
-	t_seg	*temp;
+// static int	ft_words_filler(char **args, t_ast *n, int words)
+// {
+// 	int		i;
+// 	t_seg	*temp;
 
-	i = -1;
-	temp = n->segs;
-	while (++i < words)
-	{
-		n->args[i] = ft_join_segs_until_sep(temp);
-		if (!n->args[i])
-			return (ft_free_args(n->args), 0);
-		while (temp && temp->type != SEG_SEP)
-			temp = temp->next;
-		if (temp && temp->type == SEG_SEP && temp->next)
-			temp = temp->next;
-	}
-	return (1);
-}
+// 	i = -1;
+// 	temp = n->segs;
+// 	while (++i < words)
+// 	{
+// 		n->args[i] = ft_join_segs_until_sep(temp);
+// 		if (!n->args[i])
+// 			return (ft_free_args(n->args), 0);
+// 		while (temp && temp->type != SEG_SEP)
+// 			temp = temp->next;
+// 		if (temp && temp->type == SEG_SEP && temp->next)
+// 			temp = temp->next;
+// 	}
+// 	return (1);
+// }
 
-static int	ft_words_counter(t_ast *n)
-{
-	t_seg	*segs;
-	int		ret;
+// static int	ft_words_counter(t_ast *n)
+// {
+// 	t_seg	*segs;
+// 	int		ret;
 
-	ret = 0;
-	segs = n->segs;
-	if (!segs)
-		return (0);
-	while (segs)
-	{
-		if (segs->type == SEG_SEP)
-			ret++;
-		segs = segs->next;
-	}
-	return (ret);
-}
+// 	ret = 0;
+// 	segs = n->segs;
+// 	if (!segs)
+// 		return (0);
+// 	while (segs)
+// 	{
+// 		if (segs->type == SEG_SEP)
+// 			ret++;
+// 		segs = segs->next;
+// 	}
+// 	return (ret);
+// }
 
 static char	*ft_valid_filename_finder(void)
 {
@@ -211,6 +211,20 @@ static char	*ft_valid_filename_finder(void)
 	return (free(nb), file);
 }
 
+static int	ft_is_quoted(t_ast *n)
+{
+	t_seg	*temp;
+
+	temp = n->segs;
+	while (temp && temp->type != SEG_SEP)
+	{
+		if (temp->type != SEG_RAW)
+			return (1);
+		temp = temp->next;
+	}
+	return (0);
+}
+
 static int	ft_heredoc_rebuild(t_ast *n)
 {
 	t_seg	*segs;
@@ -224,13 +238,15 @@ static int	ft_heredoc_rebuild(t_ast *n)
 		return (0);
 	n->limiter = ft_join_segs_until_sep(segs);
 	if (!n->limiter)
-		return (0);
+		return (0);// erreur ouverture?
 	n->filename = ft_valid_filename_finder();
 	if (!n->filename)
 		return (0);
+	if (ft_is_quoted(n))
+		n->limiter_quoted == TRUE;
 	fd = open(n->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
-		return (0);
+		return (0);// erreur ouverture?
 	while (1)
 	{
 		write(1, "heredoc> ", 9);
@@ -387,53 +403,78 @@ static void	ft_var_translator(t_seg *segs, t_shell *shell)
 	}
 }
 
-static int	ft_cmd_rebuild_bis(t_ast *n)
-{
-	t_seg	*segs;
-	char	*ret;
-
-	segs = n->segs;
-	if (!segs)
-		return (0);
-	while (segs)
-	{
-
-		ret = ft_join_segs_until_sep(segs);
-	}
-	if (!ret)
-		return (0);
-	printf("%s\n", ret);
-	n->args = ft_split(ret, ' ');
-	if (n->args)
-		return (ft_free_args(n->args), 0);
-	return (1);
-}
-
 static int	ft_cmd_rebuild(t_ast *n)
 {
 	t_seg	*segs;
-	int		words;
+	t_seg	*temp;
+	char	*ret;
+	char	*tmp;
+	size_t	size;
+	size_t	i;
 
-	words = 0;
+	size = 0;
 	segs = n->segs;
+	temp = segs;
 	if (!segs)
 		return (0);
-	words = ft_words_counter(n);
-	n->args = calloc(words + 1, sizeof(char *));
-	if (!n->args)
+	while (temp)
+	{
+		ft_join_segs_until_sep_helper(temp, &size);
+		size++;
+		while (temp && temp->type != SEG_SEP)
+			temp = temp->next;
+		if (temp->type == SEG_SEP)
+			temp = temp->next;
+	}
+	ret = (char *)malloc((size + 1) * sizeof(char));
+	if (!ret)
 		return (0);
-	n->args[words] = NULL;
-	if (!ft_words_filler(n->args, n, words))
+	ret[size] = '\0';
+	i = 0;
+	while (segs)
+	{
+		tmp = ft_join_segs_until_sep(segs);
+		if (!tmp)
+			return (0);
+		ft_memcpy(ret + i, tmp, ft_strlen(tmp));
+		i += ft_strlen(tmp);
+		ft_memcpy(ret + i, " ", 1);
+		i++;
+		free(tmp);
+		while (segs && segs->type != SEG_SEP)
+			segs = segs->next;
+		if (segs->type == SEG_SEP)
+			segs = segs->next;
+	}
+	n->args = ft_split(ret, ' ');
+	if (!n->args)
 		return (ft_free_args(n->args), 0);
 	return (1);
 }
+
+// static int	ft_cmd_rebuild_bis(t_ast *n)
+// {
+// 	t_seg	*segs;
+// 	int		words;
+
+// 	words = 0;
+// 	segs = n->segs;
+// 	if (!segs)
+// 		return (0);
+// 	words = ft_words_counter(n);
+// 	n->args = calloc(words + 1, sizeof(char *));
+// 	if (!n->args)
+// 		return (0);
+// 	n->args[words] = NULL;
+// 	if (!ft_words_filler(n->args, n, words))
+// 		return (ft_free_args(n->args), 0);
+// 	return (1);
+// }
 
 static int	ft_redir_expand(t_ast *n, t_shell *shell)
 {
 	t_seg	*segs;
-	int		words;
 
-	words = 0;
 	segs = n->segs;
 	if (!segs)
 		return (0);
@@ -441,12 +482,35 @@ static int	ft_redir_expand(t_ast *n, t_shell *shell)
 	return (1);
 }
 
+/*if (n->limiter_quoted == FALSE)*/
+static int	ft_heredoc_expand(t_ast *n, t_shell *shell)
+{
+	t_seg	*segs;
+	int		fd_src;
+	int		fd_dst;
+	
+
+	fd_src = open(n->filename, O_RDONLY);
+	if (fd_src < 0)
+		return (0);// erreur ouverture?
+	free(n->filename);
+	n->filename = ft_valid_filename_finder();
+	if (!n->filename)
+		return (0);
+	fd_dst = open(n->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd_dst < 0)
+		return (0);// erreur ouverture?
+	segs = n->segs;
+	if (!segs)
+		return (0);
+	ft_heredoc_var_exp(segs, shell);
+	return (1);
+}
+
 static int	ft_cmd_expand(t_ast *n, t_shell *shell)
 {
 	t_seg	*segs;
-	int		words;
 
-	words = 0;
 	segs = n->segs;
 	if (!segs)
 		return (0);
@@ -488,11 +552,11 @@ static int	ft_expand_node(t_ast *n, t_shell *shell)
 		if (!ft_redir_expand(n, shell))
 			return (0);	// gestion erreur
 	}
-	// if (n->type == NODE_HEREDOC)
-	// {
-	// 	if (!ft_heredoc_expand(n))
-	// 		return (0);	// gestion erreur
-	// }
+	if (n->type == NODE_HEREDOC)
+	{
+		if (!ft_heredoc_expand(n))
+			return (0);	// gestion erreur
+	}
 	return (1);
 }
 
