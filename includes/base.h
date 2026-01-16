@@ -20,12 +20,17 @@ typedef struct s_vars
 	struct s_vars	*next;
 }	t_vars;
 
-typedef	struct s_exit
+typedef enum e_bool
+{
+	FALSE,
+	TRUE
+}	t_bool;
+
+typedef struct s_exit
 {
 	int		status;
 	t_bool	is_exited;
 }	t_exit;
-
 
 typedef struct s_shell
 {
@@ -41,12 +46,6 @@ typedef enum e_segtype
 	SEG_DQ,
 	SEG_SEP
 }	t_segtype;
-
-typedef enum e_bool
-{
-	FALSE,
-	TRUE
-}	t_bool;
 
 typedef struct s_seg
 {
