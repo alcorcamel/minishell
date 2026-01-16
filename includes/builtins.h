@@ -3,7 +3,7 @@
 
 # include "base.h"
 
-t_bool	ft_is_builtin(char *cmd);
+t_bool	ft_is_builtin(t_ast *node, t_shell *shell);
 int		ft_echo(char **arg);
 int		ft_pwd(char **arg);
 int		ft_exit(char **arg);
