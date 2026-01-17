@@ -5,5 +5,6 @@
 
 int		ft_print_envp(t_shell *shell);
 t_bool	ft_cpy_enpv(char **envp, t_shell *shell);
+t_vars	*ft_find_vars(char *key, t_shell *shell);
 
 #endif
