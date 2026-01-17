@@ -13,18 +13,19 @@
 # include <fcntl.h>
 # include <errno.h>
 
-typedef struct s_vars
-{
-	char			*key;
-	char			*value;
-	struct s_vars	*next;
-}	t_vars;
-
 typedef enum e_bool
 {
 	FALSE,
 	TRUE
 }	t_bool;
+
+typedef struct s_vars
+{
+	char			*key;
+	char			*value;
+	t_bool			is_exported;
+	struct s_vars	*next;
+}	t_vars;
 
 typedef struct s_exit
 {

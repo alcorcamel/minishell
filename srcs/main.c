@@ -64,8 +64,9 @@ int	main(int ac, char **av, char **envp)
 	t_ast	*root;
 	t_shell	shell;
 
-	shell.envp = envp;
 	shell.vars = NULL;
+	if (ft_cpy_enpv(envp, &shell) == FALSE)
+		exit(1);
 	while (1)
 	{
 		line = readline("JARVIS$ ");

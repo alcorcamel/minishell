@@ -1,7 +1,7 @@
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-# include "base.h"
+# include "env.h"
 
 t_bool	ft_is_builtin(t_ast *node, t_shell *shell);
 int		ft_echo(char **arg);
