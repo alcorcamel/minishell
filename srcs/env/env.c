@@ -127,7 +127,13 @@ int	ft_print_envp(t_shell *shell)
 	while (iterator)
 	{
 		if (iterator->is_exported == TRUE)
-			ft_printf("%s=\"%s\"\n", iterator->key, iterator->value);
+		{
+			ft_printf("export %s", iterator->key);
+			if (iterator->value)
+				ft_printf("=\"%s\"\n", iterator->value);
+			else
+				ft_printf("\n");
+		}
 		iterator = iterator->next;
 	}
 	return (0);
