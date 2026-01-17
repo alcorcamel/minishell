@@ -6,5 +6,9 @@
 int		ft_print_envp(t_shell *shell);
 t_bool	ft_cpy_enpv(char **envp, t_shell *shell);
 t_vars	*ft_find_vars(char *key, t_shell *shell);
+t_vars	*ft_create_new_vars(char *var_envp, t_bool is_exported);
+void	ft_add_vars(t_shell *shell, t_vars *vars);
+char	*ft_get_key_from_var_envp(char *var_envp);
+t_bool	ft_get_value_from_var_envp(char *var_envp, char **value);
 
 #endif

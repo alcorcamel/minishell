@@ -1,5 +1,53 @@
 #include "../../includes/env.h"
 
+char	*ft_get_key_from_var_envp(char *var_envp)
+{
+	int		i;
+	char	*key;
+
+	i = 0;
+	while (var_envp[i] && var_envp[i] != '=')
+		i++;
+	key = (char *)malloc(sizeof(char) * (i + 1));
+	if (!key)
+		return (NULL);
+	i = 0;
+	while (var_envp[i] && var_envp[i] != '=')
+	{
+		key[i] = var_envp[i];
+		i++;
+	}
+	key[i] = '\0';
+	return (key);
+}
+
+t_bool	ft_get_value_from_var_envp(char *var_envp, char **value)
+{
+	int		i;
+	int		j;
+	char	*val;
+
+	i = 0;
+	while (var_envp[i] && var_envp[i] != '=')
+		i++;
+	if (var_envp[i] != '=')
+		return (*value = NULL, TRUE);
+	j = i++;
+	while (var_envp[i])
+		i++;
+	val = (char *)malloc(sizeof(char) * (i - j));
+	if (!val)
+		return (*value = NULL, FALSE);
+	i = 0;
+	while (var_envp[++j])
+	{
+		if (var_envp[j] != '"' && var_envp[j] != '\'')
+			val[i++] = var_envp[j];
+	}
+	val[i] = '\0';
+	*value = val;
+}
+
 t_vars	*ft_create_new_vars(char *var_envp, t_bool is_exported)
 {
 	char	*key;
@@ -8,7 +56,6 @@ t_vars	*ft_create_new_vars(char *var_envp, t_bool is_exported)
 	int		j;
 	t_vars	*new;
 
-	i = 0;
 	key = NULL;
 	value = NULL;
 	new = (t_vars *)malloc(sizeof(t_vars));
@@ -16,31 +63,12 @@ t_vars	*ft_create_new_vars(char *var_envp, t_bool is_exported)
 		return (NULL);
 	new->is_exported = is_exported;
 	new->next = NULL;
-	while (var_envp[i] && var_envp[i] != '=')
-		i++;
-	key = (char *)malloc(sizeof(char) * (i + 1));
+	key = ft_get_key_from_var_envp(var_envp);
 	if (!key)
 		return (ft_free((void **)&new), NULL);
-	i = 0;
-	while (var_envp[i] && var_envp[i] != '=')
-	{
-		key[i] = var_envp[i];
-		i++;
-	}
-	key[i] = '\0';
 	new->key = key;
-	if (var_envp[i] != '=')
-		return (new->value = NULL, new);
-	j = i++;
-	while (var_envp[i])
-		i++;
-	value = (char *)malloc(sizeof(char) * (i - j));
-	if (!value)
+	if (ft_get_value_from_var_envp(var_envp, &value) == FALSE)
 		return (ft_free((void **)&new), ft_free((void **)&key), NULL);
-	i = 0;
-	while (var_envp[++j])
-		value[i++] = var_envp[j];
-	value[i] = '\0';
 	new->value = value;
 	return (new);
 }
