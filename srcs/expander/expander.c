@@ -483,29 +483,29 @@ static int	ft_redir_expand(t_ast *n, t_shell *shell)
 }
 
 /*if (n->limiter_quoted == FALSE)*/
-static int	ft_heredoc_expand(t_ast *n, t_shell *shell)
-{
-	t_seg	*segs;
-	int		fd_src;
-	int		fd_dst;
-	
+// static int	ft_heredoc_expand(t_ast *n, t_shell *shell)
+// {
+// 	t_seg	*segs;
+// 	int		fd_src;
+// 	int		fd_dst;
 
-	fd_src = open(n->filename, O_RDONLY);
-	if (fd_src < 0)
-		return (0);// erreur ouverture?
-	free(n->filename);
-	n->filename = ft_valid_filename_finder();
-	if (!n->filename)
-		return (0);
-	fd_dst = open(n->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (fd_dst < 0)
-		return (0);// erreur ouverture?
-	segs = n->segs;
-	if (!segs)
-		return (0);
-	ft_heredoc_var_exp(segs, shell);
-	return (1);
-}
+
+// 	fd_src = open(n->filename, O_RDONLY);
+// 	if (fd_src < 0)
+// 		return (0);// erreur ouverture?
+// 	free(n->filename);
+// 	n->filename = ft_valid_filename_finder();
+// 	if (!n->filename)
+// 		return (0);
+// 	fd_dst = open(n->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+// 	if (fd_dst < 0)
+// 		return (0);// erreur ouverture?
+// 	segs = n->segs;
+// 	if (!segs)
+// 		return (0);
+// 	ft_heredoc_var_exp(segs, shell);
+// 	return (1);
+// }
 
 static int	ft_cmd_expand(t_ast *n, t_shell *shell)
 {
@@ -552,11 +552,11 @@ static int	ft_expand_node(t_ast *n, t_shell *shell)
 		if (!ft_redir_expand(n, shell))
 			return (0);	// gestion erreur
 	}
-	if (n->type == NODE_HEREDOC)
-	{
-		if (!ft_heredoc_expand(n))
-			return (0);	// gestion erreur
-	}
+	// if (n->type == NODE_HEREDOC)
+	// {
+	// 	if (!ft_heredoc_expand(n, shell))
+	// 		return (0);	// gestion erreur
+	// }
 	return (1);
 }
 
