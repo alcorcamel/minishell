@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CHECK_OBJS=$(ls srcs/objs/ | wc -l)
+CHECK_OBJS=$(ls srcs/ | grep objs | wc -l)
 if [ "$CHECK_OBJS" -ne 0 ]; then
 	make fclean
 CHECK_ORIG_AKIM=$(git remote | grep -c 'origin-akim')
