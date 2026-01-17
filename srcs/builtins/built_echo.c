@@ -1,7 +1,7 @@
 
 #include "../../includes/builtins.h"
 
-int	echo(char **arg)
+int	ft_echo(char **arg)
 {
 	int		i;
 	int		j;

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+CHECK_OBJS=$(ls srcs/objs/ | wc -l)
+if [ "$CHECK_OBJS" -ne 0 ]; then
+	make fclean
 CHECK_ORIG_AKIM=$(git remote | grep -c 'origin-akim')
 if [ "$CHECK_ORIG_AKIM" -eq 0 ]; then
 	git remote add origin-akim "git@github.com:DanielAkim2000/minishell.git"

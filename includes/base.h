@@ -37,6 +37,7 @@ typedef struct s_shell
 	char	**envp;
 	t_vars	*vars;
 	t_exit	ctrl_exit;
+	int		last_status;
 }	t_shell;
 
 typedef enum e_segtype

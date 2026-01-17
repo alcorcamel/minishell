@@ -1,5 +1,0 @@
-echo -n -n -n -n
-
-echo -n
-
-cat | ./minishell

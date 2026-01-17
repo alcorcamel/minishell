@@ -1,8 +1,5 @@
 
-#include "../includes/lexer.h"
-#include "../includes/parser.h"
-#include "../includes/executor.h"
-#include "../includes/expander.h"
+#include "../includes/minishell.h"
 
 static char	*ft_type_printer(t_token_type t)
 {
@@ -82,8 +79,8 @@ int	main(int ac, char **av, char **envp)
 		root = ft_build_and_or(&tokens);
 		//ast_print(root);
 		ft_explore_ast(&root, &shell);
-		ft_exec_root(root, &shell);
-		free(line);
+		shell.last_status = ft_exec_root(root, &shell);
+		ft_free((void **)&line);
 		// if (ft_paser(tokens) == 1)
 		// 	exec!
 	}
