@@ -79,7 +79,7 @@ int	main(int ac, char **av, char **envp)
 		root = ft_build_and_or(&tokens);
 		//ast_print(root);
 		ft_explore_ast(&root, &shell);
-		shell.last_status = ft_exec_root(root, &shell);
+		shell.last_status = ft_exec_ast(root, &shell);
 		ft_free((void **)&line);
 		// if (ft_paser(tokens) == 1)
 		// 	exec!

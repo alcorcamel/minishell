@@ -20,7 +20,7 @@ int			ft_exec_and(t_ast *node, t_shell *shell);
 int			ft_exec_or(t_ast *node, t_shell *shell);
 int			ft_exec_ast(t_ast *node, t_shell *shell);
 char		*ft_get_path(t_ast *node, t_shell *shell);
-void		ft_throw_error(char *err_p);
+int			ft_throw_error(char *err_p);
 int			ft_exec_built(t_ast *node, t_shell *shell);
 
 #endif
