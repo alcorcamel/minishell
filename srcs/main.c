@@ -69,6 +69,7 @@ int	main(int ac, char **av, char **envp)
 	shell.vars = NULL;
 	shell.last_status = 0;
 	ft_print_boot();
+	ft_boot_loading();
 	if (ft_cpy_enpv(envp, &shell) == FALSE)
 		exit(1);
 	while (1)

@@ -14,5 +14,6 @@
 
 void	ft_print_boot(void);
 char	*ft_generate_prompt(t_shell *shell);
+void	ft_boot_loading(void);
 
 #endif

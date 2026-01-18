@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 13:23:59 by demane            #+#    #+#             */
-/*   Updated: 2026/01/18 02:46:00 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/18 18:25:52 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@ int			ft_exec_ast(t_ast *node, t_shell *shell);
 t_bool		ft_cpy_enpv(char **envp, t_shell *shell);
 void		ft_print_boot(void);
 char		*ft_generate_prompt(t_shell *shell);
+void		ft_boot_loading(void);
 
 #endif

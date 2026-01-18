@@ -35,6 +35,10 @@ int	ft_exec_cmd(t_ast *node, t_shell *shell)
 	char	**envp;
 	// if (ft_is_builtin(node))
 	// 	return (ft_exec_builtin(node, shell));
+	if (ft_cmd_expand(node, shell) == 0)
+		return (1);
+	if (ft_cmd_rebuild(node) == 0)
+		return (1);
 	if (ft_is_builtin(node, shell) == TRUE)
 		return (ft_exec_built(node, shell));
 	pid = fork();
