@@ -62,6 +62,7 @@ static char	*ft_expand_one_var_in_seg(t_seg *seg, t_shell *shell, char *s)
 	char	*found;
 	int		len;
 
+	found = NULL;
 	if (*(s + 1) == '?')
 		return (ft_exp_onevar_helper(seg, shell, found));
 	len = ft_var_name_len(s + 1);

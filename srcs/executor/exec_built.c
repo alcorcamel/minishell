@@ -7,7 +7,7 @@ int	ft_exec_built(t_ast *node, t_shell *shell)
 	if (ft_strncmp(node->args[0], "echo", ft_strlen(node->args[0])) == 0)
 		return (ft_echo(node->args));
 	if (ft_strncmp(node->args[0], "cd", ft_strlen(node->args[0]))  == 0)
-		return (ft_cd(node->args));
+		return (ft_cd(node->args, shell));
 	if (ft_strncmp(node->args[0], "pwd", ft_strlen(node->args[0]))  == 0)
 		return (ft_pwd(node->args));
 	if (ft_strncmp(node->args[0], "export", ft_strlen(node->args[0]))  == 0)

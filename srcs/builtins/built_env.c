@@ -2,7 +2,7 @@
 
 static int	ft_print_err_env(void)
 {
-	ft_putstr_fd("env : too many arguments\n", STDERR_FILENO);
+	ft_putstr_fd("minishield: env: too many arguments\n", STDERR_FILENO);
 	return (1);
 }
 
