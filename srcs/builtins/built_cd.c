@@ -13,6 +13,15 @@ int	ft_print_err_cd(void)
 	return (1);
 }
 
+int	ft_print_err_cd_no_directory(char *dir)
+{
+	ft_putstr_fd("minishield: cd: ", STDERR_FILENO);
+	if (dir)
+		ft_putstr_fd(dir, STDERR_FILENO);
+	ft_putstr_fd(": Aucun fichier ou dossier de ce nom\n", STDERR_FILENO);
+	return (1);
+}
+
 int	ft_cd(char **args, t_shell *shell)
 {
 	t_vars	*var;
@@ -53,7 +62,7 @@ int	ft_cd(char **args, t_shell *shell)
 	if (!path)
 		return (ft_putstr_fd("minishield: cd: << HOME >> non defini", STDERR_FILENO), 1);
 	if (chdir(path) == -1)
-		return (perror("cd"), 1);
+		return (ft_print_err_cd_no_directory(args[1]));
 	var = ft_find_vars("PWD", shell);
 	if (var)
 	{
