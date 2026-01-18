@@ -6,12 +6,12 @@
 #    By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/10 11:33:07 by demane            #+#    #+#              #
-#    Updated: 2026/01/14 13:28:17 by demane           ###   ########.fr        #
+#    Updated: 2026/01/18 13:18:59 by demane           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
-CC = cc
+CC = @cc
 CFLAGS = -Wall -Wextra -Werror -I.
 AR = @ar rcs
 RM = @rm -f
@@ -43,16 +43,46 @@ OBJS_GNL = $(SRCS_GNL:.c=.o)
 
 OBJS_BONUS = $(SRCS_BONUS:.c=.o)
 
+# ================ STYLE =================
+
+
+RESET   = \033[0m
+GREEN   = \033[32m
+CYAN    = \033[36m
+BOLD  = \033[1m
+
+
+BAR_WIDTH = 30
+FILE_WIDTH = 43
+TOTAL     = $(words $(SRCS) $(SRCS_PRINTF) $(SRCS_GNL) $(SRCS_BONUS))
+COUNT     = 0
+
+define progress_bar
+	@$(eval COUNT=$(shell echo $$(( $(COUNT) + 1 ))))
+	@PERCENT=$$(($(COUNT) * 100 / $(TOTAL))); \
+	FILLED=$$(($(COUNT) * $(BAR_WIDTH) / $(TOTAL))); \
+	EMPTY=$$(($(BAR_WIDTH) - $$FILLED)); \
+	FILE="$<"; \
+	SHORT_FILE=$$(printf "%-*.*s" $(FILE_WIDTH) $(FILE_WIDTH) "$$FILE"); \
+	printf "\r\033[K$(BOLD)$(CYAN)[BUILD] [LIBFT]]$(RESET) %s $(CYAN)[" "$$SHORT_FILE"; \
+	printf "%0.s=" $$(seq 1 $$FILLED); \
+	printf "%0.s " $$(seq 1 $$EMPTY); \
+	printf "] %3d%%$(RESET)" $$PERCENT
+endef
+
+
 all: $(NAME)
 
 $(NAME): $(OBJS) $(OBJS_PRINTF) $(OBJS_GNL) $(OBJS_BONUS)
 	$(AR) $(NAME) $(OBJS) $(OBJS_PRINTF) $(OBJS_GNL) $(OBJS_BONUS)
+	@printf "\n$(GREEN)✔ Build LIBFT terminé$(RESET)\n"
 
 bonus: $(OBJS_BONUS) $(OBJS) $(NAME)
 	$(AR) $(NAME) $(OBJS) $(OBJS_PRINTF) $(OBJS_BONUS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
+	$(progress_bar)
 
 clean:
 	$(RM) $(OBJS) $(OBJS_PRINTF) $(OBJS_BONUS) $(OBJS_GNL)

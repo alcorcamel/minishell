@@ -1,5 +1,5 @@
 NAME        = minishell
-CC          = cc
+CC          = @cc
 # CFLAGS      = -Wall -Wextra -Werror -I./includes
 CFLAGS      = -I./includes -g3
 
@@ -17,22 +17,22 @@ DIR_EXECUTOR= executor
 # ================= FILES =================
 
 FILES_LEXER = lexer_free_utils.c lexer_operators.c lexer_print_err.c \
-              lexer_reader.c lexer_segs.c lexer_tokens.c lexer_utils.c \
-              lexer.c
+	      lexer_reader.c lexer_segs.c lexer_tokens.c lexer_utils.c \
+	      lexer.c
 
 FILES_PARSER = parser_ast_builder.c parser.c parser_print_err.c \
-               parser_utils2.c parser_builder.c parser_free.c \
-               parser_segs.c parser_utils.c
+	       parser_utils2.c parser_builder.c parser_free.c \
+	       parser_segs.c parser_utils.c
 
 FILES_EXPANDER = expander.c
 
 FILES_BUILTINS = built_cd.c built_echo.c built_env.c built_exit.c \
-                 built_export.c built_pwd.c built_unset.c built_utils.c
+		 built_export.c built_pwd.c built_unset.c built_utils.c
 
 FILES_EXECUTOR = exec_and.c exec_append.c exec_ast.c exec_cmd.c \
-                 exec_or.c exec_pipe.c exec_redirect.c \
-                 exec_subshell.c exec_get_path.c exec_throw_error.c exec_built.c \
-                 exec_here_doc.c
+		 exec_or.c exec_pipe.c exec_redirect.c \
+		 exec_subshell.c exec_get_path.c exec_throw_error.c exec_built.c \
+		 exec_here_doc.c
 
 FILES_ENV = env.c
 
@@ -49,8 +49,8 @@ SRCS_ENV      = $(addprefix $(DIR_SRCS)/$(DIR_ENV)/, $(FILES_ENV))
 SRCS_STYLES   = $(addprefix $(DIR_SRCS)/styles/, $(FILES_STYLES))
 
 SRCS =  $(SRCS_LEXER) $(SRCS_PARSER) $(SRCS_EXPANDER) \
-        $(SRCS_BUILTINS) $(SRCS_EXECUTOR) $(SRCS_ENV)\
-        $(SRCS_STYLES) $(DIR_SRCS)/main.c
+	$(SRCS_BUILTINS) $(SRCS_EXECUTOR) $(SRCS_ENV)\
+	$(SRCS_STYLES) $(DIR_SRCS)/main.c
 
 # ================= OBJS =================
 
@@ -60,27 +60,59 @@ OBJS = $(SRCS:$(DIR_SRCS)/%.c=$(DIR_OBJS)/%.o)
 
 LIBFT = $(DIR_INCLUDES)/libft/libft.a
 
+# ================ STYLE =================
+
+
+RESET   = \033[0m
+GREEN   = \033[32m
+CYAN    = \033[36m
+BOLD  = \033[1m
+
+
+BAR_WIDTH = 30
+FILE_WIDTH = 40
+TOTAL     = $(words $(SRCS))
+COUNT     = 0
+
+define progress_bar
+	@$(eval COUNT=$(shell echo $$(( $(COUNT) + 1 ))))
+	@PERCENT=$$(($(COUNT) * 100 / $(TOTAL))); \
+	FILLED=$$(($(COUNT) * $(BAR_WIDTH) / $(TOTAL))); \
+	EMPTY=$$(($(BAR_WIDTH) - $$FILLED)); \
+	FILE="$<"; \
+	SHORT_FILE=$$(printf "%-*.*s" $(FILE_WIDTH) $(FILE_WIDTH) "$$FILE"); \
+	printf "\r\033[K$(BOLD)$(CYAN)[BUILD] [MINISHELL]$(RESET) %s $(CYAN)[" "$$SHORT_FILE"; \
+	printf "%0.s=" $$(seq 1 $$FILLED); \
+	printf "%0.s " $$(seq 1 $$EMPTY); \
+	printf "] %3d%%$(RESET)" $$PERCENT
+endef
+
+
+
+
 # ================= RULES =================
 
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) -lreadline -lhistory -lncurses
+	@printf "\n$(GREEN)✔ Build MINISHELL terminé$(RESET)\n"
 
 $(DIR_OBJS)/%.o: $(DIR_SRCS)/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
+	$(progress_bar)
 
 $(LIBFT):
-	make -C $(DIR_INCLUDES)/libft
+	@make -C $(DIR_INCLUDES)/libft
 
 clean:
-	rm -rf $(DIR_OBJS)
-	make -C $(DIR_INCLUDES)/libft clean
+	@rm -rf $(DIR_OBJS)
+	@make -C $(DIR_INCLUDES)/libft clean
 
 fclean: clean
-	rm -rf $(NAME)
-	make -C $(DIR_INCLUDES)/libft fclean
+	@rm -rf $(NAME)
+	@make -C $(DIR_INCLUDES)/libft fclean
 
 re: fclean all
 
