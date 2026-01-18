@@ -9,21 +9,21 @@ static int	ft_rebuild_node(t_ast *n, t_shell *shell)
 		if (!ft_redir_rebuild(n))
 			return (0);// gestion erreur
 	}
-	if (n->type == NODE_CMD)
-	{
-		if (!ft_cmd_expand(n, shell))
-			return (0);// gestion erreur
-	}
+	// if (n->type == NODE_CMD)
+	// {
+	// 	if (!ft_cmd_expand(n, shell))
+	// 		return (0);// gestion erreur
+	// }
 	return (1);
 }
 
 static int	ft_expand_node(t_ast *n, t_shell *shell)
 {
-	if (n->type == NODE_CMD)
-	{
-		if (!ft_cmd_rebuild(n))
-			return (0);// gestion erreur
-	}
+	// if (n->type == NODE_CMD)
+	// {
+	// 	if (!ft_cmd_rebuild(n))
+	// 		return (0);// gestion erreur
+	// }
 	if (n->type == NODE_REDIR_IN || n->type == NODE_REDIR_OUT
 		|| n->type == NODE_REDIR_APPEND)
 	{
