@@ -65,7 +65,6 @@ int	main(int ac, char **av, char **envp)
 	t_shell	shell;
 
 	shell.vars = NULL;
-	shell.envp = envp;
 	if (ft_cpy_enpv(envp, &shell) == FALSE)
 		exit(1);
 	while (1)

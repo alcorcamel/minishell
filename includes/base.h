@@ -35,7 +35,6 @@ typedef struct s_exit
 
 typedef struct s_shell
 {
-	char	**envp;
 	t_vars	*vars;
 	t_exit	ctrl_exit;
 	int		last_status;

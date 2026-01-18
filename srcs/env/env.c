@@ -164,11 +164,87 @@ int	ft_print_envp(t_shell *shell, t_bool is_aff_export)
 			else
 				ft_printf("%s", iterator->key);
 			if (iterator->value)
-				ft_printf("=\"%s\"\n", iterator->value);
+			{
+				if (is_aff_export == TRUE)
+					ft_printf("=\"%s\"\n", iterator->value);
+				else
+					ft_printf("=%s\n", iterator->value);
+			}
 			else
 				ft_printf("\n");
 		}
 		iterator = iterator->next;
 	}
 	return (0);
+}
+
+void	ft_free_all_envp(char ***envp)
+{
+	int	i;
+
+	if (!envp || *envp)
+		return ((void)0);
+	i = -1;
+	while (*envp[++i])
+	{
+		ft_free((void **)&(*envp[i]));
+	}
+	ft_free((void **)&(*envp));
+}
+
+char	*ft_make_envp_line(t_vars *var)
+{
+	char	*line;
+	int		j;
+	int		i;
+
+	if (!var)
+		return (NULL);
+	j = ft_strlen(var->key) + ft_strlen(var->value) + 2;
+	line = (char *)ft_calloc(j, sizeof(char));
+	if (!line)
+		return (NULL);
+	i = -1;
+	while (var->key[++i] != '\0')
+		line[i] = var->key[i];
+	if (!var->value)
+		return (line[i] = '\0', line);
+	line[i++] = '=';
+	j = -1;
+	while (var->value[++j])
+		line[i++] = var->value[j];
+	line[i] = '\0';
+	return (line);
+}
+
+char	**ft_make_envp(t_vars *vars)
+{
+	int		i;
+	t_vars	*iterator;
+	char	**envp;
+
+	if (!vars)
+		return (NULL);
+	i = 0;
+	iterator = vars;
+	while (iterator)
+	{
+		i++;
+		iterator = iterator->next;
+	}
+	envp = (char **)ft_calloc((i + 1), sizeof(char *));
+	if (!envp)
+		return (NULL);
+	envp[i] = NULL;
+	i = 0;
+	iterator = vars;
+	while (iterator)
+	{
+		envp[i] = ft_make_envp_line(iterator);
+		if (!envp[i++])
+			return (ft_free_all_envp(&envp), NULL);
+		iterator = iterator->next;
+	}
+	envp[i] = NULL;
+	return (envp);
 }

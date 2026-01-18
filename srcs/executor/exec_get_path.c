@@ -101,7 +101,7 @@ char	*ft_get_path(t_ast *node, t_shell *shell)
 {
 	char	*path;
 	char	**split_val;
-	int		index;
+	t_vars	*var;
 	char	*cmd;
 
 	cmd = node->args[0];
@@ -111,10 +111,10 @@ char	*ft_get_path(t_ast *node, t_shell *shell)
 		return (ft_strdup(cmd));
 	if (ft_access_in_rep(&(cmd), *node, NULL))
 		return (ft_strdup(cmd));
-	index = ft_get_index_path(shell->envp);
-	if (index == -1)
+	var = ft_find_vars("PATH", shell);
+	if (!var)
 		return (NULL);
-	split_val = ft_split(shell->envp[index] + 5, ':');
+	split_val = ft_split(var->value, ':');
 	if (!split_val)
 		return (NULL);
 	path = ft_try_paths(&split_val, cmd, *node);
