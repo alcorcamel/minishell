@@ -1,4 +1,3 @@
-
 #include "../../includes/lexer.h"
 
 static int	ft_read_sq(char *s, int *i, t_seg **segs)

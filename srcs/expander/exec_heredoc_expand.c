@@ -1,4 +1,3 @@
-
 #include "../../includes/executor.h"
 #include "../../includes/expander.h"
 
@@ -70,7 +69,6 @@ static char	*ft_expand_vars_in_line(char *line, t_shell *shell)
 	}
 	return (line);
 }
-
 
 static int	ft_heredoc_exp_helper(t_shell *shell, int fd_src, int fd_dst)
 {

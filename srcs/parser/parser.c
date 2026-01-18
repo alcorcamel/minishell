@@ -1,4 +1,3 @@
-
 #include "../../includes/parser.h"
 
 static int	ft_first_tok_checker(t_token *tok)
@@ -9,28 +8,6 @@ static int	ft_first_tok_checker(t_token *tok)
 		return (ft_pars_err(1, "||"), 0);
 	else if (tok->type == TOKEN_AND)
 		return (ft_pars_err(1, "&&"), 0);
-	else if (tok->type == TOKEN_RPAREN)
-		return (ft_pars_err(1, ")"), 0);
-	return (1);
-}
-
-static int	ft_after_rparen(t_token *tok, t_token_type prev)
-{
-	if (tok->type == TOKEN_WORD)
-		return (ft_pars_err(1, tok->value), 0);
-	else if (tok->type == TOKEN_LPAREN)
-		return (ft_pars_err(1, "("), 0);
-	return (1);
-}
-
-static int	ft_after_pipe(t_token *tok, t_token_type prev)
-{
-	if (tok->type == TOKEN_PIPE)
-		return (ft_pars_err(1, "|"), 0);
-	else if (tok->type == TOKEN_AND)
-		return (ft_pars_err(1, "&&"), 0);
-	else if (tok->type == TOKEN_OR)
-		return (ft_pars_err(1, "||"), 0);
 	else if (tok->type == TOKEN_RPAREN)
 		return (ft_pars_err(1, ")"), 0);
 	return (1);
@@ -57,7 +34,7 @@ static int	ft_after_redir(t_token *tok, t_token_type prev)
 	return (1);
 }
 
-static int ft_in_checker(t_token *tok, t_token_type prev)
+static int	ft_in_checker(t_token *tok, t_token_type prev)
 {
 	if (prev == TOKEN_REDIR_IN || prev == TOKEN_REDIR_OUT
 		|| prev == TOKEN_HEREDOC || prev == TOKEN_APPEND)

@@ -22,7 +22,7 @@ FILES_LEXER = lexer_free_utils.c lexer_operators.c lexer_print_err.c \
 
 FILES_PARSER = parser_ast_builder.c parser.c parser_print_err.c \
 	       parser_utils2.c parser_builder.c parser_free.c \
-	       parser_segs.c parser_utils.c
+	       parser_segs.c parser_utils.c parser_builder2.c
 
 FILES_EXPANDER = expander.c exec_cmd_expand.c exec_cmd_expand2.c \
 		   exec_cmd_rebuild.c exec_cmd_rebuild2.c exec_heredoc_expand.c \

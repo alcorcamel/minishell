@@ -1,4 +1,3 @@
-
 #include "../../includes/expander.h"
 
 char	*ft_valid_filename_finder(void)

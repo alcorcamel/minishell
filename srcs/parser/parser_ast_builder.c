@@ -1,20 +1,21 @@
-
 #include "../../includes/parser.h"
 
-t_ast *ft_ast_new(t_node_type type)
+t_ast	*ft_ast_new(t_node_type type)
 {
-	t_ast	*n = (t_ast *)ft_calloc(1, sizeof(t_ast));
+	t_ast	*n;
 
+	n = (t_ast *)ft_calloc(1, sizeof(t_ast));
 	if (!n)
 		return (NULL);
 	n->type = type;
 	return (n);
 }
 
-t_ast *ft_ast_new_bin(t_node_type type, t_ast *left, t_ast *right)
+t_ast	*ft_ast_new_bin(t_node_type type, t_ast *left, t_ast *right)
 {
-	t_ast	*n = ft_ast_new(type);
+	t_ast	*n;
 
+	n = ft_ast_new(type);
 	if (!n)
 		return (NULL);
 	n->left = left;
@@ -22,27 +23,29 @@ t_ast *ft_ast_new_bin(t_node_type type, t_ast *left, t_ast *right)
 	return (n);
 }
 
-t_ast *ft_ast_new_cmd(t_seg *segs)
+t_ast	*ft_ast_new_cmd(t_seg *segs)
 {
-	t_ast	*n = ft_ast_new(NODE_CMD);
+	t_ast	*n;
 
+	n = ft_ast_new(NODE_CMD);
 	if (!n)
 		return (NULL);
 	n->segs = segs;
 	return (n);
 }
 
-t_ast *ft_ast_new_subshell(t_ast *subshell)
+t_ast	*ft_ast_new_subshell(t_ast *subshell)
 {
-	t_ast	*n = ft_ast_new(NODE_SUBSHELL);
+	t_ast	*n;
 
+	n = ft_ast_new(NODE_SUBSHELL);
 	if (!n)
 		return (NULL);
 	n->left = subshell;
 	return (n);
 }
 
-t_ast *ft_ast_new_redir(t_token_type op, t_seg *segs, t_ast *left)
+t_ast	*ft_ast_new_redir(t_token_type op, t_seg *segs, t_ast *left)
 {
 	t_ast	*n;
 

@@ -1,4 +1,3 @@
-
 #include "../../includes/lexer.h"
 
 static int	ft_add_op_helper2(t_token **lst, t_token *tok, char *s, int *i)
@@ -27,14 +26,8 @@ static int	ft_add_op_helper2(t_token **lst, t_token *tok, char *s, int *i)
 	return (ft_tokadd_back(lst, tok), (*i)++, 1);
 }
 
-static int	ft_add_op_helper(t_token **lst, t_token *tok, char *s, int *i)
+static int	ft_add_op_helper3(t_token **lst, t_token *tok, int *i, char *s)
 {
-	if (s[*i] == '>' && s[*i + 1] == '<')
-		return (ft_lex_err(12, "><"), 0);
-	if (s[*i] == '<' && s[*i + 1] == '<' && s[*i + 2] == '<')
-		return (ft_lex_err(11, "<"), 0);
-	if (s[*i] == '>' && s[*i + 1] == '>' && s[*i + 2] == '>')
-		return (ft_lex_err(11, ">"), 0);
 	if (s[*i] == '&' && s[*i + 1] == '&')
 	{
 		tok = ft_toknew(TOKEN_AND);
@@ -53,15 +46,11 @@ static int	ft_add_op_helper(t_token **lst, t_token *tok, char *s, int *i)
 		(*i) += 2;
 		return (1);
 	}
-	if (s[*i] == '<' && s[*i + 1] == '<')
-	{
-		tok = ft_toknew(TOKEN_HEREDOC);
-		if (!tok)
-			return (0);
-		ft_tokadd_back(lst, tok);
-		(*i) += 2;
-		return (1);
-	}
+	return (2);
+}
+
+static int	ft_add_op_helper4(t_token **lst, t_token *tok, int *i, char *s)
+{
 	if (s[*i] == '>' && s[*i + 1] == '>')
 	{
 		tok = ft_toknew(TOKEN_APPEND);
@@ -71,6 +60,38 @@ static int	ft_add_op_helper(t_token **lst, t_token *tok, char *s, int *i)
 		(*i) += 2;
 		return (1);
 	}
+	if (s[*i] == '<' && s[*i + 1] == '<')
+	{
+		tok = ft_toknew(TOKEN_HEREDOC);
+		if (!tok)
+			return (0);
+		ft_tokadd_back(lst, tok);
+		(*i) += 2;
+		return (1);
+	}
+	return (2);
+}
+
+static int	ft_add_op_helper(t_token **lst, t_token *tok, char *s, int *i)
+{
+	int	k;
+
+	if (s[*i] == '>' && s[*i + 1] == '<')
+		return (ft_lex_err(12, "><"), 0);
+	if (s[*i] == '<' && s[*i + 1] == '<' && s[*i + 2] == '<')
+		return (ft_lex_err(11, "<"), 0);
+	if (s[*i] == '>' && s[*i + 1] == '>' && s[*i + 2] == '>')
+		return (ft_lex_err(11, ">"), 0);
+	k = ft_add_op_helper3(lst, tok, i, s);
+	if (k == 0)
+		return (0);
+	else if (k == 1)
+		return (1);
+	k = ft_add_op_helper4(lst, tok, i, s);
+	if (k == 0)
+		return (0);
+	else if (k == 1)
+		return (1);
 	return (2);
 }
 
