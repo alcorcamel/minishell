@@ -43,7 +43,7 @@ int	ft_cd(char **args, t_shell *shell)
 	}
 	else
 		path = ft_strdup(args[1]);
-	if (ft_strncmp(args[1], "-", ft_strlen(args[1])) == 0 && ft_strlen(args[1]) == 1)
+	if (ft_strncmp(path, "-", ft_strlen(path)) == 0 && ft_strlen(path) == 1)
 	{
 		var = ft_find_vars("OLDPWD", shell);
 		if (var)
@@ -51,7 +51,7 @@ int	ft_cd(char **args, t_shell *shell)
 		if (!path)
 			return (ft_putstr_fd("minishield: cd: << OLDPWD >> non defini", STDERR_FILENO), 1);
 	}
-	if (ft_strncmp(args[1], "~", ft_strlen(args[1])) == 0 && ft_strlen(args[1]) == 1)
+	if (ft_strncmp(path, "~", ft_strlen(path)) == 0 && ft_strlen(path) == 1)
 	{
 		var = ft_find_vars("HOME", shell);
 		if (var)
