@@ -1,4 +1,3 @@
-
 #include "../../includes/expander.h"
 
 void	ft_free_args(char **args)
@@ -37,7 +36,6 @@ int	ft_is_limiter(char *line, char *limiter)
 		&& line[len] == '\n'
 		&& line[len + 1] == '\0');
 }
-
 
 static void	ft_join_segs_until_sep_helper(t_seg *temp, size_t *size)
 {

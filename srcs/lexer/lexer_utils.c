@@ -1,4 +1,3 @@
-
 #include "../../includes/lexer.h"
 
 int	ft_isspaces(char c)

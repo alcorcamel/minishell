@@ -1,4 +1,3 @@
-
 #include "../../includes/parser.h"
 
 void	free_ast(t_ast **root)
@@ -7,7 +6,6 @@ void	free_ast(t_ast **root)
 
 	if (!root || !*root)
 		return ;
-
 	n = *root;
 	if (n->left)
 		free_ast(&n->left);

@@ -1,4 +1,3 @@
-
 #include "../../includes/lexer.h"
 
 int	ft_lexer_helper(char *l, int *i, int *brace, t_token **lst_begin)

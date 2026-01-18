@@ -1,9 +1,8 @@
-
 #include "../../includes/parser.h"
 
-void free_segs(t_seg *s)
+void	free_segs(t_seg *s)
 {
-	t_seg *next;
+	t_seg	*next;
 
 	while (s)
 	{
