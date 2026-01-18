@@ -104,6 +104,7 @@ char	*ft_get_path(t_ast *node, t_shell *shell)
 	t_vars	*var;
 	char	*cmd;
 
+	path = NULL;
 	cmd = node->args[0];
 	if (!cmd)
 		return (NULL);
@@ -112,21 +113,19 @@ char	*ft_get_path(t_ast *node, t_shell *shell)
 	if (ft_access_in_rep(&(cmd), *node, NULL))
 		return (ft_strdup(cmd));
 	var = ft_find_vars("PATH", shell);
-	if (!var)
+	if (!var || var->value == NULL || !*var->value)
 		return (NULL);
 	split_val = ft_split(var->value, ':');
 	if (!split_val)
 		return (NULL);
 	path = ft_try_paths(&split_val, cmd, *node);
-	if (errno == EACCES)
-	{
-		perror(path);
-		ft_free((void **)&path);
-		ft_free_all_split_val(&split_val);
-		// ft_free_all_node
-		exit(126);
-	}
-	if (!path)
-		return (ft_strdup(cmd));
+	// if (errno == EACCES)
+	// {
+	// 	perror(path);
+	// 	ft_free((void **)&path);
+	// 	ft_free_all_split_val(&split_val);
+	// 	// ft_free_all_node
+	// 	exit(126);
+	// }
 	return (path);
 }

@@ -57,9 +57,9 @@ int	ft_exec_ast(t_ast *node, t_shell *shell)
 		status = ft_exec_redirect_in(node, shell);
 	else if (node->type == NODE_REDIR_OUT)
 		status = ft_exec_redirect_out(node, shell);
+	else if (node->type == NODE_REDIR_APPEND)
+		status = ft_exec_append(node, shell);
 	else
 		status = 0;
-	// if (node->type == NODE_REDIR_APPEND)
-	// 	return (ft_exec_redirect_append(node, shell));
 	return (status);
 }

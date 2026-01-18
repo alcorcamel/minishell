@@ -10,8 +10,8 @@ int	ft_pwd(char **arg)
 {
 	char	*cwd;
 
-	if (arg[1])
-		return (ft_print_err_pwd());
+	// if (arg[1])
+	// 	return (ft_print_err_pwd());
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 	{

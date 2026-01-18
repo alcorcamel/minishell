@@ -66,16 +66,20 @@ void	ft_add_or_replace_vars(char *arg, t_shell *shell)
 int	ft_export(char **args, t_shell *shell)
 {
 	int	i;
+	int	status;
 
 	if (!args[1])
 		return (ft_print_envp(shell, TRUE));
 	i = 1;
+	status = 0;
 	while (args[i])
 	{
 		if (ft_is_valid_args_export(args[i]) == TRUE)
 			ft_add_or_replace_vars(args[i], shell);
+		else
+			status = 1;
 		i++;
 	}
-	return (0);
+	return (status);
 }
 

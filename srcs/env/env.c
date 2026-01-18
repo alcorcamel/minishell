@@ -112,7 +112,8 @@ t_vars	*ft_find_vars(char *key, t_shell *shell)
 	iterator = shell->vars;
 	while (iterator != NULL)
 	{
-		if (ft_strncmp(key, iterator->key, ft_strlen(key)) == 0)
+		if (ft_strncmp(key, iterator->key, ft_strlen(key)) == 0
+			&& ft_strlen(key) == ft_strlen(iterator->key))
 			return (iterator);
 		iterator = iterator->next;
 	}
@@ -137,10 +138,13 @@ t_bool	ft_del_vars(t_vars *del, t_shell *shell)
 		return (TRUE);
 	while (iterator)
 	{
-		if (iterator->key == del->key)
+		if (ft_strncmp(iterator->key, del->key, ft_strlen(del->key)) == 0
+			&& ft_strlen(del->key) == ft_strlen(iterator->key))
 		{
 			if (prev)
 				prev->next = iterator->next;
+			else
+				shell->vars = iterator->next;
 			ft_free_vars(&iterator);
 			return (TRUE);
 		}

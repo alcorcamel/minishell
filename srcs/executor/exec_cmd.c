@@ -38,8 +38,6 @@ int	ft_exec_cmd(t_ast *node, t_shell *shell)
 	if (ft_is_builtin(node, shell) == TRUE)
 		return (ft_exec_built(node, shell));
 	pid = fork();
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
 	if (pid == -1)
 		return (-1);
 	if (pid == 0)
@@ -47,11 +45,18 @@ int	ft_exec_cmd(t_ast *node, t_shell *shell)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		path = ft_get_path(node, shell);
+		if (!path)
+			exit(ft_throw_error(node->args[0]));
 		envp = ft_make_envp(shell->vars);
 		if (!envp) // traiter avec l envp de secours
 			exit(1);
 		execve(path, node->args, envp);
 		exit(ft_throw_error(path));
+	}
+	else
+	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
 	}
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))

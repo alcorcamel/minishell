@@ -27,8 +27,14 @@ char	*ft_shorten_path(char *cwd, t_shell *shell)
 	size_t	home_len;
 	size_t	len;
 	char	*short_path;
+	t_vars	*var;
 
-	home = ft_find_vars("HOME", shell)->value;
+	home = NULL;
+	if (!cwd)
+		return (ft_strdup(""));
+	var = ft_find_vars("HOME", shell);
+	if (var)
+		home = var->value;
 	if (!home)
 		return (ft_strdup(cwd));
 	home_len = ft_strlen(home);

@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 18:10:28 by demane            #+#    #+#             */
-/*   Updated: 2025/11/10 17:44:09 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/18 14:57:01 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	**ft_split(char const *str, char c)
 			if (strs[k++] == NULL)
 				return (ft_free_all(strs));
 		}
-		i = j + 1;
+		i = j + (str[j] != '\0');
 	}
 	return (strs[k] = NULL, strs);
 }
