@@ -63,13 +63,18 @@ int	main(int ac, char **av, char **envp)
 	t_token	*tokens;
 	t_ast	*root;
 	t_shell	shell;
+	char	*prompt;
 
 	shell.vars = NULL;
+	shell.last_status = 0;
+	ft_print_boot();
 	if (ft_cpy_enpv(envp, &shell) == FALSE)
 		exit(1);
 	while (1)
 	{
-		line = readline("JARVIS$ ");
+		prompt = ft_generate_prompt(&shell);
+		line = readline(prompt);
+		ft_free((void **)&prompt);
 		if (!line)
 			return (1);// en realite erreur sans quitter
 		tokens = ft_lexer(line);
