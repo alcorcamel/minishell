@@ -42,29 +42,29 @@ static t_vars	*ft_varsnew(char *key, char *value)
 	return (ret);
 }
 
-static char	*ft_envp_finder(char **envp, char *s)
-{
-	int		i;
-	char	*str;
-	char	*ret;
+// static char	*ft_envp_finder(char **envp, char *s)
+// {
+// 	int		i;
+// 	char	*str;
+// 	char	*ret;
 
-	i = -1;
-	str = ft_strjoin(s, "=");
-	if (!str)
-		return (NULL);
-	while (envp[++i])
-	{
-		if (ft_strncmp(envp[i], str, ft_strlen(str)) == 0)
-		{
-			ret = ft_strdup(ft_strchr(envp[i], '=') + 1);
-			if (!ret)
-				return (free(str), NULL);
-			return (free(str), ret);
-		}
-	}
-	free(str);
-	return (NULL);
-}
+// 	i = -1;
+// 	str = ft_strjoin(s, "=");
+// 	if (!str)
+// 		return (NULL);
+// 	while (envp[++i])
+// 	{
+// 		if (ft_strncmp(envp[i], str, ft_strlen(str)) == 0)
+// 		{
+// 			ret = ft_strdup(ft_strchr(envp[i], '=') + 1);
+// 			if (!ret)
+// 				return (free(str), NULL);
+// 			return (free(str), ret);
+// 		}
+// 	}
+// 	free(str);
+// 	return (NULL);
+// }
 
 static void	ft_varsadd_back(t_vars **lst, t_vars *newvars)
 {
@@ -145,44 +145,6 @@ static char	*ft_join_segs_until_sep(t_seg *seg)
 	return (ret[i] = '\0', ret);
 }
 
-// static int	ft_words_filler(char **args, t_ast *n, int words)
-// {
-// 	int		i;
-// 	t_seg	*temp;
-
-// 	i = -1;
-// 	temp = n->segs;
-// 	while (++i < words)
-// 	{
-// 		n->args[i] = ft_join_segs_until_sep(temp);
-// 		if (!n->args[i])
-// 			return (ft_free_args(n->args), 0);
-// 		while (temp && temp->type != SEG_SEP)
-// 			temp = temp->next;
-// 		if (temp && temp->type == SEG_SEP && temp->next)
-// 			temp = temp->next;
-// 	}
-// 	return (1);
-// }
-
-// static int	ft_words_counter(t_ast *n)
-// {
-// 	t_seg	*segs;
-// 	int		ret;
-
-// 	ret = 0;
-// 	segs = n->segs;
-// 	if (!segs)
-// 		return (0);
-// 	while (segs)
-// 	{
-// 		if (segs->type == SEG_SEP)
-// 			ret++;
-// 		segs = segs->next;
-// 	}
-// 	return (ret);
-// }
-
 static char	*ft_valid_filename_finder(void)
 {
 	int		i;
@@ -243,7 +205,9 @@ static int	ft_heredoc_rebuild(t_ast *n)
 	if (!n->filename)
 		return (0);
 	if (ft_is_quoted(n))
-		n->limiter_quoted == TRUE;
+		n->limiter_quoted = TRUE;
+	else
+		n->limiter_quoted = FALSE;
 	fd = open(n->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 		return (0);// erreur ouverture?
@@ -325,27 +289,38 @@ static int	ft_replace_var(char *s, t_seg *segs, int name_len)
 	return (1);
 }
 
-static	char	*ft_find_vars(char *s, t_shell *shell)
-{
-	int		i;
-	t_shell	*tmp_shell;
-	t_vars	*tmp_vars;
-	char	*ret;
+// static	char	*ft_find_vars(char *s, t_shell *shell)
+// {
+// 	int		i;
+// 	t_shell	*tmp_shell;
+// 	t_vars	*tmp_vars;
+// 	char	*ret;
 
-	i = 0;
-	tmp_shell = shell;
-	tmp_vars = tmp_shell->vars;
-	while (tmp_vars)
-	{
-		if (ft_strncmp(s, tmp_vars->key, ft_strlen(tmp_vars->key)) == 0
-			&& ft_strlen(s) == ft_strlen(tmp_vars->key))
-		{
-			ret = ft_strdup(tmp_vars->value);
-			return (ret);
-		}
-		tmp_vars = tmp_vars->next;
-	}
-	return (ft_envp_finder(shell->envp, s));
+// 	i = 0;
+// 	tmp_shell = shell;
+// 	tmp_vars = tmp_shell->vars;
+// 	while (tmp_vars)
+// 	{
+// 		if (ft_strncmp(s, tmp_vars->key, ft_strlen(tmp_vars->key)) == 0
+// 			&& ft_strlen(s) == ft_strlen(tmp_vars->key))
+// 		{
+// 			ret = ft_strdup(tmp_vars->value);
+// 			return (ret);
+// 		}
+// 		tmp_vars = tmp_vars->next;
+// 	}
+// 	return (ft_envp_finder(shell->envp, s));
+// }
+
+static char*	ft_exp_onevar_helper(t_seg *seg, t_shell *shell, char *found)
+{
+	found = ft_itoa(shell->last_status);
+	if (!found)
+		return (NULL);
+	if (!ft_replace_var(found, seg, 1))
+		return (free(found), NULL);
+	free(found);
+	return (ft_strchr(seg->text, '$'));
 }
 
 static char	*ft_expand_one_var_in_seg(t_seg *seg, t_shell *shell, char *s)
@@ -354,13 +329,15 @@ static char	*ft_expand_one_var_in_seg(t_seg *seg, t_shell *shell, char *s)
 	char	*found;
 	int		len;
 
+	if (*(s + 1) == '?')
+		return (ft_exp_onevar_helper(seg, shell, found));
 	len = ft_var_name_len(s + 1);
 	if (len == 0)
 		return (ft_strchr(s + 1, '$'));
 	name = ft_strndup(s + 1, len);
 	if (!name)
 		return (NULL);
-	found = ft_find_vars(name, shell);
+	found = ft_strdup(ft_find_vars(name, shell)->value);
 	free(name);
 	if (!found)
 	{
@@ -378,7 +355,7 @@ static int	ft_expand_seg_vars(t_seg *seg, t_shell *shell)
 {
 	char	*s;
 
-	if (seg->type != SEG_RAW || !seg->text)
+	if ((seg->type != SEG_RAW && seg->type != SEG_DQ) || !seg->text)
 		return (1);
 	s = ft_strchr(seg->text, '$');
 	while (s)
@@ -403,73 +380,145 @@ static void	ft_var_translator(t_seg *segs, t_shell *shell)
 	}
 }
 
-static int	ft_cmd_rebuild(t_ast *n)
+static size_t	ft_word_len(t_seg **segs)
 {
-	t_seg	*segs;
 	t_seg	*temp;
-	char	*ret;
-	char	*tmp;
-	size_t	size;
-	size_t	i;
+	size_t	ret;
+	int		is_quoted;
 
-	size = 0;
-	segs = n->segs;
-	temp = segs;
-	if (!segs)
-		return (0);
-	while (temp)
+	temp = *segs;
+	ret = 0;
+	is_quoted = 0;
+	while (temp && temp->type != SEG_SEP)
 	{
-		ft_join_segs_until_sep_helper(temp, &size);
-		size++;
-		while (temp && temp->type != SEG_SEP)
-			temp = temp->next;
-		if (temp->type == SEG_SEP)
-			temp = temp->next;
+		if (temp->type == SEG_SQ || temp->type == SEG_DQ)
+			is_quoted = 1;
+		if (temp->text)
+			ret += ft_strlen(temp->text);
+		temp = temp->next;
 	}
-	ret = (char *)malloc((size + 1) * sizeof(char));
-	if (!ret)
-		return (0);
-	ret[size] = '\0';
-	i = 0;
-	while (segs)
+	if (ret == 0 && is_quoted)
+		ret = 1;
+	if (temp && temp->type == SEG_SEP)
+		temp = temp->next;
+	*segs = temp;
+	return (ret);
+}
+
+static void	ft_append_seg_special(char *dst, t_seg *seg, size_t *i)
+{
+	size_t	j;
+
+	j = 0;
+	while (seg->text && seg->text[j])
 	{
-		tmp = ft_join_segs_until_sep(segs);
-		if (!tmp)
+		if ((seg->type == SEG_SQ || seg->type == SEG_DQ) && seg->text[j] == ' ')
+			dst[*i] = '\x1F';
+		else
+			dst[*i] = seg->text[j];
+		(*i)++;
+		j++;
+	}
+}
+
+static t_seg	*ft_write_word(char *ret, size_t *i, t_seg *segs)
+{
+	t_seg	*s;
+	size_t	start;
+	int		is_quoted;
+
+	s = segs;
+	start = *i;
+	is_quoted = 0;
+	while (s && s->type != SEG_SEP)
+	{
+		if (s->type == SEG_SQ || s->type == SEG_DQ)
+			is_quoted = 1;
+		ft_append_seg_special(ret, s, i);
+		s = s->next;
+	}
+	if (is_quoted && *i == start)
+		ret[(*i)++] = '\x1E';
+	if (s && s->type == SEG_SEP)
+		s = s->next;
+	return (s);
+}
+
+static int	ft_arg_restorer(char **arg)
+{
+	int		j;
+	char	*s;
+	char	*new;
+
+	s = *arg;
+	j = 0;
+	while (s && s[j])
+	{
+		if (s[j] == '\x1F')
+			s[j] = ' ';
+		j++;
+	}
+	if (s && s[0] == '\x1E' && s[1] == '\0')
+	{
+		new = ft_strdup("");
+		if (!new)
 			return (0);
-		ft_memcpy(ret + i, tmp, ft_strlen(tmp));
-		i += ft_strlen(tmp);
-		ft_memcpy(ret + i, " ", 1);
-		i++;
-		free(tmp);
-		while (segs && segs->type != SEG_SEP)
-			segs = segs->next;
-		if (segs->type == SEG_SEP)
-			segs = segs->next;
+		free(*arg);
+		*arg = new;
 	}
-	n->args = ft_split(ret, ' ');
-	if (!n->args)
-		return (ft_free_args(n->args), 0);
 	return (1);
 }
 
-// static int	ft_cmd_rebuild_bis(t_ast *n)
-// {
-// 	t_seg	*segs;
-// 	int		words;
+static int	ft_restore_args(char **args)
+{
+	int	i;
 
-// 	words = 0;
-// 	segs = n->segs;
-// 	if (!segs)
-// 		return (0);
-// 	words = ft_words_counter(n);
-// 	n->args = calloc(words + 1, sizeof(char *));
-// 	if (!n->args)
-// 		return (0);
-// 	n->args[words] = NULL;
-// 	if (!ft_words_filler(n->args, n, words))
-// 		return (ft_free_args(n->args), 0);
-// 	return (1);
-// }
+	i = 0;
+	while (args && args[i])
+	{
+		if (!ft_arg_restorer(&args[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static int	ft_cmd_rebuild(t_ast *n)
+{
+	t_seg	*segs;
+	t_seg	*tmp;
+	char	*ret;
+	size_t	size;
+	size_t	i;
+
+	segs = n->segs;
+	tmp = segs;
+	if (!segs)
+		return (0);
+	size = 0;
+	while (tmp)
+	{
+		size += ft_word_len(&tmp);
+		size++;
+	}
+	ret = (char *)malloc(size + 1);
+	if (!ret)
+		return (0);
+	i = 0;
+	while (segs)
+	{
+		segs = ft_write_word(ret, &i, segs);
+		ret[i++] = ' ';
+	}
+	ret[i] = '\0';
+	n->args = ft_split(ret, ' ');
+	free(ret);
+	if (!n->args)
+		return (0);
+	if (!ft_restore_args(n->args))
+		return (ft_free_args(n->args), 0);
+	return (1);
+}
 
 static int	ft_redir_expand(t_ast *n, t_shell *shell)
 {
@@ -482,30 +531,132 @@ static int	ft_redir_expand(t_ast *n, t_shell *shell)
 	return (1);
 }
 
-/*if (n->limiter_quoted == FALSE)*/
-// static int	ft_heredoc_expand(t_ast *n, t_shell *shell)
-// {
-// 	t_seg	*segs;
-// 	int		fd_src;
-// 	int		fd_dst;
+static char	*ft_var_replace(char *line, char *found, int i, int name_len)
+{
+	int		found_len;
+	int		after_len;
+	char	*ret;
 
+	if (!line || !found)
+		return (NULL);
+	found_len = ft_strlen(found);
+	after_len = ft_strlen(line + i + 1 + name_len);
+	ret = (char *)malloc(i + found_len + after_len + 1);
+	if (!ret)
+		return (NULL);
+	ft_memcpy(ret, line, i);
+	ft_memcpy(ret + i, found, found_len);
+	ft_memcpy(ret + i + found_len, line + i + 1 + name_len, after_len);
+	ret[i + found_len + after_len] = '\0';
+	return (ret);
+}
 
-// 	fd_src = open(n->filename, O_RDONLY);
-// 	if (fd_src < 0)
-// 		return (0);// erreur ouverture?
-// 	free(n->filename);
-// 	n->filename = ft_valid_filename_finder();
-// 	if (!n->filename)
-// 		return (0);
-// 	fd_dst = open(n->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-// 	if (fd_dst < 0)
-// 		return (0);// erreur ouverture?
-// 	segs = n->segs;
-// 	if (!segs)
-// 		return (0);
-// 	ft_heredoc_var_exp(segs, shell);
-// 	return (1);
-// }
+static int	ft_expand_vars_line_helper(char **line, t_shell *shell, int *i)
+{
+	char	*new;
+	char	*found;
+
+	found = ft_itoa(shell->last_status);
+	if (!found)
+		return (free(*line), 0);
+	new = ft_var_replace(*line, found, *i, 1);
+	(*i) += ft_strlen(found);
+	free(found);
+	if (!new)
+		return (free(*line), 0);
+	free(*line);
+	*line = new;
+	return (1);
+}
+
+static int	ft_expand_vars_line_helper2(char **line, t_shell *shell, int *i)
+{
+	int		len;
+	char	*new;
+	char 	*name;
+	char	*found;
+
+	len = ft_var_name_len(*line + *i + 1);
+	name = ft_strndup(*line + *i + 1, len);
+	if (!name)
+		return (free(*line), 0);
+	found = ft_strdup(ft_find_vars(name, shell)->value);
+	free(name);
+	if (!found)
+		found = ft_strdup("");
+	if (!found)
+		return (free(*line), 0);
+	new = ft_var_replace(*line, found, *i, len);
+	(*i) += ft_strlen(found);
+	free(found);
+	if (!new)
+		return (free(*line), 0);
+	free(*line);
+	*line = new;
+	return (1);
+}
+
+static char	*ft_expand_vars_in_line(char *line, t_shell *shell)
+{
+	int		i;
+
+	i = 0;
+	while (line && line[i])
+	{
+		if (line[i] == '$' && line[i + 1] == '?')
+		{
+			if (!ft_expand_vars_line_helper(&line, shell, &i))
+				return (NULL);
+		}
+		else if (line[i] == '$' && ft_var_name_len(line + i + 1) != 0)
+		{
+			if (!ft_expand_vars_line_helper2(&line, shell, &i))
+				return (NULL);
+		}
+		else
+			i++;
+	}
+	return (line);
+}
+
+static int	ft_heredoc_expand(t_ast *n, t_shell *shell)
+{
+	int		fd_src;
+	int		fd_dst;
+	char	*line;
+	char	*old;
+
+	if (!n || !n->filename)
+		return (0);
+	if (n->limiter_quoted == TRUE)
+		return (1);
+	fd_src = open(n->filename, O_RDONLY);
+	if (fd_src < 0)
+		return (0);// erreur ouverture?
+	old = n->filename;
+	n->filename = ft_valid_filename_finder();
+	if (!n->filename)
+		return (close(fd_src), n->filename = old, 0);
+	fd_dst = open(n->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd_dst < 0)
+		return (close(fd_src), free(n->filename), n->filename = old, 0);
+	while (1)
+	{
+		line = get_next_line(fd_src);
+		if (!line)
+			break ;
+		line = ft_expand_vars_in_line(line, shell);
+		if (!line)
+			return (close(fd_src), close(fd_dst), free(n->filename),
+			n->filename = old, 0);
+		write(fd_dst, line, ft_strlen(line));
+		free(line);
+	}
+	close(fd_src);
+	close(fd_dst);
+	free(old);
+	return (1);
+}
 
 static int	ft_cmd_expand(t_ast *n, t_shell *shell)
 {
@@ -518,7 +669,7 @@ static int	ft_cmd_expand(t_ast *n, t_shell *shell)
 	return (1);
 }
 
-static int	ft_rebuild_node(t_ast *n)
+static int	ft_rebuild_node(t_ast *n, t_shell *shell)
 {
 	if (n->type == NODE_CMD)
 	{
@@ -533,7 +684,7 @@ static int	ft_rebuild_node(t_ast *n)
 	}
 	if (n->type == NODE_HEREDOC)
 	{
-		if (!ft_heredoc_rebuild(n))
+		if (!ft_heredoc_expand(n, shell))
 			return (0);	// gestion erreur
 	}
 	return (1);
@@ -552,11 +703,11 @@ static int	ft_expand_node(t_ast *n, t_shell *shell)
 		if (!ft_redir_expand(n, shell))
 			return (0);	// gestion erreur
 	}
-	// if (n->type == NODE_HEREDOC)
-	// {
-	// 	if (!ft_heredoc_expand(n, shell))
-	// 		return (0);	// gestion erreur
-	// }
+	if (n->type == NODE_HEREDOC)
+	{
+		if (!ft_heredoc_rebuild(n))
+			return (0);	// gestion erreur
+	}
 	return (1);
 }
 
@@ -569,7 +720,7 @@ void	ft_explore_ast(t_ast **root, t_shell *shell)
 	n = *root;
 	if (!ft_expand_node(n, shell))
 		return ;
-	if (!ft_rebuild_node(n))
+	if (!ft_rebuild_node(n, shell))
 		return ;
 	if (n->left)
 		ft_explore_ast(&n->left, shell);
