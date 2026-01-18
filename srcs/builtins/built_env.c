@@ -1,6 +1,14 @@
 #include "../../includes/builtins.h"
 
-int		ft_env(char **arg)
+static int	ft_print_err_env(void)
 {
-	return (0);
+	ft_putstr_fd("env : too many arguments\n", STDERR_FILENO);
+	return (1);
+}
+
+int		ft_env(char **args, t_shell *shell)
+{
+	if (args[1])
+		return (ft_print_err_env());
+	return (ft_print_envp(shell, FALSE));
 }

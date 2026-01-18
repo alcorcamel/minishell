@@ -119,7 +119,38 @@ t_vars	*ft_find_vars(char *key, t_shell *shell)
 	return (NULL);
 }
 
-int	ft_print_envp(t_shell *shell)
+void	ft_free_vars(t_vars **var)
+{
+	ft_free((void **)&(*var)->key);
+	ft_free((void **)&(*var)->value);
+	ft_free((void **)&(*var));
+}
+
+t_bool	ft_del_vars(t_vars *del, t_shell *shell)
+{
+	t_vars	*iterator;
+	t_vars	*prev;
+
+	iterator = shell->vars;
+	prev = NULL;
+	if (del == NULL || shell->vars == NULL)
+		return (TRUE);
+	while (iterator)
+	{
+		if (iterator->key == del->key)
+		{
+			if (prev)
+				prev->next = iterator->next;
+			ft_free_vars(&iterator);
+			return (TRUE);
+		}
+		prev = iterator;
+		iterator = iterator->next;
+	}
+	return (FALSE);
+}
+
+int	ft_print_envp(t_shell *shell, t_bool is_aff_export)
 {
 	t_vars	*iterator;
 
@@ -128,7 +159,10 @@ int	ft_print_envp(t_shell *shell)
 	{
 		if (iterator->is_exported == TRUE)
 		{
-			ft_printf("export %s", iterator->key);
+			if (is_aff_export == TRUE)
+				ft_printf("export %s", iterator->key);
+			else
+				ft_printf("%s", iterator->key);
 			if (iterator->value)
 				ft_printf("=\"%s\"\n", iterator->value);
 			else

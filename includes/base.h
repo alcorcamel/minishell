@@ -2,7 +2,6 @@
 # define BASE_H
 
 # include "./libft/libft.h"
-# include "./libft/get_next_line/get_next_line.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -12,6 +11,7 @@
 # include <signal.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <limits.h>
 
 typedef enum e_bool
 {

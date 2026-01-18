@@ -13,9 +13,9 @@ int	ft_exec_built(t_ast *node, t_shell *shell)
 	if (ft_strncmp(node->args[0], "export", ft_strlen(node->args[0]))  == 0)
 		return (ft_export(node->args, shell));
 	if (ft_strncmp(node->args[0], "unset", ft_strlen(node->args[0])) == 0)
-		return (ft_unset(node->args));
+		return (ft_unset(node->args, shell));
 	if (ft_strncmp(node->args[0], "env", ft_strlen(node->args[0])) == 0)
-		return (ft_env(node->args));
+		return (ft_env(node->args, shell));
 	if (ft_strncmp(node->args[0], "exit", ft_strlen(node->args[0])) == 0)
 		return (ft_exit(node->args));
 	return (FALSE);
