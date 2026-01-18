@@ -64,6 +64,7 @@ int	main(int ac, char **av, char **envp)
 	t_ast	*root;
 	t_shell	shell;
 	char	*prompt;
+	int		res;
 
 	shell.vars = NULL;
 	shell.last_status = 0;

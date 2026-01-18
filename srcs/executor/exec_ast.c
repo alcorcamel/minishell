@@ -51,7 +51,7 @@ int	ft_exec_ast(t_ast *node, t_shell *shell)
 		status = ft_exec_and(node, shell);
 	else if (node->type == NODE_OR)
 		status = ft_exec_or(node, shell);
-	if (node->type == NODE_HEREDOC)
+	else if (node->type == NODE_HEREDOC)
 		return (ft_exec_here_doc(node, shell));
 	else if (node->type == NODE_REDIR_IN)
 		status = ft_exec_redirect_in(node, shell);
