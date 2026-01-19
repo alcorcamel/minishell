@@ -12,6 +12,7 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <limits.h>
+# include <dirent.h>
 
 typedef enum e_bool
 {
@@ -26,6 +27,12 @@ typedef struct s_vars
 	t_bool			is_exported;
 	struct s_vars	*next;
 }	t_vars;
+
+typedef struct s_new_args
+{
+	char				*value;
+	struct s_new_args	*next;
+}	t_new_args;
 
 typedef struct s_exit
 {
@@ -100,6 +107,7 @@ typedef struct s_ast
 	char			*filename;
 	char			*limiter;
 	t_bool			limiter_quoted;
+	t_new_args		*globber;
 }	t_ast;
 
 
