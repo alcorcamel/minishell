@@ -19,7 +19,7 @@ void	ft_lst_printer(t_new_args **head)
 	if (!head)
 		return ;
 	temp = *head;
-	while (temp->next)
+	while (temp)
 	{
 		printf("%s\n", temp->value);
 		temp = temp->next;
@@ -35,7 +35,7 @@ void	ft_args_printer2(t_ast *n)
 		return ;
 	temp = n;
 	i = -1;
-	while (++i && temp->args[i])
+	while (temp->args[++i])
 	{
 		printf("%s\n", temp->args[i]);
 	}
@@ -78,11 +78,12 @@ int	ft_only_one_star(t_new_args **head)
 	t_new_args		*tmp;
 	int				found;
 
+	found = 0;
 	rep = NULL;
 	readfile = NULL;
 	rep = opendir(".");
 	if (!rep)
-		return (0);
+		return (closedir(rep), 0);
 	while (1)
 	{
 		readfile = readdir(rep);
@@ -93,7 +94,7 @@ int	ft_only_one_star(t_new_args **head)
 			tmp = ft_argnew(ft_strdup(readfile->d_name));
 			found = 1;
 			if (!tmp->value)
-				return (0);
+				return (closedir(rep), 0);
 			ft_arg_add_back(head, tmp);
 		}
 	}
@@ -174,7 +175,7 @@ int	ft_beginning_star(t_new_args **head, char *arg)
 				found = 1;
 				tmp = ft_argnew(ft_strdup(readfile->d_name));
 				if (!tmp->value)
-					return (0);
+					return (closedir(rep), 0);
 				ft_arg_add_back(head, tmp);
 			}
 		}
@@ -194,7 +195,7 @@ int	ft_args_splitter(t_new_args **head, char *arg)
 
 	rep = NULL;
 	if (!arg)
-		return (0);
+		return (closedir(rep), 0);
 	if (ft_strlen(arg) == 1)
 		return (ft_only_one_star(head));
 	else if (arg[0] && arg[0] == '\x1D')
@@ -233,12 +234,13 @@ int		ft_new_args_maker(t_new_args **head, t_ast *n)
 		ret[i] = ft_strdup(tmp->value);
 		tmp = tmp->next;
 	}
+	ret[size] = NULL;
 	ft_free_args(n->args);
 	n->args = NULL;
 	n->args = ret;
 	return (1);
 }
-
+// FREE TTE LA LISTE!!!
 int		ft_args_handler(t_ast *n)
 {
 	int			i;
@@ -267,7 +269,7 @@ int		ft_args_handler(t_ast *n)
 	ft_new_args_maker(&head, n);
 	// printf("%s\n", n->args[5]);
 	// //ft_lst_printer(head);
-	ft_args_printer2(n);
+	//ft_args_printer2(n);
 
 	return (1);
 }
