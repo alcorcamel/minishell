@@ -10,6 +10,8 @@ static void	ft_append_seg_special(char *dst, t_seg *seg, size_t *i)
 	{
 		if ((seg->type == SEG_SQ || seg->type == SEG_DQ) && seg->text[j] == ' ')
 			dst[*i] = '\x1F';
+		else if ((seg->type != SEG_SQ || seg->type != SEG_DQ) && seg->text[j] == '*')
+			dst[*i] = '\x1D';
 		else
 			dst[*i] = seg->text[j];
 		(*i)++;
@@ -107,5 +109,6 @@ int	ft_cmd_rebuild(t_ast *n)
 		return (0);
 	if (!ft_restore_args(n->args))
 		return (ft_free_args(n->args), 0);
+	ft_args_handler(n);
 	return (1);
 }
