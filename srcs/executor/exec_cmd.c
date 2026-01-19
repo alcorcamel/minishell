@@ -42,4 +42,5 @@ int	ft_exec_cmd(t_ast *node, t_shell *shell)
 		return (WEXITSTATUS(status));
 	if (WIFSIGNALED(status))
 		return (128 + WTERMSIG(status));
+	return (0);
 }

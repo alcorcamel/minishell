@@ -46,6 +46,7 @@ t_bool	ft_get_value_from_var_envp(char *var_envp, char **value)
 	}
 	val[i] = '\0';
 	*value = val;
+	return (TRUE);
 }
 
 t_vars	*ft_create_new_vars(char *var_envp, t_bool is_exported)
