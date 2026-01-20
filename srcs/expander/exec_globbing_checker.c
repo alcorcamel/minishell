@@ -146,6 +146,45 @@ int	ft_only_one_star(t_new_args **head, char *arg)
 	return (1);
 }
 
+int	ft_valid_star_any_rep(char *line, char *arg)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	if (arg[0] == '\x1D' && line[0] == '.')
+		return (0);
+	while (arg[j])
+	{
+		if (arg[j] != '\x1D')
+		{
+			while (arg[j] == line[i])
+			{
+				i++;
+				j++;
+			}
+			if (i >= ft_strlen(line) && j >= ft_strlen(arg))
+				return (1);
+			if (arg[j] && arg[j] != line[i] && arg[j] != '\x1D')
+				return (0);
+		}
+		else
+		{
+			while (arg[j] == '\x1D')
+				j++;
+			if (!arg[j])
+				return (1);
+			while (line[i] && line[i] != arg[j])
+				i++;
+			if (line[i] != arg[j])
+				return (0);
+		}
+	}
+	return (1);
+}
+
+
 int	ft_valid_star_any(char *line, char *arg)
 {
 	int	i;
@@ -239,7 +278,16 @@ int	ft_star_anywhere(t_new_args **head, char *arg)
 		readfile = readdir(rep);
 		if (readfile == NULL)
 			break ;
-		if (ft_valid_star_any(readfile->d_name, arg))
+		if (arg[ft_strlen(arg) - 1] == '\\'
+			&& ft_valid_star_any_rep(readfile->d_name, arg))
+		{
+			tmp = ft_argnew(ft_strdup(readfile->d_name));
+			found = 1;
+			if (!tmp->value)
+				return (0);
+			ft_arg_add_back(head, tmp);
+		}
+		else if (ft_valid_star_any(readfile->d_name, arg))
 		{
 			tmp = ft_argnew(ft_strdup(readfile->d_name));
 			found = 1;
