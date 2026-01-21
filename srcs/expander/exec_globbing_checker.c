@@ -183,6 +183,8 @@ int	ft_star_anywhere(t_new_args **head, char *arg)
 		readfile = readdir(rep);
 		if (readfile == NULL)
 			break ;
+		if (readfile->d_name[0] == '.' && arg[0] != '.')
+			continue;
 		if (ft_valid_star_any(readfile->d_name, arg))
 		{
 			tmp = ft_argnew(ft_strdup(readfile->d_name));
@@ -259,28 +261,18 @@ int	ft_valid_star_any_inout(char *line, char *arg)
 {
 	int	i;
 	int	j;
+	int found;
 
 	i = 0;
 	j = 0;
+	found = 0;
 	if (arg[0] == '*' && line[0] == '.')
 		return (0);
-	while (arg[j])
+	if (!line[i])
+		return (0);
+	while (found == 0)
 	{
-		if (arg[j] != '*')
-		{
-			while (arg[j] == line[i])
-			{
-				i++;
-				j++;
-			}
-			if (i >= ft_strlen(line) && j >= ft_strlen(arg))
-			// if (!arg[j] && !line[i])
-				return (1);
-			if (arg[j] && arg[j] != line[i] && arg[j] != '*')
-				return (0);
-			//printf("--%s: line=%s et arg=%s \n", line, line + i, arg + j);
-		}
-		else
+		if (arg[j] == '*')
 		{
 			while (arg[j] == '*')
 				j++;
@@ -288,8 +280,28 @@ int	ft_valid_star_any_inout(char *line, char *arg)
 				return (1);
 			while (line[i] && line[i] != arg[j])
 				i++;
-			//printf("%s: line=%s et arg=%s \n", line, line + i, arg + j);
-			if (line[i] != arg[j])
+			if (!line[i])
+				return (0);
+			if (ft_valid_star_any(line + i + 1, arg + j - 1))
+				return (1);
+			if (arg[j] && line[i] != arg[j])
+				return (0);
+			if (!arg[j] && !line[i])
+				return (1);
+		}
+		else
+		{
+			while (arg[j] && arg[j] == line[i])
+			{
+				i++;
+				j++;
+			}
+			if (arg[j] == '\0' && line[i] == '\0')
+			{
+				found = 1;
+				break ;
+			}
+			if (arg[j] != '*' && arg[j] != line[i])
 				return (0);
 		}
 	}
@@ -312,7 +324,7 @@ int		ft_inout_globber(t_ast *n)
 	if (!rep)
 		return (0);
 	if (!n->filename)
-		return (0);
+		return (closedir(rep), 0);
 	bkp = ft_strdup(n->filename);
 	while (1)
 	{
@@ -334,14 +346,12 @@ int		ft_inout_globber(t_ast *n)
 	if (found > 1)
 	{
 		free(n->filename);
-		printf("coucou\n");
-		n->filename = bkp;
+		n->filename = ft_strdup(bkp);
 		ft_expander_error(bkp, 1);
 		free(bkp);
-		return (0);
+		return (closedir(rep), 0);
 	}
-	printf("%s\n", n->filename);
-	return (1);
+	return (closedir(rep), 1);
 }
 
 int		ft_args_handler(t_ast *n)
