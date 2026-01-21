@@ -127,36 +127,8 @@ int	ft_valid_star_any(char *line, char *arg)
 		return (0);
 	if (!line[i])
 		return (0);
-	// while ((arg[j] || line[i]) && found == 0)
 	while (found == 0)
 	{
-		// if (arg[j] != '\x1D')
-		// {
-		// 	while (arg[j] == line[i])
-		// 	{
-		// 		i++;
-		// 		j++;
-		// 	}
-		// 	printf("++%s: line=%s et arg=%s \n", line, line + i, arg + j);
-		// 	if (i >= ft_strlen(line) && j >= ft_strlen(arg))
-		// 	// if (!arg[j] && !line[i])
-		// 		return (1);
-		// 	if (arg[j] && arg[j] != line[i] && arg[j] != '\x1D')
-		// 		return (0);
-		// 	printf("--%s: line=%s et arg=%s \n", line, line + i, arg + j);
-		// }
-		// else
-		// {
-		// 	while (arg[j] == '\x1D')
-		// 		j++;
-		// 	if (!arg[j] && !line[i])
-		// 		return (1);
-		// 	while (line[i] && line[i] != arg[j])
-		// 		i++;
-		// 	printf("%s: line=%s et arg=%s \n", line, line + i, arg + j);
-		// 	if (line[i] != arg[j])
-		// 		return (0);
-		// }
 		if (arg[j] == '\x1D')
 		{
 			while (arg[j] == '\x1D')
@@ -167,10 +139,8 @@ int	ft_valid_star_any(char *line, char *arg)
 				i++;
 			if (!line[i])
 				return (0);
-			printf("--%s: line=%s et arg=%s \n", line, line + i, arg + j);
 			if (ft_valid_star_any(line + i + 1, arg + j - 1))
 				return (1);
-			// printf("++%s: line=%s et arg=%s \n", line, line + i, arg + j);
 			if (arg[j] && line[i] != arg[j])
 				return (0);
 			if (!arg[j] && !line[i])
@@ -183,7 +153,6 @@ int	ft_valid_star_any(char *line, char *arg)
 				i++;
 				j++;
 			}
-			// printf("**%s: line=%s et arg=%s \n", line, line + i, arg + j);
 			if (arg[j] == '\0' && line[i] == '\0')
 			{
 				found = 1;
@@ -193,7 +162,6 @@ int	ft_valid_star_any(char *line, char *arg)
 				return (0);
 		}
 	}
-	printf("----------finiiiii-------\n");
 	return (1);
 }
 
@@ -219,7 +187,6 @@ int	ft_star_anywhere(t_new_args **head, char *arg)
 		{
 			tmp = ft_argnew(ft_strdup(readfile->d_name));
 			found = 1;
-			printf("je add\n");
 			if (!tmp->value)
 				return (0);
 			ft_arg_add_back(head, tmp);
