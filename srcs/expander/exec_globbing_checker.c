@@ -107,32 +107,57 @@ void	ft_arg_add_back(t_new_args **lst, t_new_args *new)
 	temp->next = new;
 }
 
+int	ft_is_char_match(char c_arg, char c_line)
+{
+	if (c_arg == c_line)
+		return (1);
+	return (0);
+}
+
 int	ft_valid_star_any(char *line, char *arg)
 {
 	int	i;
 	int	j;
+	int found;
 
 	i = 0;
 	j = 0;
+	found = 0;
 	if (arg[0] == '\x1D' && line[0] == '.')
 		return (0);
-	while (arg[j])
+	if (!line[i])
+		return (0);
+	// while ((arg[j] || line[i]) && found == 0)
+	while (found == 0)
 	{
-		if (arg[j] != '\x1D')
-		{
-			while (arg[j] == line[i])
-			{
-				i++;
-				j++;
-			}
-			if (i >= ft_strlen(line) && j >= ft_strlen(arg))
-			// if (!arg[j] && !line[i])
-				return (1);
-			if (arg[j] && arg[j] != line[i] && arg[j] != '\x1D')
-				return (0);
-			//printf("--%s: line=%s et arg=%s \n", line, line + i, arg + j);
-		}
-		else
+		// if (arg[j] != '\x1D')
+		// {
+		// 	while (arg[j] == line[i])
+		// 	{
+		// 		i++;
+		// 		j++;
+		// 	}
+		// 	printf("++%s: line=%s et arg=%s \n", line, line + i, arg + j);
+		// 	if (i >= ft_strlen(line) && j >= ft_strlen(arg))
+		// 	// if (!arg[j] && !line[i])
+		// 		return (1);
+		// 	if (arg[j] && arg[j] != line[i] && arg[j] != '\x1D')
+		// 		return (0);
+		// 	printf("--%s: line=%s et arg=%s \n", line, line + i, arg + j);
+		// }
+		// else
+		// {
+		// 	while (arg[j] == '\x1D')
+		// 		j++;
+		// 	if (!arg[j] && !line[i])
+		// 		return (1);
+		// 	while (line[i] && line[i] != arg[j])
+		// 		i++;
+		// 	printf("%s: line=%s et arg=%s \n", line, line + i, arg + j);
+		// 	if (line[i] != arg[j])
+		// 		return (0);
+		// }
+		if (arg[j] == '\x1D')
 		{
 			while (arg[j] == '\x1D')
 				j++;
@@ -140,11 +165,35 @@ int	ft_valid_star_any(char *line, char *arg)
 				return (1);
 			while (line[i] && line[i] != arg[j])
 				i++;
-			//printf("%s: line=%s et arg=%s \n", line, line + i, arg + j);
-			if (line[i] != arg[j])
+			if (!line[i])
+				return (0);
+			printf("--%s: line=%s et arg=%s \n", line, line + i, arg + j);
+			if (ft_valid_star_any(line + i + 1, arg + j - 1))
+				return (1);
+			// printf("++%s: line=%s et arg=%s \n", line, line + i, arg + j);
+			if (arg[j] && line[i] != arg[j])
+				return (0);
+			if (!arg[j] && !line[i])
+				return (1);
+		}
+		else
+		{
+			while (arg[j] && arg[j] == line[i])
+			{
+				i++;
+				j++;
+			}
+			// printf("**%s: line=%s et arg=%s \n", line, line + i, arg + j);
+			if (arg[j] == '\0' && line[i] == '\0')
+			{
+				found = 1;
+				break ;
+			}
+			if (arg[j] != '\x1D' && arg[j] != line[i])
 				return (0);
 		}
 	}
+	printf("----------finiiiii-------\n");
 	return (1);
 }
 
@@ -170,6 +219,7 @@ int	ft_star_anywhere(t_new_args **head, char *arg)
 		{
 			tmp = ft_argnew(ft_strdup(readfile->d_name));
 			found = 1;
+			printf("je add\n");
 			if (!tmp->value)
 				return (0);
 			ft_arg_add_back(head, tmp);
@@ -238,6 +288,95 @@ int		ft_new_args_maker(t_new_args **head, t_ast *n)
 // if (d)
 // 	OK!!
 
+int	ft_valid_star_any_inout(char *line, char *arg)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	if (arg[0] == '*' && line[0] == '.')
+		return (0);
+	while (arg[j])
+	{
+		if (arg[j] != '*')
+		{
+			while (arg[j] == line[i])
+			{
+				i++;
+				j++;
+			}
+			if (i >= ft_strlen(line) && j >= ft_strlen(arg))
+			// if (!arg[j] && !line[i])
+				return (1);
+			if (arg[j] && arg[j] != line[i] && arg[j] != '*')
+				return (0);
+			//printf("--%s: line=%s et arg=%s \n", line, line + i, arg + j);
+		}
+		else
+		{
+			while (arg[j] == '*')
+				j++;
+			if (!arg[j])
+				return (1);
+			while (line[i] && line[i] != arg[j])
+				i++;
+			//printf("%s: line=%s et arg=%s \n", line, line + i, arg + j);
+			if (line[i] != arg[j])
+				return (0);
+		}
+	}
+	return (1);
+}
+
+int		ft_inout_globber(t_ast *n)
+{
+	DIR*			rep;
+	struct dirent	*readfile;
+	int				found;
+	char			*s;
+	char 			*bkp;
+
+	rep = NULL;
+	found = 0;
+	s = NULL;
+	readfile = NULL;
+	rep = opendir(".");
+	if (!rep)
+		return (0);
+	if (!n->filename)
+		return (0);
+	bkp = ft_strdup(n->filename);
+	while (1)
+	{
+		readfile = readdir(rep);
+		if (readfile == NULL)
+			break ;
+		if (ft_strchr(n->filename, (int)'*'))
+		{
+			if (ft_valid_star_any_inout(readfile->d_name, n->filename))
+			{
+				found++;
+				free(s);
+				s = ft_strdup(readfile->d_name);
+				free(n->filename);
+				n->filename = s;
+			}
+		}
+	}
+	if (found > 1)
+	{
+		free(n->filename);
+		printf("coucou\n");
+		n->filename = bkp;
+		ft_expander_error(bkp, 1);
+		free(bkp);
+		return (0);
+	}
+	printf("%s\n", n->filename);
+	return (1);
+}
+
 int		ft_args_handler(t_ast *n)
 {
 	int			i;
@@ -249,8 +388,8 @@ int		ft_args_handler(t_ast *n)
 	ret = NULL;
 	head = NULL;
 	n->globber = head;
-	if (n->args[0] && n->args[0][0] == '\x1D')
-		ft_arg_restorer(n->args[0]);
+	// if (n->args[0] && n->args[0][0] == '\x1D')
+	// 	ft_arg_restorer(n->args[0]);
 	while (n->args[++i])
 	{
 		if (ft_strchr(n->args[i], (int)'\x1D'))
