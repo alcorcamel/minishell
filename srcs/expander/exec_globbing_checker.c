@@ -107,84 +107,6 @@ void	ft_arg_add_back(t_new_args **lst, t_new_args *new)
 	temp->next = new;
 }
 
-int	ft_only_one_star(t_new_args **head, char *arg)
-{
-	DIR*			rep;
-	struct dirent	*readfile;
-	t_new_args		*tmp;
-	int				found;
-
-	found = 0;
-	rep = NULL;
-	readfile = NULL;
-	rep = opendir(".");
-	if (!rep)
-		return (closedir(rep), 0);
-	while (1)
-	{
-		readfile = readdir(rep);
-		if (readfile == NULL)
-			break ;
-		if (readfile->d_name[0] != '.')
-		{
-			tmp = ft_argnew(ft_strdup(readfile->d_name));
-			found = 1;
-			if (!tmp->value)
-				return (closedir(rep), 0);
-			ft_arg_add_back(head, tmp);
-		}
-	}
-	if (found == 0)
-	{
-		ft_arg_restorer(arg);
-		tmp = ft_argnew(ft_strdup(arg));
-		if (!tmp->value)
-			return (closedir(rep), 0);
-		ft_arg_add_back(head, tmp);
-	}
-	closedir(rep);
-	return (1);
-}
-
-int	ft_valid_star_any_rep(char *line, char *arg)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	if (arg[0] == '\x1D' && line[0] == '.')
-		return (0);
-	while (arg[j])
-	{
-		if (arg[j] != '\x1D')
-		{
-			while (arg[j] == line[i])
-			{
-				i++;
-				j++;
-			}
-			if (i >= ft_strlen(line) && j >= ft_strlen(arg))
-				return (1);
-			if (arg[j] && arg[j] != line[i] && arg[j] != '\x1D')
-				return (0);
-		}
-		else
-		{
-			while (arg[j] == '\x1D')
-				j++;
-			if (!arg[j])
-				return (1);
-			while (line[i] && line[i] != arg[j])
-				i++;
-			if (line[i] != arg[j])
-				return (0);
-		}
-	}
-	return (1);
-}
-
-
 int	ft_valid_star_any(char *line, char *arg)
 {
 	int	i;
@@ -226,40 +148,6 @@ int	ft_valid_star_any(char *line, char *arg)
 	return (1);
 }
 
-int	ft_valid_beg_star(char *line, char *arg)
-{
-	int	i;
-	int	j;
-
-	i = ft_strlen(line) - 1;
-	j = ft_strlen(arg) - 1;
-	while (arg[j] != '\x1D')
-	{
-		if (arg[j] != line[i])
-			return (0);
-		j--;
-		i--;
-	}
-	return (1);
-}
-
-int	ft_valid_end_star(char *line, char *arg)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (arg[j] != '\x1D')
-	{
-		if (arg[j] != line[i])
-			return (0);
-		j++;
-		i++;
-	}
-	return (1);
-}
-
 int	ft_star_anywhere(t_new_args **head, char *arg)
 {
 	DIR*			rep;
@@ -278,102 +166,13 @@ int	ft_star_anywhere(t_new_args **head, char *arg)
 		readfile = readdir(rep);
 		if (readfile == NULL)
 			break ;
-		if (arg[ft_strlen(arg) - 1] == '\\'
-			&& ft_valid_star_any_rep(readfile->d_name, arg))
+		if (ft_valid_star_any(readfile->d_name, arg))
 		{
 			tmp = ft_argnew(ft_strdup(readfile->d_name));
 			found = 1;
 			if (!tmp->value)
 				return (0);
 			ft_arg_add_back(head, tmp);
-		}
-		else if (ft_valid_star_any(readfile->d_name, arg))
-		{
-			tmp = ft_argnew(ft_strdup(readfile->d_name));
-			found = 1;
-			if (!tmp->value)
-				return (0);
-			ft_arg_add_back(head, tmp);
-		}
-	}
-	if (found == 0)
-	{
-		ft_arg_restorer(arg);
-		tmp = ft_argnew(ft_strdup(arg));
-		if (!tmp->value)
-			return (closedir(rep), 0);
-		ft_arg_add_back(head, tmp);
-	}
-	closedir(rep);
-	return (1);
-}
-
-int	ft_ending_star(t_new_args **head, char *arg)
-{
-	DIR*			rep;
-	struct dirent	*readfile;
-	t_new_args		*tmp;
-	int				found;
-
-	found = 0;
-	rep = NULL;
-	readfile = NULL;
-	rep = opendir(".");
-	if (!rep)
-		return (0);
-	while (1)
-	{
-		readfile = readdir(rep);
-		if (readfile == NULL)
-			break ;
-		if (ft_valid_end_star(readfile->d_name, arg))
-		{
-			tmp = ft_argnew(ft_strdup(readfile->d_name));
-			if (!tmp->value)
-				return (0);
-			ft_arg_add_back(head, tmp);
-		}
-	}
-	if (found == 0)
-	{
-		ft_arg_restorer(arg);
-		tmp = ft_argnew(ft_strdup(arg));
-		if (!tmp->value)
-			return (closedir(rep), 0);
-		ft_arg_add_back(head, tmp);
-	}
-	closedir(rep);
-	return (1);
-}
-
-int	ft_beginning_star(t_new_args **head, char *arg)
-{
-	DIR*			rep;
-	struct dirent	*readfile;
-	t_new_args		*tmp;
-	int				found;
-
-	rep = NULL;
-	found = 0;
-	readfile = NULL;
-	rep = opendir(".");
-	if (!rep)
-		return (0);
-	while (1)
-	{
-		readfile = readdir(rep);
-		if (readfile == NULL)
-			break ;
-		if (readfile->d_name[0] != '.')
-		{
-			if (ft_valid_beg_star(readfile->d_name, arg))
-			{
-				found = 1;
-				tmp = ft_argnew(ft_strdup(readfile->d_name));
-				if (!tmp->value)
-					return (closedir(rep), 0);
-				ft_arg_add_back(head, tmp);
-			}
 		}
 	}
 	if (found == 0)
@@ -395,7 +194,7 @@ int	ft_args_splitter(t_new_args **head, char *arg)
 
 	rep = NULL;
 	if (!arg)
-		return (closedir(rep), 0);
+		return (0);
 	// if (ft_strlen(arg) == 1)
 	// 	return (ft_only_one_star(head, arg));
 	// else if (arg[0] == '\x1D' && ft_spechar_counter(arg) == 1)
@@ -406,7 +205,6 @@ int	ft_args_splitter(t_new_args **head, char *arg)
 		return (ft_star_anywhere(head, arg));
 	return (1);
 }
-
 int		ft_new_args_maker(t_new_args **head, t_ast *n)
 {
 	int			size;
@@ -433,6 +231,13 @@ int		ft_new_args_maker(t_new_args **head, t_ast *n)
 	return (1);
 }
 // FREE TTE LA LISTE!!!
+// TESTER SI REDIR essaie in/out un dossier
+// bash: */: ambiguous redirect
+// DIR *d;
+// d = opendir(path);
+// if (d)
+// 	OK!!
+
 int		ft_args_handler(t_ast *n)
 {
 	int			i;
@@ -466,27 +271,3 @@ int		ft_args_handler(t_ast *n)
 	return (1);
 }
 
-// void	ft_globbing_checker(t_ast *n)
-// {
-// 	int			i;
-// 	t_new_args	*head;
-
-// 	head = NULL;
-// 	i = -1;
-// 	if (n->args[0] && n->args[0][0] == '\x1D')
-// 		n->args[0][0] = '*';// remplacer toutes les etoiles ds arg[0]
-// 	while (n->args[++i])
-// 	{
-// 		if (ft_strchr(n->args[i], (int)'\x1D'))
-// 		{
-// 			if (!ft_args_handler(&head, n))
-// 				return ;
-// 		}
-// 		else
-// 		{
-
-
-
-// 		}
-// 	}
-// }
