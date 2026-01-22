@@ -12,7 +12,7 @@ void	ft_free_args(char **args)
 	free(args);
 }
 
-void	ft_var_translator(t_seg *segs, t_shell *shell)
+int	ft_var_translator(t_seg *segs, t_shell *shell)
 {
 	t_seg	*temp;
 
@@ -20,9 +20,10 @@ void	ft_var_translator(t_seg *segs, t_shell *shell)
 	while (temp)
 	{
 		if (!ft_expand_seg_vars(temp, shell))
-			return ;
+			return (0);
 		temp = temp->next;
 	}
+	return (1);
 }
 
 int	ft_is_limiter(char *line, char *limiter)

@@ -103,7 +103,11 @@ int	ft_add_operator(t_token **lst, char *s, int *i, int *brace)
 	if (s[*i] == '(')
 		(*brace)++;
 	if (s[*i] == ')')
+	{
 		(*brace)--;
+		if (*brace < 0)
+			return (ft_lex_err(12, ")"), 0);
+	}
 	if (s[*i] == ';')
 		return (ft_lex_err(16, ";"), 0);
 	if (s[*i] == '\\')

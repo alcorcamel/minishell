@@ -26,7 +26,8 @@ static int	ft_heredoc_rebuild_helper(t_ast *n)
 		return (0);// erreur ouverture?
 	n->filename = ft_valid_filename_finder();
 	if (!n->filename)
-		return (0);
+		return (free(n->limiter), n->limiter = NULL,
+		free(n->filename), n->filename = NULL, 0);
 	if (ft_is_quoted(n))
 		n->limiter_quoted = TRUE;
 	else
@@ -43,7 +44,8 @@ int	ft_heredoc_rebuild(t_ast *n)
 		return (0);
 	fd = open(n->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
-		return (0);// erreur ouverture?
+		return (free(n->limiter), n->limiter = NULL,
+		free(n->filename), n->filename=NULL, 0);
 	while (1)
 	{
 		write(1, "heredoc> ", 9);
@@ -73,7 +75,7 @@ int	ft_redir_rebuild(t_ast *n)
 	if (!n->filename)
 		return (0);
 	if (!ft_inout_globber(n))
-		return (0);
+		return (free(n->filename), n->filename = NULL, 0);
 	return (1);
 }
 
@@ -84,6 +86,7 @@ int	ft_redir_expand(t_ast *n, t_shell *shell)
 	segs = n->segs;
 	if (!segs)
 		return (0);
-	ft_var_translator(segs, shell);
+	if (!ft_var_translator(segs, shell))
+		return (0);
 	return (1);
 }

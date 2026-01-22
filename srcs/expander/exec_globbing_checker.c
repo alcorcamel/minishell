@@ -190,7 +190,7 @@ int	ft_star_anywhere(t_new_args **head, char *arg)
 			tmp = ft_argnew(ft_strdup(readfile->d_name));
 			found = 1;
 			if (!tmp->value)
-				return (0);
+				return (closedir(rep), ft_free_nargs(*head), 0);
 			ft_arg_add_back(head, tmp);
 		}
 	}
@@ -199,11 +199,10 @@ int	ft_star_anywhere(t_new_args **head, char *arg)
 		ft_arg_restorer(arg);
 		tmp = ft_argnew(ft_strdup(arg));
 		if (!tmp->value)
-			return (closedir(rep), 0);
+			return (closedir(rep), ft_free_nargs(*head), free(tmp), 0);
 		ft_arg_add_back(head, tmp);
 	}
-	closedir(rep);
-	return (1);
+	return (closedir(rep), 1);
 }
 
 int	ft_args_splitter(t_new_args **head, char *arg)
@@ -315,23 +314,25 @@ int		ft_inout_globber(t_ast *n)
 	struct dirent	*readfile;
 	int				found;
 	char			*s;
-	char 			*bkp;
 
 	rep = NULL;
 	found = 0;
 	s = NULL;
+	if (!ft_strchr(n->filename, '*'))
+		return (1);
 	readfile = NULL;
 	rep = opendir(".");
 	if (!rep)
 		return (0);
 	if (!n->filename)
 		return (closedir(rep), 0);
-	bkp = ft_strdup(n->filename);
 	while (1)
 	{
 		readfile = readdir(rep);
 		if (readfile == NULL)
 			break ;
+		if (readfile->d_name[0] == '.' && n->filename[0] != '.')
+			continue;
 		if (ft_strchr(n->filename, (int)'*'))
 		{
 			if (ft_valid_star_any_inout(readfile->d_name, n->filename))
@@ -339,19 +340,19 @@ int		ft_inout_globber(t_ast *n)
 				found++;
 				free(s);
 				s = ft_strdup(readfile->d_name);
+				if (!s)
+					return (closedir(rep), 0);
 			}
 		}
 	}
-	free(n->filename);
-	if (found > 1)
+	if (found == 1)
 	{
-		n->filename = ft_strdup(bkp);
-		ft_expander_error(bkp, 1);
-		free(bkp);
-		return (closedir(rep), 0);
-	}
-	else
+		free(n->filename);
 		n->filename = s;
+		return (closedir(rep), 1);
+	}
+	else if (found > 1)
+		return (ft_expander_error(n->filename, 1), free(s), closedir(rep), 0);
 	return (closedir(rep), 1);
 }
 

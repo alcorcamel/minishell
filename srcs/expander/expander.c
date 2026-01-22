@@ -38,9 +38,9 @@ int	ft_explore_ast(t_ast **root, t_shell *shell)
 		return (0);
 	if (!ft_rebuild_node(n, shell))
 		return (0);
-	if (n->left)
-		ft_explore_ast(&n->left, shell);
-	if (n->right)
-		ft_explore_ast(&n->right, shell);
+	if (n->left && !ft_explore_ast(&n->left, shell))
+		return (0);
+	if (n->right && !ft_explore_ast(&n->right, shell))
+		return (0);
 	return (1);
 }

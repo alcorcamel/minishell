@@ -26,6 +26,7 @@ static int	ft_expand_vars_line_helper2(char **line, t_shell *shell, int *i)
 	char	*name;
 	char	*found;
 
+	found = NULL;
 	len = ft_var_name_len(*line + *i + 1);
 	name = ft_strndup(*line + *i + 1, len);
 	if (!name)

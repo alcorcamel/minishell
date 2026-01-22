@@ -81,7 +81,7 @@ static int	ft_cmd_rebuild_helper(t_seg *segs, size_t *size, char **ret)
 		(*size)++;
 	}
 	*ret = (char *)malloc((*size) + 1);
-	if (!ret)
+	if (!*ret)
 		return (0);
 	return (1);
 }
@@ -109,6 +109,7 @@ int	ft_cmd_rebuild(t_ast *n)
 		return (0);
 	if (!ft_restore_args(n->args))
 		return (ft_free_args(n->args), 0);
-	ft_args_handler(n);
+	if (!ft_args_handler(n))
+		return (ft_free_args(n->args), n->args = NULL, 0);
 	return (1);
 }
