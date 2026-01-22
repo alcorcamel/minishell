@@ -23,5 +23,8 @@ int		ft_is_quoted(t_ast *n);
 int		ft_heredoc_rebuild(t_ast *n);
 int		ft_redir_rebuild(t_ast *n);
 int		ft_redir_expand(t_ast *n, t_shell *shell);
+int		ft_args_handler(t_ast *n);
+void	ft_expander_error(char *s, int i);
+int		ft_inout_globber(t_ast *n);
 
 #endif

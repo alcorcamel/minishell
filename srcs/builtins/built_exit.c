@@ -27,15 +27,17 @@ int		ft_exit(char **arg)
 	i = 0;
 	while (arg[1][i])
 	{
-		if (!ft_isdigit(arg[1][i++]))
+		if (!ft_isdigit(arg[1][i]) && arg[1][i] != '-' && arg[1][i] != '+')
 		{
 			// free tout avant !!!
 			ft_print_err_exit_nb_args();
 			break ;
 		}
+		i++;
 	}
 	// verifier l overflow!!!
 	status = ft_atoi(arg[1]);
+	status = status % 256;
 	// free_tout avant ilf aut pas oublier!!!!!
 		exit(status);
 	return (0);
