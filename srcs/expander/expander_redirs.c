@@ -72,7 +72,6 @@ int	ft_redir_rebuild(t_ast *n)
 	n->filename = ft_join_segs_until_sep(segs);
 	if (!n->filename)
 		return (0);
-	// appeler ici le globber expand seulemtn sur in/out avec msg erreurs spe selon cas
 	if (!ft_inout_globber(n))
 		return (0);
 	return (1);

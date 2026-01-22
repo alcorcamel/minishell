@@ -282,7 +282,7 @@ int	ft_valid_star_any_inout(char *line, char *arg)
 				i++;
 			if (!line[i])
 				return (0);
-			if (ft_valid_star_any(line + i + 1, arg + j - 1))
+			if (ft_valid_star_any_inout(line + i + 1, arg + j - 1))
 				return (1);
 			if (arg[j] && line[i] != arg[j])
 				return (0);
@@ -347,6 +347,7 @@ int		ft_inout_globber(t_ast *n)
 	{
 		free(n->filename);
 		n->filename = ft_strdup(bkp);
+		printf("++%s\n", n->filename);
 		ft_expander_error(bkp, 1);
 		free(bkp);
 		return (closedir(rep), 0);
@@ -380,10 +381,6 @@ int		ft_args_handler(t_ast *n)
 		}
 	}
 	ft_new_args_maker(&head, n);
-	// printf("%s\n", n->args[5]);
-	// //ft_lst_printer(head);
-	//ft_args_printer2(n);
-
 	return (1);
 }
 
