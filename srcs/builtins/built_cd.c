@@ -53,11 +53,7 @@ int	ft_cd(char **args, t_shell *shell)
 	}
 	if (ft_strncmp(path, "~", ft_strlen(path)) == 0 && ft_strlen(path) == 1)
 	{
-		var = ft_find_vars("HOME", shell);
-		if (var)
-			path = ft_strdup(var->value);
-		if (!path)
-			return (ft_putstr_fd("minishield: cd: << HOME >> non defini", STDERR_FILENO), 1);
+		path = ft_strdup("");
 	}
 	if (!path)
 		return (ft_putstr_fd("minishield: cd: << HOME >> non defini", STDERR_FILENO), 1);
