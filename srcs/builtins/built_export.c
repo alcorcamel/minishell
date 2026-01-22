@@ -7,7 +7,7 @@ void	ft_print_err_id_invalide(char *err)
 	ft_putstr_fd(err, STDERR_FILENO);
 	ft_putstr_fd(" >>", STDERR_FILENO);
 	ft_putstr_fd(" : ", STDERR_FILENO);
-	ft_putstr_fd("identifiant non valable\n", STDERR_FILENO);
+	ft_putstr_fd("not a valid identifier\n", STDERR_FILENO);
 }
 
 static t_bool	ft_is_valid_args_export(char *arg)

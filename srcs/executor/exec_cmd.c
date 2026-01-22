@@ -25,12 +25,12 @@ int	ft_exec_cmd(t_ast *node, t_shell *shell)
 		signal(SIGQUIT, SIG_DFL);
 		path = ft_get_path(node, shell);
 		if (!path)
-			exit(ft_throw_error(node->args[0]));
+			exit(ft_throw_error_cmd_not_found(node->args[0]));
 		envp = ft_make_envp(shell->vars);
 		if (!envp) // traiter avec l envp de secours
 			exit(1);
 		execve(path, node->args, envp);
-		exit(ft_throw_error(path));
+		exit(ft_throw_error_cmd(path));
 	}
 	else
 	{

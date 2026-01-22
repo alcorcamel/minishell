@@ -1,9 +1,30 @@
 
 #include "../../includes/executor.h"
 
-int	ft_throw_error(char *err_p)
+int	ft_print_err_directory(char *dir)
 {
-	perror(err_p);
+	ft_putstr_fd("minishied: ", STDERR_FILENO);
+	if (dir)
+		ft_putstr_fd(dir, STDERR_FILENO);
+	ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+	return (126);
+}
+
+int	ft_throw_error_cmd(char *cmd)
+{
+	if (ft_is_directory(cmd) == TRUE)
+		return (ft_print_err_directory(cmd));
+	perror(cmd);
+	if (errno == EACCES || errno == ENOEXEC)
+		return (126);
+	if (errno == ENOENT)
+		return (127);
+	return (1);
+}
+
+int	ft_throw_error(char *cmd)
+{
+	perror(cmd);
 	if (errno == EACCES || errno == ENOEXEC)
 		return (126);
 	if (errno == ENOENT)
@@ -13,7 +34,7 @@ int	ft_throw_error(char *err_p)
 
 int	ft_throw_error_cmd_not_found(char *err_p)
 {
-	ft_putstr_fd(err_p, STDOUT_FILENO);
-	ft_putstr_fd(": command not found", STDOUT_FILENO);
+	ft_putstr_fd(err_p, STDERR_FILENO);
+	ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	return (127);
 }

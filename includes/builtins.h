@@ -2,6 +2,7 @@
 # define BUILTINS_H
 
 # include "env.h"
+# include "utils.h"
 
 t_bool	ft_is_builtin(t_ast *node, t_shell *shell);
 int		ft_echo(char **args);

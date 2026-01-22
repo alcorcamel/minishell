@@ -6,7 +6,7 @@ static int	ft_print_err_env(void)
 	return (1);
 }
 
-int		ft_env(char **args, t_shell *shell)
+int	ft_env(char **args, t_shell *shell)
 {
 	if (args[1])
 		return (ft_print_err_env());

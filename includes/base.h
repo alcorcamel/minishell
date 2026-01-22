@@ -17,8 +17,8 @@
 
 typedef enum e_bool
 {
-	FALSE,
-	TRUE
+	FALSE = 0,
+	TRUE = 1
 }	t_bool;
 
 typedef struct s_vars
@@ -109,6 +109,7 @@ typedef struct s_ast
 	char			*limiter;
 	t_bool			limiter_quoted;
 	t_new_args		*globber;
+	t_bool			is_expanded;
 }	t_ast;
 
 

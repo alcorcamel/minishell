@@ -5,6 +5,7 @@
 #include "parser.h"
 #include "expander.h"
 #include "builtins.h"
+#include "utils.h"
 
 // int			ft_exec_root(t_ast *node, t_shell *shell);
 int			ft_exec_pipe(t_ast *node, t_shell *shell);
@@ -23,5 +24,7 @@ char		*ft_get_path(t_ast *node, t_shell *shell);
 int			ft_throw_error(char *err_p);
 int			ft_throw_error_cmd_not_found(char *err_p);
 int			ft_exec_built(t_ast *node, t_shell *shell);
+t_bool		ft_is_directory(char *path);
+int			ft_throw_error_cmd(char *cmd);
 
 #endif

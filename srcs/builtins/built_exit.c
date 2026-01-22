@@ -2,43 +2,56 @@
 
 int	ft_print_err_exit(void)
 {
-	ft_putstr_fd("minishield: exit : trop d'arguments\n", STDERR_FILENO);
+	ft_putstr_fd("minishield: exit : too many arguments\n", STDERR_FILENO);
 	return (1);
 }
 
 void	ft_print_err_exit_nb_args(void)
 {
-	ft_putstr_fd("minishield: exit : argument numérique nécessaire\n",
+	ft_putstr_fd("minishield: exit : numeric argument required\n",
 		STDERR_FILENO);
 	exit(2);
 }
 
-int		ft_exit(char **arg)
+static t_bool	ft_is_valid_args_exit(char *arg)
+{
+	int	i;
+
+	i = 0;
+	if (arg[i] != '-' || arg[i] != '+')
+		i++;
+	while (arg[i])
+	{
+		if (!ft_isdigit(arg[i]))
+		{
+			// free tout avant !!!
+			ft_print_err_exit_nb_args();
+			return (FALSE);
+			break ;
+		}
+		i++;
+	}
+	return (TRUE);
+}
+
+int	ft_exit(char **args)
 {
 	int	status;
 	int	i;
 
 	ft_printf("exit\n");
-	if (!arg[1])
+	if (!args[1])
 		exit(0);
 	// a verifier le code d exit poiur un overflow
-	if (arg[2])
+	if (args[2] && ft_is_valid_args_exit(args[1]))
 		return (ft_print_err_exit());
 	i = 0;
-	while (arg[1][i])
-	{
-		if (!ft_isdigit(arg[1][i]) && arg[1][i] != '-' && arg[1][i] != '+')
-		{
-			// free tout avant !!!
-			ft_print_err_exit_nb_args();
-			break ;
-		}
-		i++;
-	}
+	if (ft_is_valid_args_exit(args[1]) == FALSE)
+		ft_print_err_exit_nb_args();
 	// verifier l overflow!!!
-	status = ft_atoi(arg[1]);
+	status = ft_atoi(args[1]);
 	status = status % 256;
 	// free_tout avant ilf aut pas oublier!!!!!
-		exit(status);
+	exit(status);
 	return (0);
 }

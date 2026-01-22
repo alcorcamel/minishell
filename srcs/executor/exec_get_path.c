@@ -110,7 +110,7 @@ char	*ft_get_path(t_ast *node, t_shell *shell)
 		return (NULL);
 	if (ft_strlen(cmd) == 0 || ft_str_is_space(cmd))
 		return (ft_strdup(cmd));
-	if (ft_access_in_rep(&(cmd), *node, NULL))
+	if (ft_access_in_rep(&(cmd), *node, NULL) || ft_is_directory(cmd) == TRUE)
 		return (ft_strdup(cmd));
 	var = ft_find_vars("PATH", shell);
 	if (!var || var->value == NULL || !*var->value)
