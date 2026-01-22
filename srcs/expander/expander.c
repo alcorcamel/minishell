@@ -27,19 +27,20 @@ static int	ft_expand_node(t_ast *n, t_shell *shell)
 	return (1);
 }
 
-void	ft_explore_ast(t_ast **root, t_shell *shell)
+int	ft_explore_ast(t_ast **root, t_shell *shell)
 {
 	t_ast	*n;
 
 	if (!root || !*root)
-		return ;
+		return (0);
 	n = *root;
 	if (!ft_expand_node(n, shell))
-		return ;
+		return (0);
 	if (!ft_rebuild_node(n, shell))
-		return ;
+		return (0);
 	if (n->left)
 		ft_explore_ast(&n->left, shell);
 	if (n->right)
 		ft_explore_ast(&n->right, shell);
+	return (1);
 }

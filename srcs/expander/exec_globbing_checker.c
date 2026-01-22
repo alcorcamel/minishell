@@ -177,7 +177,7 @@ int	ft_star_anywhere(t_new_args **head, char *arg)
 	readfile = NULL;
 	rep = opendir(".");
 	if (!rep)
-		return (0);
+		return (ft_free_nargs(*head), 0);
 	while (1)
 	{
 		readfile = readdir(rep);
@@ -213,7 +213,7 @@ int	ft_args_splitter(t_new_args **head, char *arg)
 
 	rep = NULL;
 	if (!arg)
-		return (0);
+		return (ft_free_nargs(*head), 0);
 	// if (ft_strlen(arg) == 1)
 	// 	return (ft_only_one_star(head, arg));
 	// else if (arg[0] == '\x1D' && ft_spechar_counter(arg) == 1)
@@ -221,7 +221,7 @@ int	ft_args_splitter(t_new_args **head, char *arg)
 	// else if (arg[ft_strlen(arg) - 1] == '\x1D' && ft_spechar_counter(arg) == 1)
 	// 	return (ft_ending_star(head, arg));
 	// else
-		return (ft_star_anywhere(head, arg));
+	return (ft_star_anywhere(head, arg));
 	return (1);
 }
 int		ft_new_args_maker(t_new_args **head, t_ast *n)
@@ -299,6 +299,7 @@ int	ft_valid_star_any_inout(char *line, char *arg)
 			if (arg[j] == '\0' && line[i] == '\0')
 			{
 				found = 1;
+				return (1);
 				break ;
 			}
 			if (arg[j] != '*' && arg[j] != line[i])
@@ -338,20 +339,19 @@ int		ft_inout_globber(t_ast *n)
 				found++;
 				free(s);
 				s = ft_strdup(readfile->d_name);
-				free(n->filename);
-				n->filename = s;
 			}
 		}
 	}
+	free(n->filename);
 	if (found > 1)
 	{
-		free(n->filename);
 		n->filename = ft_strdup(bkp);
-		printf("++%s\n", n->filename);
 		ft_expander_error(bkp, 1);
 		free(bkp);
 		return (closedir(rep), 0);
 	}
+	else
+		n->filename = s;
 	return (closedir(rep), 1);
 }
 
@@ -381,6 +381,6 @@ int		ft_args_handler(t_ast *n)
 		}
 	}
 	ft_new_args_maker(&head, n);
+	ft_free_nargs(head);
 	return (1);
 }
-

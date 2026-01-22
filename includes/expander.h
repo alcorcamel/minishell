@@ -4,7 +4,7 @@
 # include "lexer.h"
 # include "env.h"
 
-void	ft_explore_ast(t_ast **root, t_shell *vars);
+int		ft_explore_ast(t_ast **root, t_shell *vars);
 int		ft_heredoc_expand(t_ast *n, t_shell *shell);
 int		ft_restore_args(char **args);
 int		ft_cmd_rebuild(t_ast *n);
@@ -26,5 +26,6 @@ int		ft_redir_expand(t_ast *n, t_shell *shell);
 int		ft_args_handler(t_ast *n);
 void	ft_expander_error(char *s, int i);
 int		ft_inout_globber(t_ast *n);
+void	ft_free_nargs(t_new_args *node);
 
 #endif
