@@ -15,6 +15,8 @@
 # include <limits.h>
 # include <dirent.h>
 
+extern volatile sig_atomic_t g_signal;
+
 typedef enum e_bool
 {
 	FALSE = 0,

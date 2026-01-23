@@ -6,9 +6,30 @@ static int	ft_print_err_env(void)
 	return (1);
 }
 
+static int	ft_print_envp_for_env(t_shell *shell)
+{
+	t_vars	*iterator;
+	int		nb_printed;
+
+	iterator = shell->vars;
+	while (iterator)
+	{
+		if (iterator->is_exported == TRUE)
+		{
+			if (iterator->value)
+			{
+				ft_printf("%s", iterator->key);
+				ft_printf("=%s\n", iterator->value);
+			}
+		}
+		iterator = iterator->next;
+	}
+	return (0);
+}
+
 int	ft_env(char **args, t_shell *shell)
 {
 	if (args[1])
 		return (ft_print_err_env());
-	return (ft_print_envp(shell, FALSE));
+	return (ft_print_envp_for_env(shell));
 }

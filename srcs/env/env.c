@@ -86,6 +86,26 @@ void	ft_add_vars(t_shell *shell, t_vars *vars)
 	iterator->next = vars;
 }
 
+void	ft_create_path_emergency(t_shell *shell)
+{
+	t_vars	*var;
+	char	*cwd;
+	char	*tmp;
+
+	cwd = getcwd(NULL, 0);
+	var = ft_create_new_vars("PATH=/bin:/usr/bin", FALSE);
+	ft_add_vars(shell, var);
+	tmp = cwd;
+	cwd = ft_strjoin("PWD=", tmp);
+	ft_free((void **)&tmp);
+	var = ft_create_new_vars(cwd, TRUE);
+	ft_add_vars(shell, var);
+	var = ft_create_new_vars("OLDPWD", TRUE);
+	ft_add_vars(shell, var);
+	var = ft_create_new_vars("_=/usr/bin/env", TRUE);
+	ft_add_vars(shell, var);
+}
+
 t_bool	ft_cpy_enpv(char **envp, t_shell *shell)
 {
 	t_vars	*new_vars;
@@ -103,6 +123,8 @@ t_bool	ft_cpy_enpv(char **envp, t_shell *shell)
 		ft_add_vars(shell, new_vars);
 		i++;
 	}
+	if (ft_find_vars("PATH", shell) == NULL)
+		ft_create_path_emergency(shell);
 	return (TRUE);
 }
 
@@ -153,34 +175,6 @@ t_bool	ft_del_vars(t_vars *del, t_shell *shell)
 		iterator = iterator->next;
 	}
 	return (FALSE);
-}
-
-int	ft_print_envp(t_shell *shell, t_bool is_aff_export)
-{
-	t_vars	*iterator;
-
-	iterator = shell->vars;
-	while (iterator)
-	{
-		if (iterator->is_exported == TRUE)
-		{
-			if (is_aff_export == TRUE)
-				ft_printf("export %s", iterator->key);
-			else
-				ft_printf("%s", iterator->key);
-			if (iterator->value)
-			{
-				if (is_aff_export == TRUE)
-					ft_printf("=\"%s\"\n", iterator->value);
-				else
-					ft_printf("=%s\n", iterator->value);
-			}
-			else
-				ft_printf("\n");
-		}
-		iterator = iterator->next;
-	}
-	return (0);
 }
 
 void	ft_free_all_envp(char ***envp)

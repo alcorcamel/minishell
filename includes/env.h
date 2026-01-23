@@ -3,7 +3,6 @@
 
 #include "base.h"
 
-int		ft_print_envp(t_shell *shell, t_bool is_aff_export);
 t_bool	ft_cpy_enpv(char **envp, t_shell *shell);
 t_vars	*ft_find_vars(char *key, t_shell *shell);
 t_vars	*ft_create_new_vars(char *var_envp, t_bool is_exported);

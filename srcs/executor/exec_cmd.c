@@ -21,8 +21,9 @@ int	ft_exec_cmd(t_ast *node, t_shell *shell)
 		return (-1);
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+		ft_restore_signal();
+		if (ft_strlen(node->args[0]) == 0 && node->is_expanded)
+			exit(0);
 		path = ft_get_path(node, shell);
 		if (!path)
 			exit(ft_throw_error_cmd_not_found(node->args[0]));
@@ -31,11 +32,6 @@ int	ft_exec_cmd(t_ast *node, t_shell *shell)
 			exit(1);
 		execve(path, node->args, envp);
 		exit(ft_throw_error_cmd(path));
-	}
-	else
-	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
 	}
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))

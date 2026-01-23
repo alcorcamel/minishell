@@ -2,10 +2,11 @@
 # define EXECUTOR_H
 
 // #include "../lexer/lexer.h"
-#include "parser.h"
-#include "expander.h"
-#include "builtins.h"
-#include "utils.h"
+# include "parser.h"
+# include "expander.h"
+# include "builtins.h"
+# include "utils.h"
+# include "signals.h"
 
 // int			ft_exec_root(t_ast *node, t_shell *shell);
 int			ft_exec_pipe(t_ast *node, t_shell *shell);

@@ -8,14 +8,11 @@ int	ft_exec_subshell(t_ast *node, t_shell *shell)
 	int		status;
 
 	pid = fork();
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
 	if (pid == -1)
 		return (-1);
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+		ft_restore_signal();
 		status = ft_exec_ast(node->left, shell);
 		exit(status);
 	}

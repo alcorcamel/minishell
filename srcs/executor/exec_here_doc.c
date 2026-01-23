@@ -11,6 +11,7 @@ int		ft_exec_here_doc(t_ast *node, t_shell *shell)
 		return (ft_throw_error("fork"));
 	if (pid == 0)
 	{
+		ft_restore_signal();
 		if (ft_heredoc_expand(node, shell))
 			exit(1);
 		fd = open(node->filename, O_RDONLY);

@@ -70,15 +70,23 @@ int	main(int ac, char **av, char **envp)
 	shell.last_status = 0;
 	// ft_print_boot();
 	// ft_boot_loading();
+	ft_ignore_signal();
 	if (ft_cpy_enpv(envp, &shell) == FALSE)
 		exit(1);
 	while (1)
 	{
+		ft_verif_signal(&shell, FALSE);
 		prompt = ft_generate_prompt(&shell);
 		line = readline(prompt);
 		ft_free((void **)&prompt);
 		if (!line)
 			return (1);// en realite erreur sans quitter
+		if (*line == '\0')
+		{
+			shell.last_status = 130;
+			ft_free((void **)&line);
+			continue ;
+		}
 		tokens = ft_lexer(line);
 		//ft_printer(tokens);
 		add_history (line);
@@ -89,6 +97,7 @@ int	main(int ac, char **av, char **envp)
 		ft_explore_ast(&root, &shell);
 		shell.last_status = ft_exec_ast(root, &shell);
 		ft_free((void **)&line);
+		ft_verif_signal(&shell, TRUE);
 		// if (ft_paser(tokens) == 1)
 		// 	exec!
 	}

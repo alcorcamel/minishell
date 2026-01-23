@@ -14,6 +14,7 @@ int		ft_exec_redirect_in(t_ast *node, t_shell *shell)
 		return (ft_throw_error("fork"));
 	if (pid == 0)
 	{
+		ft_restore_signal();
 		fd = open(node->filename, O_RDONLY);
 		if (fd == -1)
 			return (ft_throw_error(node->filename));
@@ -41,6 +42,7 @@ int		ft_exec_redirect_out(t_ast *node, t_shell *shell)
 		return (ft_throw_error("fork"));
 	if (pid == 0)
 	{
+		ft_restore_signal();
 		fd = open(node->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd == -1)
 			return (ft_throw_error(node->filename));

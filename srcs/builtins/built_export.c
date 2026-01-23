@@ -63,13 +63,33 @@ void	ft_add_or_replace_vars(char *arg, t_shell *shell)
 	}
 }
 
+static int	ft_print_envp_for_export(t_shell *shell)
+{
+	t_vars	*iterator;
+
+	iterator = shell->vars;
+	while (iterator)
+	{
+		if (iterator->is_exported == TRUE)
+		{
+			ft_printf("export %s", iterator->key);
+			if (iterator->value)
+				ft_printf("=\"%s\"\n", iterator->value);
+			else
+				ft_printf("\n");
+		}
+		iterator = iterator->next;
+	}
+	return (0);
+}
+
 int	ft_export(char **args, t_shell *shell)
 {
 	int	i;
 	int	status;
 
 	if (!args[1])
-		return (ft_print_envp(shell, TRUE));
+		return (ft_print_envp_for_export(shell));
 	i = 1;
 	status = 0;
 	while (args[i])
