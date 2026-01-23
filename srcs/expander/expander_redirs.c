@@ -86,7 +86,7 @@ int	ft_redir_expand(t_ast *n, t_shell *shell)
 	segs = n->segs;
 	if (!segs)
 		return (0);
-	if (!ft_var_translator(segs, shell))
+	if (!ft_var_translator(n, segs, shell))
 		return (0);
 	return (1);
 }
