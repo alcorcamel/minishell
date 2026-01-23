@@ -12,14 +12,14 @@ void	ft_free_args(char **args)
 	free(args);
 }
 
-int	ft_var_translator(t_seg *segs, t_shell *shell)
+int	ft_var_translator(t_ast *n, t_seg *segs, t_shell *shell)
 {
 	t_seg	*temp;
 
 	temp = segs;
 	while (temp)
 	{
-		if (!ft_expand_seg_vars(temp, shell))
+		if (!ft_expand_seg_vars(n, temp, shell))
 			return (0);
 		temp = temp->next;
 	}

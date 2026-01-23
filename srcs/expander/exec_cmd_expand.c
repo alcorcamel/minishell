@@ -71,7 +71,7 @@ int	ft_cmd_expand(t_ast *n, t_shell *shell)
 	if (!segs)
 		return (0);
 	ft_invalid_dol_replace(n);
-	if (!ft_var_translator(segs, shell))
+	if (!ft_var_translator(n, segs, shell))
 		return (0);
 	ft_invalid_dol_restorer(n);
 	return (1);
