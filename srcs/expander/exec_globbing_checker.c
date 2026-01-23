@@ -435,7 +435,7 @@ int		ft_args_handler(t_ast *n)
 		}
 	}
 	ft_new_args_maker(&head, n);
-	ft_args_sorter(n);
+	//ft_args_sorter(n);
 	ft_free_nargs(head);
 	return (1);
 }
