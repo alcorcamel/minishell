@@ -97,9 +97,9 @@ int	ft_spe_arg_lstsize(t_new_args *lst)
 	i = 0;
 	while (lst)
 	{
-		lst = lst->next;
 		if (lst->globbed == 1)
 			i++;
+		lst = lst->next;
 	}
 	return (i);
 }
@@ -113,7 +113,9 @@ void	ft_arg_add_back(t_new_args **lst, t_new_args *new, int i)
 	if (!*lst)
 	{
 		*lst = new;
-		return ;
+		if (i == 1)
+			new->globbed = 1;
+		return;
 	}
 	temp = *lst;
 	while (temp->next)
@@ -221,25 +223,6 @@ int	ft_star_anywhere(t_new_args **head, char *arg)
 	return (closedir(rep), 1);
 }
 
-// int	ft_args_splitter(t_new_args **head, char *arg)
-// {
-// 	DIR*			rep;
-// 	struct dirent	*readfile;
-
-// 	rep = NULL;
-// 	if (!arg)
-// 		return (ft_free_nargs(*head), 0);
-// 	// if (ft_strlen(arg) == 1)
-// 	// 	return (ft_only_one_star(head, arg));
-// 	// else if (arg[0] == '\x1D' && ft_spechar_counter(arg) == 1)
-// 	// 	return (ft_beginning_star(head, arg));
-// 	// else if (arg[ft_strlen(arg) - 1] == '\x1D' && ft_spechar_counter(arg) == 1)
-// 	// 	return (ft_ending_star(head, arg));
-// 	// else
-// 	return (ft_star_anywhere(head, arg));
-// 	return (1);
-// }
-
 int		ft_new_args_maker(t_new_args **head, t_ast *n)
 {
 	int			size;
@@ -329,6 +312,8 @@ int		ft_inout_globber(t_ast *n)
 	rep = NULL;
 	found = 0;
 	s = NULL;
+	if (!n || !n->filename)
+		return (0);
 	if (!ft_strchr(n->filename, '*'))
 		return (1);
 	readfile = NULL;
@@ -385,18 +370,20 @@ void	ft_str_capitalizer(char *str)
 
 int	ft_str_compare(char *s1, char *s2)
 {
-	char *tmp1;
-	char *tmp2;
+	char	*tmp1;
+	char	*tmp2;
+	int		ret;
 
 	if (!s1 || !s2)
 		return (0);
 	tmp1 = ft_strdup(s1);
 	tmp2 = ft_strdup(s2);
 	if (!tmp1 || !tmp2)
-		return (0);
+		return (free(tmp1), free(tmp2), 0);
 	ft_str_capitalizer(tmp1);
 	ft_str_capitalizer(tmp2);
-	return (strcmp(tmp1, tmp2));
+	ret = strcmp(tmp1, tmp2);
+	return (free(tmp1), free(tmp2), ret);
 }
 
 void	ft_sublist_sorter(t_new_args **head, t_ast *n)
@@ -413,6 +400,8 @@ void	ft_sublist_sorter(t_new_args **head, t_ast *n)
 	while (tmp && tmp->globbed == 0)
 		tmp = tmp->next;
 	new_head = tmp;
+	if (!new_head)
+		return ;
 	while (new_head->next && new_head->next->globbed == 1)
 	{
 		tmp = new_head->next;
@@ -443,8 +432,6 @@ int		ft_args_handler(t_ast *n)
 	ret = NULL;
 	head = NULL;
 	n->globber = head;
-	// if (n->args[0] && n->args[0][0] == '\x1D')
-	// 	ft_arg_restorer(n->args[0]);
 	while (n->args[++i])
 	{
 		if (ft_strchr(n->args[i], (int)'\x1D'))
@@ -463,7 +450,6 @@ int		ft_args_handler(t_ast *n)
 	if (found)
 		ft_sublist_sorter(&head, n);
 	ft_new_args_maker(&head, n);
-	//ft_args_sorter(n);
 	ft_free_nargs(head);
 	return (1);
 }

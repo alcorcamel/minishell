@@ -25,7 +25,7 @@ static void	ft_seg_printer(t_ast *n)
 	printf("\n");
 }
 
-static void ft_invalid_dol_replace(t_ast *n)
+static void	ft_invalid_dol_replace(t_ast *n)
 {
 	t_seg	*temp;
 	int		i;
@@ -45,7 +45,7 @@ static void ft_invalid_dol_replace(t_ast *n)
 	}
 }
 
-static void ft_invalid_dol_restorer(t_ast *n)
+static void	ft_invalid_dol_restorer(t_ast *n)
 {
 	t_seg	*temp;
 	int		i;

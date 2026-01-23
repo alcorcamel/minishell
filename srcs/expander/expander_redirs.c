@@ -27,7 +27,7 @@ static int	ft_heredoc_rebuild_helper(t_ast *n)
 	n->filename = ft_valid_filename_finder();
 	if (!n->filename)
 		return (free(n->limiter), n->limiter = NULL,
-		free(n->filename), n->filename = NULL, 0);
+			free(n->filename), n->filename = NULL, 0);
 	if (ft_is_quoted(n))
 		n->limiter_quoted = TRUE;
 	else
@@ -45,7 +45,7 @@ int	ft_heredoc_rebuild(t_ast *n)
 	fd = open(n->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 		return (free(n->limiter), n->limiter = NULL,
-		free(n->filename), n->filename=NULL, 0);
+			free(n->filename), n->filename = NULL, 0);
 	while (1)
 	{
 		write(1, "heredoc> ", 9);

@@ -10,7 +10,8 @@ static void	ft_append_seg_special(char *dst, t_seg *seg, size_t *i)
 	{
 		if ((seg->type == SEG_SQ || seg->type == SEG_DQ) && seg->text[j] == ' ')
 			dst[*i] = '\x1F';
-		else if ((seg->type != SEG_SQ && seg->type != SEG_DQ) && seg->text[j] == '*')
+		else if ((seg->type != SEG_SQ && seg->type != SEG_DQ)
+			&& seg->text[j] == '*')
 			dst[*i] = '\x1D';
 		else
 			dst[*i] = seg->text[j];
