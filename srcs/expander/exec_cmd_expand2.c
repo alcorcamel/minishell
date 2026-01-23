@@ -9,6 +9,7 @@ static char	*ft_replace_var_helper(t_seg *segs, char *s, int j, int name_len)
 	int		i;
 
 	s_len = ft_strlen(s);
+	ret = NULL;
 	after_len = ft_strlen(segs->text + j + 1 + name_len);
 	ret = (char *)malloc(j + s_len + after_len + 1);
 	if (!ret)

@@ -38,7 +38,8 @@ static void ft_invalid_dol_replace(t_ast *n)
 	{
 		if (temp->text)
 			size = ft_strlen(temp->text);
-		if (temp->text && temp->next && temp->next->type == SEG_SEP && temp->text[size - 1] == '$')
+		if (temp->text && temp->next && temp->next->type == SEG_SEP
+			&& temp->text[size - 1] == '$')
 			temp->text[size - 1] = '\x1C';
 		temp = temp->next;
 	}
@@ -57,7 +58,8 @@ static void ft_invalid_dol_restorer(t_ast *n)
 	{
 		if (temp->text)
 			size = ft_strlen(temp->text);
-		if (temp->text && temp->next && temp->next->type == SEG_SEP && temp->text[size - 1] == '\x1C')
+		if (temp->text && temp->next && temp->next->type == SEG_SEP
+			&& size != 0 && temp->text[size - 1] == '\x1C')
 			temp->text[size - 1] = '$';
 		temp = temp->next;
 	}
