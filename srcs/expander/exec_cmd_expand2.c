@@ -73,12 +73,12 @@ static char	*ft_expand_one_var_in_seg(t_seg *seg, t_shell *shell, char *s)
 	if (ft_find_vars(name, shell))
 		found = ft_strdup(ft_find_vars(name, shell)->value);
 	free(name);
-	if (!found)
-	{
-		found = ft_strdup("");
-		if (!found)
-			return (NULL);
-	}
+	// if (!found)
+	// {
+	// 	found = ft_strdup("");
+	// 	if (!found)
+	// 		return (NULL);
+	// }
 	if (!ft_replace_var(found, seg, len))
 		return (free(found), NULL);
 	free(found);
