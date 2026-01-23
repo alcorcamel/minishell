@@ -205,24 +205,25 @@ int	ft_star_anywhere(t_new_args **head, char *arg)
 	return (closedir(rep), 1);
 }
 
-int	ft_args_splitter(t_new_args **head, char *arg)
-{
-	DIR*			rep;
-	struct dirent	*readfile;
+// int	ft_args_splitter(t_new_args **head, char *arg)
+// {
+// 	DIR*			rep;
+// 	struct dirent	*readfile;
 
-	rep = NULL;
-	if (!arg)
-		return (ft_free_nargs(*head), 0);
-	// if (ft_strlen(arg) == 1)
-	// 	return (ft_only_one_star(head, arg));
-	// else if (arg[0] == '\x1D' && ft_spechar_counter(arg) == 1)
-	// 	return (ft_beginning_star(head, arg));
-	// else if (arg[ft_strlen(arg) - 1] == '\x1D' && ft_spechar_counter(arg) == 1)
-	// 	return (ft_ending_star(head, arg));
-	// else
-	return (ft_star_anywhere(head, arg));
-	return (1);
-}
+// 	rep = NULL;
+// 	if (!arg)
+// 		return (ft_free_nargs(*head), 0);
+// 	// if (ft_strlen(arg) == 1)
+// 	// 	return (ft_only_one_star(head, arg));
+// 	// else if (arg[0] == '\x1D' && ft_spechar_counter(arg) == 1)
+// 	// 	return (ft_beginning_star(head, arg));
+// 	// else if (arg[ft_strlen(arg) - 1] == '\x1D' && ft_spechar_counter(arg) == 1)
+// 	// 	return (ft_ending_star(head, arg));
+// 	// else
+// 	return (ft_star_anywhere(head, arg));
+// 	return (1);
+// }
+
 int		ft_new_args_maker(t_new_args **head, t_ast *n)
 {
 	int			size;
@@ -248,13 +249,6 @@ int		ft_new_args_maker(t_new_args **head, t_ast *n)
 	n->args = ret;
 	return (1);
 }
-// FREE TTE LA LISTE!!!
-// TESTER SI REDIR essaie in/out un dossier
-// bash: */: ambiguous redirect
-// DIR *d;
-// d = opendir(path);
-// if (d)
-// 	OK!!
 
 int	ft_valid_star_any_inout(char *line, char *arg)
 {
@@ -356,6 +350,64 @@ int		ft_inout_globber(t_ast *n)
 	return (closedir(rep), 1);
 }
 
+void	ft_str_capitalizer(char *str)
+{
+	size_t	size;
+	size_t	i;
+
+	if (!str)
+		return ;
+	size = ft_strlen(str);
+	i = -1;
+	while (++i < size)
+	{
+		if (str[i] >= 'a' && str[i] <= 'z')
+			str[i] -= 32;
+	}
+}
+
+int	ft_str_compare(char *s1, char *s2)
+{
+	char *tmp1;
+	char *tmp2;
+
+	if (!s1 || !s2)
+		return (0);
+	tmp1 = ft_strdup(s1);
+	tmp2 = ft_strdup(s2);
+	if (!tmp1 || !tmp2)
+		return (0);
+	ft_str_capitalizer(tmp1);
+	ft_str_capitalizer(tmp2);
+	return (strcmp(tmp1, tmp2));
+}
+
+void	ft_args_sorter(t_ast *n)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	if (!n)
+		return ;
+	i = 1;
+	while (n->args[i + 1])
+	{
+		j = i + 1;
+		while (n->args[j])
+		{
+			if (n->args[j] && ft_str_compare(n->args[i], n->args[j]) > 0)
+			{
+				tmp = n->args[j];
+				n->args[j] = n->args[i];
+				n->args[i] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
 int		ft_args_handler(t_ast *n)
 {
 	int			i;
@@ -372,7 +424,8 @@ int		ft_args_handler(t_ast *n)
 	while (n->args[++i])
 	{
 		if (ft_strchr(n->args[i], (int)'\x1D'))
-			ft_args_splitter(&head, n->args[i]);
+			// ft_args_splitter(&head, n->args[i]);
+			ft_star_anywhere(&head, n->args[i]);
 		else
 		{
 			tmp = ft_argnew(ft_strdup(n->args[i]));
@@ -382,6 +435,7 @@ int		ft_args_handler(t_ast *n)
 		}
 	}
 	ft_new_args_maker(&head, n);
+	ft_args_sorter(n);
 	ft_free_nargs(head);
 	return (1);
 }
