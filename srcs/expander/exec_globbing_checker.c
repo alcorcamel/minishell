@@ -90,7 +90,21 @@ int	ft_arg_lstsize(t_new_args *lst)
 	return (i);
 }
 
-void	ft_arg_add_back(t_new_args **lst, t_new_args *new)
+int	ft_spe_arg_lstsize(t_new_args *lst)
+{
+	int	i;
+
+	i = 0;
+	while (lst)
+	{
+		lst = lst->next;
+		if (lst->globbed == 1)
+			i++;
+	}
+	return (i);
+}
+
+void	ft_arg_add_back(t_new_args **lst, t_new_args *new, int i)
 {
 	t_new_args	*temp;
 
@@ -105,6 +119,8 @@ void	ft_arg_add_back(t_new_args **lst, t_new_args *new)
 	while (temp->next)
 		temp = temp->next;
 	temp->next = new;
+	if (i == 1)
+		new->globbed = 1;
 }
 
 int	ft_is_char_match(char c_arg, char c_line)
@@ -191,7 +207,7 @@ int	ft_star_anywhere(t_new_args **head, char *arg)
 			found = 1;
 			if (!tmp->value)
 				return (closedir(rep), ft_free_nargs(*head), 0);
-			ft_arg_add_back(head, tmp);
+			ft_arg_add_back(head, tmp, 1);
 		}
 	}
 	if (found == 0)
@@ -200,7 +216,7 @@ int	ft_star_anywhere(t_new_args **head, char *arg)
 		tmp = ft_argnew(ft_strdup(arg));
 		if (!tmp->value)
 			return (closedir(rep), ft_free_nargs(*head), free(tmp), 0);
-		ft_arg_add_back(head, tmp);
+		ft_arg_add_back(head, tmp, 0);
 	}
 	return (closedir(rep), 1);
 }
@@ -234,8 +250,9 @@ int		ft_new_args_maker(t_new_args **head, t_ast *n)
 	if (!head || !(*head))
 		return (0);
 	size = ft_arg_lstsize(*head);
-	// ret = NULL;
 	ret = (char **)malloc((size + 1) * sizeof(char *));
+	if (!ret)
+		return (0);
 	i = -1;
 	tmp = *head;
 	while (tmp && ++i < size)
@@ -382,29 +399,34 @@ int	ft_str_compare(char *s1, char *s2)
 	return (strcmp(tmp1, tmp2));
 }
 
-void	ft_args_sorter(t_ast *n)
+void	ft_sublist_sorter(t_new_args **head, t_ast *n)
 {
-	int		i;
-	int		j;
-	char	*tmp;
+	int			i;
+	t_new_args	*tmp;
+	t_new_args	*new_head;
+	char		*bkp;
 
-	if (!n)
+	if (!head || !(*head))
 		return ;
-	i = 1;
-	while (n->args[i + 1])
+	i = -1;
+	tmp = *head;
+	while (tmp && tmp->globbed == 0)
+		tmp = tmp->next;
+	new_head = tmp;
+	while (new_head->next && new_head->next->globbed == 1)
 	{
-		j = i + 1;
-		while (n->args[j])
+		tmp = new_head->next;
+		while (tmp)
 		{
-			if (n->args[j] && ft_str_compare(n->args[i], n->args[j]) > 0)
+			if (tmp && ft_str_compare(new_head->value, tmp->value) > 0 && tmp->globbed == 1)
 			{
-				tmp = n->args[j];
-				n->args[j] = n->args[i];
-				n->args[i] = tmp;
+				bkp = tmp->value;
+				tmp->value = new_head->value;
+				new_head->value = bkp;
 			}
-			j++;
+			tmp = tmp->next;
 		}
-		i++;
+		new_head = new_head->next;
 	}
 }
 
@@ -431,9 +453,10 @@ int		ft_args_handler(t_ast *n)
 			tmp = ft_argnew(ft_strdup(n->args[i]));
 			if (!tmp->value)
 				return (0);
-			ft_arg_add_back(&head, tmp);
+			ft_arg_add_back(&head, tmp, 0);
 		}
 	}
+	// ft_sublist_sorter(&head, n);
 	ft_new_args_maker(&head, n);
 	//ft_args_sorter(n);
 	ft_free_nargs(head);

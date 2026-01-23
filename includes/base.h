@@ -35,6 +35,7 @@ typedef struct s_new_args
 {
 	char				*value;
 	struct s_new_args	*next;
+	t_bool				globbed;
 }	t_new_args;
 
 typedef struct s_exit
