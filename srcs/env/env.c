@@ -41,7 +41,7 @@ t_bool	ft_get_value_from_var_envp(char *var_envp, char **value)
 	i = 0;
 	while (var_envp[++j])
 	{
-		if (var_envp[j] != '"' && var_envp[j] != '\'')
+		if (var_envp[j] != '"')
 			val[i++] = var_envp[j];
 	}
 	val[i] = '\0';
