@@ -436,8 +436,10 @@ int		ft_args_handler(t_ast *n)
 	t_new_args	*tmp;
 	char		**ret;
 	t_new_args	*head;
+	int			found;
 
 	i = -1;
+	found = 0;
 	ret = NULL;
 	head = NULL;
 	n->globber = head;
@@ -446,8 +448,10 @@ int		ft_args_handler(t_ast *n)
 	while (n->args[++i])
 	{
 		if (ft_strchr(n->args[i], (int)'\x1D'))
-			// ft_args_splitter(&head, n->args[i]);
+		{
+			found = 1;
 			ft_star_anywhere(&head, n->args[i]);
+		}
 		else
 		{
 			tmp = ft_argnew(ft_strdup(n->args[i]));
@@ -456,7 +460,8 @@ int		ft_args_handler(t_ast *n)
 			ft_arg_add_back(&head, tmp, 0);
 		}
 	}
-	// ft_sublist_sorter(&head, n);
+	if (found)
+		ft_sublist_sorter(&head, n);
 	ft_new_args_maker(&head, n);
 	//ft_args_sorter(n);
 	ft_free_nargs(head);
