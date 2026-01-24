@@ -30,7 +30,9 @@ FILES_PARSER = parser_ast_builder.c parser.c parser_print_err.c \
 FILES_EXPANDER = expander.c exec_cmd_expand.c exec_cmd_expand2.c \
 		   exec_cmd_rebuild.c exec_cmd_rebuild2.c exec_heredoc_expand.c \
 		   exec_heredoc_expand2.c expander_utils.c expander_utils2.c \
-		   expander_redirs.c exec_globbing_checker.c expander_error.c
+		   expander_redirs.c exec_globbing_checker.c expander_error.c \
+		   exec_globbing_redirs.c exec_globbing_any.c expander_utils3.c \
+		   expander_utils4.c exec_globbing_redirs2.c expander_utils5.c
 
 FILES_BUILTINS = built_cd.c built_echo.c built_env.c built_exit.c \
 		 built_export.c built_pwd.c built_unset.c built_utils.c
