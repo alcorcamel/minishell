@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 13:23:59 by demane            #+#    #+#             */
-/*   Updated: 2026/01/23 16:58:29 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/24 18:50:31 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ t_bool		ft_cpy_enpv(char **envp, t_shell *shell);
 void		ft_print_boot(void);
 char		*ft_generate_prompt(t_shell *shell);
 void		ft_boot_loading(void);
-void		ft_ignore_signal(void);
-void		ft_verif_signal(t_shell *shell, t_bool in_realine);
+void		ft_ignore_signal_exec(void);
+void		ft_ignore_signal_prompt(void);
+void		ft_verif_signal(t_shell *shell);
 
 #endif

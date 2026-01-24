@@ -34,14 +34,14 @@ static t_bool	ft_is_valid_args_exit(char *arg)
 	return (TRUE);
 }
 
-int	ft_exit(char **args)
+int	ft_exit(char **args, t_shell *shell)
 {
 	int	status;
 	int	i;
 
 	ft_printf("exit\n");
 	if (!args[1])
-		exit(0);
+		exit(shell->last_status);
 	// a verifier le code d exit poiur un overflow
 	if (args[2] && ft_is_valid_args_exit(args[1]))
 		return (ft_print_err_exit());

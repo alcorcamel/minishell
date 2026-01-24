@@ -14,8 +14,11 @@
 # include <errno.h>
 # include <limits.h>
 # include <dirent.h>
+# include <sys/ioctl.h>
 
 extern volatile sig_atomic_t g_signal;
+
+typedef struct sigaction t_sigaction;
 
 typedef enum e_bool
 {

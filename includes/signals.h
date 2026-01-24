@@ -3,8 +3,9 @@
 
 #include "base.h"
 
-void	ft_ignore_signal(void);
+void	ft_ignore_signal_exec(void);
+void	ft_ignore_signal_prompt(void);
 void	ft_restore_signal(void);
-void	ft_verif_signal(t_shell *shell, t_bool in_realine);
+void	ft_verif_signal(t_shell *shell);
 
 #endif

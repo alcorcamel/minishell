@@ -18,6 +18,6 @@ int	ft_exec_built(t_ast *node, t_shell *shell)
 	if (!ft_strncmp(node->args[0], "env", 3) && ft_strlen(node->args[0]) == 3)
 		return (ft_env(node->args, shell));
 	if (!ft_strncmp(node->args[0], "exit", 4) && ft_strlen(node->args[0]) == 4)
-		return (ft_exit(node->args));
+		return (ft_exit(node->args, shell));
 	return (FALSE);
 }
