@@ -64,11 +64,11 @@ int	ft_heredoc_rebuild(t_ast *n)
 		while (1)
 		{
 			nb_lines++;
-			write(1, "> ", 1);
+			write(1, "> ", 2);
 			line = get_next_line(0);
 			if (!line)
 			{
-				ft_printf("\nminishell: warning: here-document at line %d delimited by end-of-file (wanted `EOF')\n", nb_lines);
+				ft_printf("\nminishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", nb_lines, n->limiter);
 				break ;
 			}
 			if (ft_is_limiter(line, n->limiter))

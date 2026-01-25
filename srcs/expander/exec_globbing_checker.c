@@ -73,13 +73,11 @@ int		ft_args_handler_loop(t_ast *n, int *found, int *i, t_new_args **head)
 int		ft_args_handler(t_ast *n)
 {
 	int			i;
-	char		**ret;
 	t_new_args	*head;
 	int			found;
 
 	i = -1;
 	found = 0;
-	ret = NULL;
 	head = NULL;
 	if (!n || !n->args)
 		return (0);

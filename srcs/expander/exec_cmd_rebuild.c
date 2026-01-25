@@ -87,12 +87,36 @@ static int	ft_cmd_rebuild_helper(t_seg *segs, size_t *size, char **ret)
 	return (1);
 }
 
+int	ft_is_empty(char *s)
+{
+	int	i;
+
+	if (!s)
+		return (1);
+	i = -1;
+	while (s[++i])
+	{
+		if (s[i] != ' ')
+			return (0);
+	}
+	return (1);
+}
+
+int	ft_set_empty_cmd(t_ast *n, char *ret)
+{
+	free(ret);
+	ft_free_args(n->args);
+	n->args = NULL;
+	return (1);
+}
+
 int	ft_cmd_rebuild(t_ast *n)
 {
 	t_seg	*segs;
 	char	*ret;
 	size_t	size;
 	size_t	i;
+	char	**nargs;
 
 	segs = n->segs;
 	if (!ft_cmd_rebuild_helper(segs, &size, &ret))
@@ -104,12 +128,18 @@ int	ft_cmd_rebuild(t_ast *n)
 		ret[i++] = ' ';
 	}
 	ret[i] = '\0';
-	n->args = ft_split(ret, ' ');
+	if (ft_is_empty(ret))
+		return (ft_set_empty_cmd(n, ret));
+	nargs = ft_split(ret, ' ');
 	free(ret);
-	if (!n->args)
+	if (!nargs)
 		return (0);
-	if (!ft_restore_args(n->args))
-		return (ft_free_args(n->args), 0);
+	if (!nargs[0])
+		return (ft_free_args(nargs), ft_free_args(n->args), n->args = NULL, 1);
+	if (!ft_restore_args(nargs))
+		return (ft_free_args(nargs), 0);
+	ft_free_args(n->args);
+	n->args = nargs;
 	if (!ft_args_handler(n))
 		return (ft_free_args(n->args), n->args = NULL, 0);
 	return (1);

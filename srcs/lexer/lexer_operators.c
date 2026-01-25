@@ -100,6 +100,7 @@ int	ft_add_operator(t_token **lst, char *s, int *i, int *brace)
 	t_token	*tok;
 	int		ret;
 
+	tok = NULL;
 	if (s[*i] == '(')
 		(*brace)++;
 	if (s[*i] == ')')

@@ -22,7 +22,7 @@ t_ast		*ft_parse_subshell(t_token **cur);
 t_ast		*ft_parse_simple(t_token **cur);
 void		free_ast(t_ast **root);
 void		ft_pars_err(int i, char *s);
-int			ft_after_pipe(t_token *tok, t_token_type prev);
-int			ft_after_rparen(t_token *tok, t_token_type prev);
+int			ft_after_pipe(t_token *tok);
+int			ft_after_rparen(t_token *tok);
 
 #endif

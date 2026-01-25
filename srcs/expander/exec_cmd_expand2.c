@@ -25,17 +25,13 @@ static char	*ft_replace_var_helper(t_seg *segs, char *s, int j, int name_len)
 	return (ret);
 }
 
-static int	ft_replace_var(char *s, t_seg *segs, int name_len)
+static int	ft_replace_var(char *s, t_seg *segs, int j, int name_len)
 {
-	int		j;
 	char	*ret;
 
-	if (!segs || !segs->text || !s || name_len < 0)
+	if (!segs || !segs->text || !s || name_len < 0 || j < 0)
 		return (0);
-	j = 0;
-	while (segs->text[j] && segs->text[j] != '$')
-		j++;
-	if (segs->text[j] != '$')
+	if (!segs->text[j] || segs->text[j] != '$')
 		return (1);
 	ret = ft_replace_var_helper(segs, s, j, name_len);
 	if (!ret)
@@ -45,15 +41,17 @@ static int	ft_replace_var(char *s, t_seg *segs, int name_len)
 	return (1);
 }
 
-static char	*ft_exp_onevar_helper(t_seg *seg, t_shell *shell, char *found)
+static char	*ft_exp_onevar_helper(t_seg *seg, t_shell *shell, int j)
 {
+	char	*found;
+
 	found = ft_itoa(shell->last_status);
 	if (!found)
-		return (NULL);
-	if (!ft_replace_var(found, seg, 1))
-		return (free(found), NULL);
+		return ((char *)seg);
+	if (!ft_replace_var(found, seg, j, 1))
+		return (free(found), (char *)seg);
 	free(found);
-	return (ft_strchr(seg->text, '$'));
+	return (ft_strchr(seg->text + j + 1, '$'));
 }
 
 char	*ft_expand_one_varinseg(t_ast *n, t_seg *seg, t_shell *shell, char *s)
@@ -61,29 +59,38 @@ char	*ft_expand_one_varinseg(t_ast *n, t_seg *seg, t_shell *shell, char *s)
 	char	*name;
 	char	*found;
 	int		len;
+	int		j;
+	int		found_len;
 
 	found = NULL;
+	j = (s - seg->text);
 	if (*(s + 1) == '?')
-		return (ft_exp_onevar_helper(seg, shell, found));
+		return (ft_exp_onevar_helper(seg, shell, j));
 	len = ft_var_name_len(s + 1);
 	if (len == 0)
 		return (ft_strchr(s + 1, '$'));
 	name = ft_strndup(s + 1, len);
 	if (!name)
-		return (NULL);
+		return ((char *)seg);
 	if (ft_find_vars(name, shell))
+	{
 		found = ft_strdup(ft_find_vars(name, shell)->value);
+		if (!found)
+			return ((char *)seg);
+	}
 	free(name);
 	if (!found)
 	{
 		found = ft_strdup("");
 		n->is_expanded = 1;
 		if (!found)
-			return (NULL);
+			return ((char *)seg);
 	}
-	if (!ft_replace_var(found, seg, len))
-		return (free(found), NULL);
-	return (free(found), ft_strchr(seg->text, '$'));
+	found_len = ft_strlen(found);
+	if (!ft_replace_var(found, seg, j, len))
+		return (free(found), (char *)seg);
+	free(found);
+	return (ft_strchr(seg->text + j + found_len, '$'));
 }
 
 int	ft_expand_seg_vars(t_ast *n, t_seg *seg, t_shell *shell)
@@ -101,8 +108,10 @@ int	ft_expand_seg_vars(t_ast *n, t_seg *seg, t_shell *shell)
 			continue ;
 		}
 		s = ft_expand_one_varinseg(n, seg, shell, s);
-		if (!s && ft_strchr(seg->text, '$'))
+		if (s == (char *)seg)
 			return (0);
+		if (!s)
+			break ;
 	}
 	return (1);
 }

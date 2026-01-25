@@ -2,21 +2,21 @@
 
 int	ft_star_any3(t_new_args **head, char *arg)
 {
-	char			*s;
-	t_new_args		*tmp;
+	char		*copy;
+	t_new_args	*tmp;
 
-	ft_arg_restorer_bis(arg);
-	s = ft_strdup(arg);
-	if (!s)
+	copy = ft_strdup(arg);
+	if (!copy)
 		return (0);
-	tmp = ft_argnew(s);
+	ft_arg_restorer_bis(copy);
+	tmp = ft_argnew(copy);
 	if (!tmp)
-		return (free(s), 0);
+		return (free(copy), 0);
 	ft_arg_add_back(head, tmp, 0);
 	return (1);
 }
 
-int	ft_star_any2(t_new_args **head, struct dirent *readfile, char *arg)
+int	ft_star_any2(t_new_args **head, struct dirent *readfile)
 {
 	char			*s;
 	t_new_args		*tmp;
@@ -48,7 +48,7 @@ int	ft_star_anywhere(t_new_args **head, char *arg)
 		if (ft_valid_star_any(readfile->d_name, arg))
 		{
 			found = 1;
-			if (!ft_star_any2(head, readfile, arg))
+			if (!ft_star_any2(head, readfile))
 				return (closedir(rep), 0);
 		}
 	}

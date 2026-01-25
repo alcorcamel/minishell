@@ -26,6 +26,7 @@ t_ast	*ft_build_and_or(t_token **cur)
 	t_token_type	op;
 
 	tmp = NULL;
+	op = TOKEN_AND;
 	if (!cur || !(*cur))
 		return (NULL);
 	left = ft_build_pipe(cur);

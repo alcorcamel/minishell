@@ -37,7 +37,7 @@ int	ft_is_redir(t_token *cur)
 	return (0);
 }
 
-int	ft_after_rparen(t_token *tok, t_token_type prev)
+int	ft_after_rparen(t_token *tok)
 {
 	if (tok->type == TOKEN_WORD)
 		return (ft_pars_err(1, tok->value), 0);
@@ -46,7 +46,7 @@ int	ft_after_rparen(t_token *tok, t_token_type prev)
 	return (1);
 }
 
-int	ft_after_pipe(t_token *tok, t_token_type prev)
+int	ft_after_pipe(t_token *tok)
 {
 	if (tok->type == TOKEN_PIPE)
 		return (ft_pars_err(1, "|"), 0);

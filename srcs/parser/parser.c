@@ -13,7 +13,7 @@ static int	ft_first_tok_checker(t_token *tok)
 	return (1);
 }
 
-static int	ft_after_redir(t_token *tok, t_token_type prev)
+static int	ft_after_redir(t_token *tok)
 {
 	if (tok->type == TOKEN_PIPE)
 		return (ft_pars_err(1, "|"), 0);
@@ -38,14 +38,14 @@ static int	ft_in_checker(t_token *tok, t_token_type prev)
 {
 	if (prev == TOKEN_REDIR_IN || prev == TOKEN_REDIR_OUT
 		|| prev == TOKEN_HEREDOC || prev == TOKEN_APPEND)
-		return (ft_after_redir(tok, prev));
+		return (ft_after_redir(tok));
 	else if (prev == TOKEN_PIPE || prev == TOKEN_AND
 		|| prev == TOKEN_OR)
-		return (ft_after_pipe(tok, prev));
+		return (ft_after_pipe(tok));
 	else if (prev == TOKEN_LPAREN)
 		return (ft_first_tok_checker(tok));
 	else if (prev == TOKEN_RPAREN)
-		return (ft_after_rparen(tok, prev));
+		return (ft_after_rparen(tok));
 	return (1);
 }
 
