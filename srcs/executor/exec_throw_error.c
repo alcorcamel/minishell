@@ -12,7 +12,7 @@ int	ft_print_err_directory(char *dir)
 
 int	ft_throw_error_cmd(char *cmd)
 {
-	if (ft_is_directory(cmd) == TRUE)
+	if (cmd && ft_is_directory(cmd) == TRUE && ft_strchr(cmd, '/'))
 		return (ft_print_err_directory(cmd));
 	perror(cmd);
 	if (errno == EACCES || errno == ENOEXEC)
@@ -34,7 +34,15 @@ int	ft_throw_error(char *cmd)
 
 int	ft_throw_error_cmd_not_found(char *err_p)
 {
-	ft_putstr_fd(err_p, STDERR_FILENO);
-	ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	if (ft_strchr(err_p, '/'))
+	{
+		ft_putstr_fd(err_p, STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+	}
+	else
+	{
+		ft_putstr_fd(err_p, STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	}
 	return (127);
 }
