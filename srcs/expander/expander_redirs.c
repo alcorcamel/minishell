@@ -39,28 +39,65 @@ int	ft_heredoc_rebuild(t_ast *n)
 {
 	int		fd;
 	char	*line;
+	pid_t	pid;
+	int		status;
+	int		nb_lines;
 
 	if (!ft_heredoc_rebuild_helper(n))
 		return (0);
-	fd = open(n->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (fd < 0)
-		return (free(n->limiter), n->limiter = NULL,
-			free(n->filename), n->filename = NULL, 0);
-	while (1)
+	pid = fork();
+	if (pid == -1)
+		return (0);
+	if (pid == 0)
 	{
-		write(1, "heredoc> ", 9);
-		line = get_next_line(0);
-		if (!line)
-			break ;
-		if (ft_is_limiter(line, n->limiter))
+		ft_restore_signal_heredoc();
+		fd = open(n->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		if (fd < 0)
 		{
-			free(line);
-			break ;
+			free(n->limiter);
+			n->limiter = NULL;
+			free(n->filename);
+			n->filename = NULL;
+			exit(1);
 		}
-		write(fd, line, ft_strlen(line));
-		free(line);
+		nb_lines = 0;
+		while (1)
+		{
+			nb_lines++;
+			write(1, "> ", 1);
+			line = get_next_line(0);
+			if (!line)
+			{
+				ft_printf("\nminishell: warning: here-document at line %d delimited by end-of-file (wanted `EOF')\n", nb_lines);
+				break ;
+			}
+			if (ft_is_limiter(line, n->limiter))
+			{
+				free(line);
+				break ;
+			}
+			write(fd, line, ft_strlen(line));
+			free(line);
+		}
+		close(fd);
+		exit(0);
 	}
-	close(fd);
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+	{
+		if (WEXITSTATUS(status) == 0)
+			return (1);
+		else
+		{
+			unlink(n->filename);
+			return (0);
+		}
+	}
+	if (WIFSIGNALED(status))
+	{
+		unlink(n->filename);
+		return (0);
+	}
 	return (1);
 }
 

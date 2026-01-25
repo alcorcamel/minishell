@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 13:23:59 by demane            #+#    #+#             */
-/*   Updated: 2026/01/24 18:50:31 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/25 02:40:50 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 t_token		*ft_lexer(char *input);
 int			ft_parser(t_token *tokens);
 t_ast		*ft_build_and_or(t_token **cur);
-void		ft_explore_ast(t_ast **root, t_shell *vars);
+int			ft_explore_ast(t_ast **root, t_shell *vars);
+// void		ft_ignore_signal_heredoc(void);
+void		ft_ignore_signal(void);
 int			ft_exec_ast(t_ast *node, t_shell *shell);
 t_bool		ft_cpy_enpv(char **envp, t_shell *shell);
 void		ft_print_boot(void);
@@ -27,5 +29,6 @@ void		ft_boot_loading(void);
 void		ft_ignore_signal_exec(void);
 void		ft_ignore_signal_prompt(void);
 void		ft_verif_signal(t_shell *shell);
+void		ft_enable_echoctl(void);
 
 #endif

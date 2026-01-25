@@ -3,6 +3,7 @@
 
 # include "lexer.h"
 # include "env.h"
+# include "signals.h"
 
 int			ft_explore_ast(t_ast **root, t_shell *vars);
 int			ft_heredoc_expand(t_ast *n, t_shell *shell);

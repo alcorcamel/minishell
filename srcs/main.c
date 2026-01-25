@@ -67,28 +67,39 @@ int	main(int ac, char **av, char **envp)
 	shell.last_status = 0;
 	if (ft_cpy_enpv(envp, &shell) == FALSE)
 		exit(1);
+	// ft_enable_echoctl();
 	while (1)
 	{
 		ft_ignore_signal_prompt();
 		prompt = ft_generate_prompt(&shell);
 		line = readline(prompt);
 		ft_free((void **)&prompt);
+		ft_verif_signal(&shell);
+		ft_ignore_signal();
 		if (!line)
 			return (1);
-		ft_verif_signal(&shell);
 		if (*line == '\0')
 		{
 			ft_free((void **)&line);
 			continue ;
 		}
-		ft_ignore_signal_exec();
 		tokens = ft_lexer(line);
 		add_history (line);
-		ft_parser(tokens);
-		root = ft_build_and_or(&tokens);
-		ft_explore_ast(&root, &shell);
-		shell.last_status = ft_exec_ast(root, &shell);
-		ft_free((void **)&line);
+		if (ft_parser(tokens) == 1)
+		{
+			root = ft_build_and_or(&tokens);
+			if (ft_explore_ast(&root, &shell) == 1)
+			{
+				ft_ignore_signal_exec();
+				shell.last_status = ft_exec_ast(root, &shell);
+			}
+			else
+			{
+				// il faudrrat ggerrer le status selon l erruer du ft_explore_ast
+				shell.last_status = 1;
+			}
+			ft_free((void **)&line);
+		}
 		ft_verif_signal(&shell);
 	}
 	return (0);

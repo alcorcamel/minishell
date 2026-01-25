@@ -15,6 +15,8 @@
 # include <limits.h>
 # include <dirent.h>
 # include <sys/ioctl.h>
+# define _GNU_SOURCE
+# include <termios.h>
 
 extern volatile sig_atomic_t g_signal;
 

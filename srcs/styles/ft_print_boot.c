@@ -83,7 +83,7 @@ char	*ft_generate_prompt(t_shell *shell)
 	cwd = getcwd(NULL, 0);
 	path = ft_shorten_path(cwd, shell);
 	ft_free((void **)&cwd);
-	if (shell->last_status == 0)
+	if (shell->last_status == 0 && !g_signal)
 		status_color = C_GREEN;
 	else
 		status_color = C_RED;
