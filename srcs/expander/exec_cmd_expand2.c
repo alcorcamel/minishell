@@ -95,6 +95,11 @@ int	ft_expand_seg_vars(t_ast *n, t_seg *seg, t_shell *shell)
 	s = ft_strchr(seg->text, '$');
 	while (s)
 	{
+		if (*(s + 1) != '?' && ft_var_name_len(s + 1) == 0)
+		{
+			s = ft_strchr(s + 1, '$');
+			continue ;
+		}
 		s = ft_expand_one_varinseg(n, seg, shell, s);
 		if (!s && ft_strchr(seg->text, '$'))
 			return (0);

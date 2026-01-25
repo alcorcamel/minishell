@@ -68,7 +68,7 @@ int		ft_new_args_maker(t_new_args **head, t_ast *n)
 	t_new_args	*tmp;
 
 	if (!head || !(*head))
-		return (0);
+		return (ft_free_args(n->args), n->args = NULL, 1);
 	size = ft_arg_lstsize(*head);
 	ret = (char **)malloc((size + 1) * sizeof(char *));
 	if (!ret)
