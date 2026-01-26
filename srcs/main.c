@@ -67,40 +67,95 @@ int	main(int ac, char **av, char **envp)
 	shell.last_status = 0;
 	if (ft_cpy_enpv(envp, &shell) == FALSE)
 		exit(1);
-	// ft_enable_echoctl();
-	while (1)
+	if (isatty(fileno(stdin)) && ac == 1)
 	{
+		while (1)
+		{
+			ft_ignore_signal_prompt();
+			prompt = ft_generate_prompt(&shell);
+			line = readline(prompt);
+			ft_free((void **)&prompt);
+			ft_verif_signal(&shell);
+			ft_ignore_signal();
+			if (!line)
+				return (1);
+			if (*line == '\0')
+			{
+				ft_free((void **)&line);
+				continue ;
+			}
+			tokens = ft_lexer(line);
+			add_history (line);
+			if (ft_parser(tokens) == 1)
+			{
+				root = ft_build_and_or(&tokens);
+				if (ft_explore_ast(&root, &shell) == 1)
+				{
+					ft_ignore_signal_exec();
+					shell.last_status = ft_exec_ast(root, &shell);
+				}
+				else
+				{
+					// il faudrrat ggerrer le status selon l erruer du ft_explore_ast
+					shell.last_status = 1;
+				}
+				ft_free((void **)&line);
+			}
+			// else
+			// 	shell.last_status = 0;
+			ft_verif_signal(&shell);
+		}
+	}
+	else
+	{
+		char	*tmp;
+		int		fd;
+		
 		ft_ignore_signal_prompt();
-		prompt = ft_generate_prompt(&shell);
-		line = readline(prompt);
-		ft_free((void **)&prompt);
-		ft_verif_signal(&shell);
-		ft_ignore_signal();
-		if (!line)
-			return (1);
-		if (*line == '\0')
+		if (ac > 2)
+			return (ft_printf("minishield: nb  d'arguments trop gros"));
+		if (ac == 2)
+			fd = open(av[1], O_RDONLY);
+		else
+			fd = STDIN_FILENO;
+		tmp = get_next_line(fd);
+		while (tmp)
 		{
-			ft_free((void **)&line);
-			continue ;
-		}
-		tokens = ft_lexer(line);
-		add_history (line);
-		if (ft_parser(tokens) == 1)
-		{
-			root = ft_build_and_or(&tokens);
-			if (ft_explore_ast(&root, &shell) == 1)
+			line = ft_strtrim(tmp, "\n");
+			ft_free((void **)&tmp);
+			ft_verif_signal(&shell);
+			ft_ignore_signal();
+			if (!line)
+				return (1);
+			if (*line == '\0')
 			{
-				ft_ignore_signal_exec();
-				shell.last_status = ft_exec_ast(root, &shell);
+				ft_free((void **)&line);
+				continue ;
 			}
-			else
+			tokens = ft_lexer(line);
+			add_history (line);
+			if (ft_parser(tokens) == 1)
 			{
-				// il faudrrat ggerrer le status selon l erruer du ft_explore_ast
-				shell.last_status = 1;
+				root = ft_build_and_or(&tokens);
+				if (ft_explore_ast(&root, &shell) == 1)
+				{
+					ft_ignore_signal_exec();
+					shell.last_status = ft_exec_ast(root, &shell);
+				}
+				else
+				{
+					// il faudrrat ggerrer le status selon l erruer du ft_explore_ast
+					shell.last_status = 1;
+				}
+				ft_free((void **)&line);
 			}
-			ft_free((void **)&line);
+			// else
+			// 	shell.last_status = 0;
+			ft_verif_signal(&shell);
+			tmp = get_next_line(fd);
 		}
-		ft_verif_signal(&shell);
+		if (fd != STDIN_FILENO)
+			close(fd);
 	}
 	return (0);
 }

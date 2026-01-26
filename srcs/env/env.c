@@ -104,6 +104,18 @@ void	ft_create_path_emergency(t_shell *shell)
 	ft_add_vars(shell, var);
 	var = ft_create_new_vars("_=/usr/bin/env", TRUE);
 	ft_add_vars(shell, var);
+	var = ft_create_new_vars("SHLVL=0", TRUE);
+	ft_add_vars(shell, var);
+}
+
+void	ft_increment_shlvl(t_shell *shell)
+{
+	t_vars	*var;
+
+	var = ft_find_vars("SHLVL", shell);
+	if (!var)
+		return ((void)0);
+	
 }
 
 t_bool	ft_cpy_enpv(char **envp, t_shell *shell)
