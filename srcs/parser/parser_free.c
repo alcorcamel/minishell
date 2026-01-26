@@ -33,8 +33,6 @@ void	ft_free_token(t_token **tok)
 		tmp = NULL;
 		tmp = next;
 	}
-	// free(*tok);
-	// *tok = NULL;
 }
 
 void	ft_ast_cleaner(t_ast *n)
