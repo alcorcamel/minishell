@@ -61,6 +61,7 @@ int	main(int ac, char **av, char **envp)
 	t_token	*tokens;
 	t_token	*head;
 	t_ast	*root;
+	t_ast	*root_head;
 	t_shell	shell;
 	char	*prompt;
 	int		res;
@@ -94,6 +95,7 @@ int	main(int ac, char **av, char **envp)
 			if (ft_parser(tokens) == 1)
 			{
 				root = ft_build_and_or(&tokens);
+				root_head = root;
 				ft_free_tokens(&head);
 				if (root)
 				{
@@ -101,12 +103,12 @@ int	main(int ac, char **av, char **envp)
 					{
 						ft_ignore_signal_exec();
 						shell.last_status = ft_exec_ast(root, &shell);
-						ft_free_ast(&root);
+						ft_free_ast(&root_head);
 					}
 					else
 					{
 						// il faudrrat ggerrer le status selon l erruer du ft_explore_ast
-						ft_free_ast(&root);
+						ft_free_ast(&root_head);
 						shell.last_status = 1;
 					}
 				}
@@ -154,16 +156,17 @@ int	main(int ac, char **av, char **envp)
 			if (ft_parser(tokens) == 1)
 			{
 				root = ft_build_and_or(&tokens);
+				root_head = root;
 				ft_free_tokens(&head);
 				if (ft_explore_ast(&root, &shell) == 1)
 				{
 					ft_ignore_signal_exec();
 					shell.last_status = ft_exec_ast(root, &shell);
-					ft_free_ast(&root);
+					ft_free_ast(&root_head);
 				}
 				else
 				{
-					ft_free_ast(&root);
+					ft_free_ast(&root_head);
 					// il faudrrat ggerrer le status selon l erruer du ft_explore_ast
 					shell.last_status = 1;
 				}
