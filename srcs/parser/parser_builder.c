@@ -1,4 +1,5 @@
 #include "../../includes/parser.h"
+#include "../../includes/expander.h"
 
 int	ft_build_and_or2(t_token **cur, t_ast **left, t_token_type op, t_ast *tmp)
 {
@@ -8,13 +9,13 @@ int	ft_build_and_or2(t_token **cur, t_ast **left, t_token_type op, t_ast *tmp)
 	*cur = (*cur)->next;
 	right = ft_build_pipe(cur);
 	if (!right)
-		return (free_ast(left), 0);
+		return (ft_free_ast(left), 0);
 	if (op == TOKEN_OR)
 		tmp = ft_ast_new_bin(NODE_OR, *left, right);
 	else if (op == TOKEN_AND)
 		tmp = ft_ast_new_bin(NODE_AND, *left, right);
 	if (!tmp)
-		return (free_ast(left), free_ast(&right), 0);
+		return (ft_free_ast(left), ft_free_ast(&right), 0);
 	*left = tmp;
 	return (1);
 }
@@ -56,10 +57,10 @@ t_ast	*ft_build_pipe(t_token **cur)
 		*cur = (*cur)->next;
 		right = ft_build_subshell(cur);
 		if (!right)
-			return (free_ast(&left), NULL);
+			return (ft_free_ast(&left), NULL);
 		tmp = ft_ast_new_bin(NODE_PIPE, left, right);
 		if (!tmp)
-			return (free_ast(&left), free_ast(&right), NULL);
+			return (ft_free_ast(&left), ft_free_ast(&right), NULL);
 		left = tmp;
 	}
 	return (left);
@@ -80,7 +81,7 @@ int	ft_subsh2(t_token **cur, t_ast **root, t_token_type *op, t_ast **r_last)
 	else
 		redir = ft_ast_new_redir(*op, redir_arg, (*r_last)->left);
 	if (!redir)
-		return (free_segs(redir_arg), free_ast(root), 0);
+		return (free_segs(redir_arg), ft_free_ast(root), 0);
 	if (*r_last)
 		(*r_last)->left = redir;
 	else
@@ -104,7 +105,7 @@ t_ast	*ft_parse_subshell(t_token **cur)
 	*cur = (*cur)->next;
 	root = ft_ast_new_subshell(subshell);
 	if (!root)
-		return (free_ast(&subshell), NULL);
+		return (ft_free_ast(&subshell), NULL);
 	while (*cur && ft_is_redir(*cur))
 	{
 		if (!ft_subsh2(cur, &root, &op, &redir_last))

@@ -79,7 +79,7 @@ int		ft_new_args_maker(t_new_args **head, t_ast *n)
 	{
 		ret[i] = ft_strdup(tmp->value);
 		if (!ret[i])
-			return (ret[i] = NULL, ft_free((void **)ret), 0);
+			return (ret[i] = NULL, ft_free_args(ret), 0);
 		tmp = tmp->next;
 	}
 	ret[size] = NULL;

@@ -15,7 +15,7 @@ int	ft_parsimpl2(t_token **cur, t_ast **root, t_token_type *op, t_ast **r_last)
 	else
 		redir = ft_ast_new_redir(*op, redir_arg, (*r_last)->left);
 	if (!redir)
-		return (free_segs(redir_arg), free_ast(root), 0);
+		return (free_segs(redir_arg), ft_free_ast(root), 0);
 	if (*r_last)
 		(*r_last)->left = redir;
 	else
@@ -27,7 +27,7 @@ int	ft_parsimpl2(t_token **cur, t_ast **root, t_token_type *op, t_ast **r_last)
 static int	ft_parse_simple3(t_ast **cmd, t_ast **root, t_token **cur)
 {
 	if (!seg_append_words(&(*cmd)->segs, (*cur)->segs))
-		return (free_ast(root), 0);
+		return (ft_free_ast(root), 0);
 	(*cur)->segs = NULL;
 	*cur = (*cur)->next;
 	return (1);

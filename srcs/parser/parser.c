@@ -69,15 +69,15 @@ int	ft_parser(t_token *tokens)
 		return (0);
 	tmp = &tokens;
 	if (!ft_first_tok_checker(*tmp))
-		return (free(tokens), 0);
+		return (0);
 	while ((*tmp)->next)
 	{
 		prev = (*tmp)->type;
 		(*tmp) = (*tmp)->next;
 		if (!ft_in_checker(*tmp, prev))
-			return (free(tokens), 0);
+			return (0);
 	}
 	if (ft_last_tok_checker(*tmp) == 0)
-		return (free(tokens), 0);
+		return (0);
 	return (1);
 }

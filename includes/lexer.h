@@ -3,8 +3,8 @@
 # include "base.h"
 
 t_token		*ft_lexer(char *input);
-void		ft_free_segs(t_seg *seg);
-void		ft_free_tokens(t_token *tok);
+void		ft_free_segs(t_seg **seg);
+void		ft_free_tokens(t_token **tok);
 int			ft_add_operator(t_token **lst, char *s, int *i, int *brace);
 int			ft_read_word(t_token **lst, char *s, int *i);
 t_token		*ft_toknew(t_token_type type);

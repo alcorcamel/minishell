@@ -84,7 +84,7 @@ char	*ft_expand_one_varinseg(t_ast *n, t_seg *seg, t_shell *shell, char *s)
 		found = ft_strdup("");
 		n->is_expanded = 1;
 		if (!found)
-			return ((char *)seg);
+			return (free(name), (char *)seg);
 	}
 	found_len = ft_strlen(found);
 	if (!ft_replace_var(found, seg, j, len))

@@ -34,10 +34,10 @@ t_token	*ft_lexer(char *l)
 		return (NULL);
 	lst_begin = NULL;
 	if (!ft_lexer_helper(l, &i, &brace, &lst_begin))
-		return (ft_free_tokens(lst_begin), NULL);
+		return (ft_free_tokens(&lst_begin), NULL);
 	if (brace > 0)
-		return (ft_free_tokens(lst_begin), ft_lex_err(14, ")"), NULL);
+		return (ft_free_tokens(&lst_begin), ft_lex_err(14, ")"), NULL);
 	else if (brace < 0)
-		return (ft_free_tokens(lst_begin), ft_lex_err(14, "("), NULL);
+		return (ft_free_tokens(&lst_begin), ft_lex_err(14, "("), NULL);
 	return (lst_begin);
 }

@@ -2,6 +2,7 @@
 # define PARSER_H
 
 # include "base.h"
+# include "lexer.h"
 
 void		free_segs(t_seg *s);
 t_seg		*seg_last(t_seg *s);
@@ -20,9 +21,11 @@ t_ast		*ft_build_pipe(t_token **cur);
 t_ast		*ft_build_subshell(t_token **cur);
 t_ast		*ft_parse_subshell(t_token **cur);
 t_ast		*ft_parse_simple(t_token **cur);
-void		free_ast(t_ast **root);
+void		ft_free_ast(t_ast **root);
 void		ft_pars_err(int i, char *s);
 int			ft_after_pipe(t_token *tok);
 int			ft_after_rparen(t_token *tok);
+void		ft_free_token(t_token **tok);
+void		ft_free_new_args(t_new_args **tok);
 
 #endif

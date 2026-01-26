@@ -1,5 +1,6 @@
 
 #include "../includes/minishell.h"
+#include "../includes/parser.h"
 
 static char	*ft_type_printer(t_token_type t)
 {
@@ -58,6 +59,7 @@ int	main(int ac, char **av, char **envp)
 {
 	char	*line;
 	t_token	*tokens;
+	t_token	*head;
 	t_ast	*root;
 	t_shell	shell;
 	char	*prompt;
@@ -78,31 +80,43 @@ int	main(int ac, char **av, char **envp)
 			ft_verif_signal(&shell);
 			ft_ignore_signal();
 			if (!line)
-				return (1);
+				break ;
 			if (*line == '\0')
 			{
 				ft_free((void **)&line);
-				continue ;
+				// free shell
+				clear_history();
+				return (1);
 			}
 			tokens = ft_lexer(line);
+			head = tokens;
 			add_history (line);
 			if (ft_parser(tokens) == 1)
 			{
 				root = ft_build_and_or(&tokens);
-				if (ft_explore_ast(&root, &shell) == 1)
+				ft_free_tokens(&head);
+				if (root)
 				{
-					ft_ignore_signal_exec();
-					shell.last_status = ft_exec_ast(root, &shell);
-				}
-				else
-				{
-					// il faudrrat ggerrer le status selon l erruer du ft_explore_ast
-					shell.last_status = 1;
+					if (ft_explore_ast(&root, &shell) == 1)
+					{
+						ft_ignore_signal_exec();
+						shell.last_status = ft_exec_ast(root, &shell);
+						ft_free_ast(&root);
+					}
+					else
+					{
+						// il faudrrat ggerrer le status selon l erruer du ft_explore_ast
+						ft_free_ast(&root);
+						shell.last_status = 1;
+					}
 				}
 				ft_free((void **)&line);
 			}
-			// else
-			// 	shell.last_status = 0;
+			else
+			{
+				ft_free_tokens(&head);
+				shell.last_status = 2;
+			}
 			ft_verif_signal(&shell);
 		}
 	}
@@ -110,7 +124,7 @@ int	main(int ac, char **av, char **envp)
 	{
 		char	*tmp;
 		int		fd;
-		
+
 		ft_ignore_signal_prompt();
 		if (ac > 2)
 			return (ft_printf("minishield: nb  d'arguments trop gros"));
@@ -126,36 +140,45 @@ int	main(int ac, char **av, char **envp)
 			ft_verif_signal(&shell);
 			ft_ignore_signal();
 			if (!line)
-				return (1);
+				break ;
 			if (*line == '\0')
 			{
 				ft_free((void **)&line);
-				continue ;
+				// free shell
+				clear_history();
+				return (1);
 			}
 			tokens = ft_lexer(line);
+			head = tokens;
 			add_history (line);
 			if (ft_parser(tokens) == 1)
 			{
 				root = ft_build_and_or(&tokens);
+				ft_free_tokens(&head);
 				if (ft_explore_ast(&root, &shell) == 1)
 				{
 					ft_ignore_signal_exec();
 					shell.last_status = ft_exec_ast(root, &shell);
+					ft_free_ast(&root);
 				}
 				else
 				{
+					ft_free_ast(&root);
 					// il faudrrat ggerrer le status selon l erruer du ft_explore_ast
 					shell.last_status = 1;
 				}
 				ft_free((void **)&line);
 			}
-			// else
-			// 	shell.last_status = 0;
+			else
+			{
+				ft_free_tokens(&head);
+				shell.last_status = 2;
+			}
 			ft_verif_signal(&shell);
 			tmp = get_next_line(fd);
 		}
 		if (fd != STDIN_FILENO)
 			close(fd);
 	}
-	return (0);
+	return (clear_history(), 0);
 }
