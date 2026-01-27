@@ -33,6 +33,22 @@ void	ft_free_all_split_val(char ***split_val)
 	ft_free((void **)&free_val);
 }
 
+int	ft_access(char **path_params, t_ast p, char ***split_val, t_bool bool)
+{
+	int		acs_val;
+	char	*path;
+
+	path = *path_params;
+	if (!path)
+		return (0);
+	if (ft_strchr(path, '/') == NULL)
+		return (0);
+	acs_val = access(path, X_OK);
+	if (acs_val == 0)
+		return (1);
+	return (0);
+}
+
 int	ft_access_in_rep(char **path_params, t_ast p, char ***split_val,
 	t_shell *shell)
 {

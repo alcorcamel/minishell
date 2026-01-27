@@ -121,6 +121,8 @@ t_bool	ft_increment_shlvl(t_shell *shell)
 	shell_lvl = ft_atol(var->value);
 	if (shell_lvl < INT_MAX)
 		shell++;
+	else
+		shell_lvl = 0;
 	tmp = var->value;
 	var->value = ft_itoa(shell_lvl);
 	if (!var->value)
