@@ -62,7 +62,7 @@ static t_bool	ft_verif(char *s, int sign)
 	return (TRUE);
 }
 
-static t_bool	ft_verif_overflow(const char *s)
+static t_bool	ft_verif_overflow(char *s)
 {
 	int				sign;
 
