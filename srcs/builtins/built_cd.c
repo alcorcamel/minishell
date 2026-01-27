@@ -146,6 +146,9 @@ int	ft_cd(char **args, t_shell *shell)
 		return (ft_putstr_fd("minishield: cd: << OLDPWD >> not defined", \
 			STDERR_FILENO), 1);
 	last_path = getcwd(NULL, 0);
+	if (!last_path)
+		ft_putstr_fd("minishield: chdir: error retrieving current directory: getcwd:\
+cannot access parent directories: No such file or directory\n", STDERR_FILENO);
 	if (chdir(path) == -1)
 		return (ft_print_err_cd_no_directory(args[1]));
 	return (ft_assign_new_pwd(shell), ft_assign_new_oldpwd(shell, last_path),

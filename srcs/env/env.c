@@ -122,7 +122,7 @@ t_bool	ft_increment_shlvl(t_shell *shell)
 	if (shell_lvl < INT_MAX)
 		shell++;
 	tmp = var->value;
-	var->value = ft_itoa(shell);
+	var->value = ft_itoa(shell_lvl);
 	if (!var->value)
 		return (TRUE);
 	ft_free((void **)&tmp);
