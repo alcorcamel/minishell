@@ -1,12 +1,25 @@
 
 #include "../../includes/executor.h"
 
-static void	ft_exec_child(int fd[2], t_ast *node_child, t_shell *shell)
+static void	ft_exec_child(int fd[2], t_ast *node_child, t_shell *shell,
+	int child)
 {
 	int	status;
+	int	dup_fd;
+	int	index_fd;
 
+	if (child == 1)
+	{
+		index_fd = 1;
+		dup_fd = STDOUT_FILENO;
+	}
+	if (child == 2)
+	{
+		index_fd = 0;
+		dup_fd = STDIN_FILENO;
+	}
 	ft_restore_signal();
-	if (dup2(fd[0], STDIN_FILENO) < 0)
+	if (dup2(fd[index_fd], dup_fd) < 0)
 	{
 		ft_free_shell(&shell);
 		exit(ft_throw_error("dup2"));
@@ -49,12 +62,12 @@ int	ft_exec_pipe(t_ast *ast, t_shell *shell)
 	if (pid[0] == -1)
 		return (ft_throw_error("fork"));
 	if (pid[0] == 0)
-		ft_exec_child(fd, ast->left, shell);
+		ft_exec_child(fd, ast->left, shell, 1);
 	pid[1] = fork();
 	if (pid[1] == -1)
 		return (ft_throw_error("fork"));
 	if (pid[1] == 0)
-		ft_exec_child(fd, ast->right, shell);
+		ft_exec_child(fd, ast->right, shell, 2);
 	close(fd[0]);
 	close(fd[1]);
 	last_status = ft_recup_status(pid);
