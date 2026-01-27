@@ -64,7 +64,7 @@ int	ft_expand_seg_vars(t_ast *n, t_seg *seg, t_shell *shell)
 			s = ft_strchr(s + 1, '$');
 			continue ;
 		}
-		s = ft_expand_one_varinseg(n, seg, shell, s);
+		s = ft_expand_oneinseg(n, seg, shell, s);
 		if (s == (char *)seg)
 			return (0);
 		if (!s)

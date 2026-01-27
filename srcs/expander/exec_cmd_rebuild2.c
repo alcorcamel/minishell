@@ -62,3 +62,22 @@ int	ft_set_empty_cmd(t_ast *n, char *ret)
 	n->args = NULL;
 	return (1);
 }
+
+int	ft_cmd_rebuild2(t_ast *n, char **ret)
+{
+	char	**nargs;
+
+	nargs = ft_split(*ret, ' ');
+	free(*ret);
+	if (!nargs)
+		return (0);
+	if (!nargs[0])
+		return (ft_free_args(nargs), ft_free_args(n->args), n->args = NULL, 1);
+	if (!ft_restore_args(nargs))
+		return (ft_free_args(nargs), 0);
+	ft_free_args(n->args);
+	n->args = nargs;
+	if (!ft_args_handler(n))
+		return (ft_free_args(n->args), n->args = NULL, 0);
+	return (1);
+}

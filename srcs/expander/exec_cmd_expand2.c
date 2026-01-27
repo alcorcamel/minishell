@@ -73,7 +73,7 @@ int	ft_varinseg2(char **name, t_shell *sh, char **f, t_ast *n)
 	return (1);
 }
 
-char	*ft_expand_one_varinseg(t_ast *n, t_seg *seg, t_shell *shell, char *s)
+char	*ft_expand_oneinseg(t_ast *n, t_seg *seg, t_shell *shell, char *s)
 {
 	char	*name;
 	char	*found;
