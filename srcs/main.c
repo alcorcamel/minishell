@@ -133,8 +133,6 @@ int main(int ac, char **av, char **envp)
 				break ;
 		}
 	}
-
-	/* ================= NON INTERACTIVE MODE ================= */
 	else
 	{
 		if (ac > 2)
@@ -208,8 +206,6 @@ int main(int ac, char **av, char **envp)
 		if (fd != STDIN_FILENO)
 			close(fd);
 	}
-
-	/* ================= CLEAN EXIT ================= */
 	clear_history();
 	p = &shell;
 	ft_free_shell(&p);
