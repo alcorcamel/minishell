@@ -107,13 +107,19 @@ void	ft_assign_new_oldpwd(t_shell *shell, char *last_path)
 	if (var)
 	{
 		tmp = var->value;
-		var->value = ft_strdup(last_path);
-		ft_free((void **)&tmp);
+		if (last_path)
+		{
+			var->value = ft_strdup(last_path);
+			ft_free((void **)&tmp);
+		}
 	}
 	else
 	{
 		var = ft_create_new_vars("OLDPWD", TRUE);
-		var->value = ft_strdup(last_path);
+		if (last_path)
+			var->value = ft_strdup(last_path);
+		else
+			var->value = NULL;
 		ft_add_vars(shell, var);
 	}
 }

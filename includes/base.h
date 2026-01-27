@@ -43,18 +43,11 @@ typedef struct s_new_args
 	t_bool				globbed;
 }	t_new_args;
 
-typedef struct s_exit
-{
-	int		status;
-	t_bool	is_exited;
-}	t_exit;
-
-typedef struct s_shell
-{
-	t_vars	*vars;
-	t_exit	ctrl_exit;
-	int		last_status;
-}	t_shell;
+// typedef struct s_exit
+// {
+// 	int		status;
+// 	t_bool	is_exited;
+// }	t_exit;
 
 typedef enum e_segtype
 {
@@ -119,6 +112,14 @@ typedef struct s_ast
 	t_new_args		*globber;
 	t_bool			is_expanded;
 }	t_ast;
+
+typedef struct s_shell
+{
+	t_vars	*vars;
+	// t_exit	ctrl_exit;
+	int		last_status;
+	t_ast	*root_ast;
+}	t_shell;
 
 
 #endif

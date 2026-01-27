@@ -7,7 +7,8 @@ int	ft_pwd(char **arg)
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 	{
-		perror("getcwd");
+		perror("minishield: pwd: error retrieving current directory: getcwd: cannot access\
+parent directories");
 		return (1);
 	}
 	ft_printf("%s\n", cwd);

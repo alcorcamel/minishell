@@ -104,18 +104,29 @@ void	ft_create_path_emergency(t_shell *shell)
 	ft_add_vars(shell, var);
 	var = ft_create_new_vars("_=/usr/bin/env", TRUE);
 	ft_add_vars(shell, var);
-	var = ft_create_new_vars("SHLVL=0", TRUE);
+	var = ft_create_new_vars("SHLVL=1", TRUE);
 	ft_add_vars(shell, var);
 }
 
-void	ft_increment_shlvl(t_shell *shell)
+t_bool	ft_increment_shlvl(t_shell *shell)
 {
 	t_vars	*var;
+	int		shell_lvl;
+	char	*tmp;
 
+	tmp = NULL;
 	var = ft_find_vars("SHLVL", shell);
 	if (!var)
-		return ((void)0);
-	
+		return (FALSE);
+	shell_lvl = ft_atol(var->value);
+	if (shell_lvl < INT_MAX)
+		shell++;
+	tmp = var->value;
+	var->value = ft_itoa(shell);
+	if (!var->value)
+		return (TRUE);
+	ft_free((void **)&tmp);
+	return (FALSE);
 }
 
 t_bool	ft_cpy_enpv(char **envp, t_shell *shell)
@@ -135,6 +146,8 @@ t_bool	ft_cpy_enpv(char **envp, t_shell *shell)
 		ft_add_vars(shell, new_vars);
 		i++;
 	}
+	if (ft_increment_shlvl(shell))
+		return (FALSE);
 	if (ft_find_vars("PATH", shell) == NULL)
 		ft_create_path_emergency(shell);
 	return (TRUE);
