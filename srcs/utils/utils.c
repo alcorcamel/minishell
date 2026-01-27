@@ -10,3 +10,22 @@ t_bool	ft_is_directory(char *path)
 		return (FALSE);
 	return (TRUE);
 }
+
+void	ft_perror(char *err_p)
+{
+	char	*join;
+
+	join = ft_strjoin("minishield: ", err_p);
+	if (!join)
+		return ((void)0);
+	perror(join);
+	ft_free((void **)&join);
+}
+
+void	ft_free_shell(t_shell **shell)
+{
+	if ((*shell)->vars)
+		ft_free_all_env(&((*shell)->vars));
+	if ((*shell)->root_ast)
+		ft_free_ast(&((*shell)->root_ast));
+}

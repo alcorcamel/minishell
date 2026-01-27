@@ -109,14 +109,12 @@ typedef struct s_ast
 	char			*filename;
 	char			*limiter;
 	t_bool			limiter_quoted;
-	t_new_args		*globber;
 	t_bool			is_expanded;
 }	t_ast;
 
 typedef struct s_shell
 {
 	t_vars	*vars;
-	// t_exit	ctrl_exit;
 	int		last_status;
 	t_ast	*root_ast;
 }	t_shell;

@@ -1,6 +1,29 @@
 #include "../../includes/executor.h"
 
-int		ft_exec_here_doc(t_ast *node, t_shell *shell)
+static void	ft_exec_child(t_shell *shell, t_ast *node)
+{
+	int	fd;
+	int	status;
+
+	ft_restore_signal();
+	if (ft_heredoc_expand(node, shell) == 0)
+	{
+		ft_free_shell(&shell);
+		exit(1);
+	}
+	fd = open(node->filename, O_RDONLY);
+	if (fd == -1)
+		return (ft_free_shell(&shell), exit(ft_throw_error("open")));
+	dup2(fd, STDIN_FILENO);
+	if (unlink(node->filename) == -1)
+		return (ft_free_shell(&shell), exit(ft_throw_error("unlink")));
+	close(fd);
+	status = ft_exec_ast(node->left, shell);
+	ft_free_shell(&shell);
+	exit(status);
+}
+
+int	ft_exec_here_doc(t_ast *node, t_shell *shell)
 {
 	pid_t	pid;
 	int		fd;
@@ -10,20 +33,7 @@ int		ft_exec_here_doc(t_ast *node, t_shell *shell)
 	if (pid == -1)
 		return (ft_throw_error("fork"));
 	if (pid == 0)
-	{
-		ft_restore_signal();
-		if (ft_heredoc_expand(node, shell) == 0)
-			exit(1);
-		fd = open(node->filename, O_RDONLY);
-		if (fd == -1)
-			return (ft_throw_error(node->filename));
-		dup2(fd, STDIN_FILENO);
-		if (unlink(node->filename) == -1)
-			perror("unlink");
-		close(fd);
-		status = ft_exec_ast(node->left, shell);
-		exit(status);
-	}
+		ft_exec_child(shell, node);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));

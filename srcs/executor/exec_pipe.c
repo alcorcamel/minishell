@@ -1,62 +1,63 @@
 
 #include "../../includes/executor.h"
 
-int		ft_exec_pipe(t_ast *ast, t_shell *shell)
+static void	ft_exec_child(int fd[2], t_ast *node_child, t_shell *shell)
 {
-	pid_t	pid[2];
-	int		fd[2];
-	pid_t	pid_child;
-	int		status_cmd;
-	pid_t	pid_waited;
-	int		status[2];
-	int		last_status;
-	pid_t	pid_check;
-	int		i;
-	// a voir pendant la gestion des erreurs je sais pas encore comment gerer les erreurs pour le moment
-	if (pipe(fd) == -1)
+	int	status;
+
+	ft_restore_signal();
+	if (dup2(fd[0], STDIN_FILENO) < 0)
 	{
-		perror(ast->args[0]);
-		return (-1);
-	}
-	pid[0] = fork();
-	if (pid[0] == -1)
-	{
-		perror(ast->args[0]);
-		return (-1);
-	}
-	if (pid[0] == 0)
-	{
-		ft_restore_signal();
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[0]);
-		close(fd[1]);
-		status_cmd = ft_exec_ast(ast->left, shell);
-		exit(status_cmd);
-	}
-	pid[1] = fork();
-	if (pid[1] == -1)
-	{
-		perror(ast->args[0]);
-		return (-1);
-	}
-	if (pid[1] == 0)
-	{
-		ft_restore_signal();
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-		close(fd[1]);
-		status_cmd = ft_exec_ast(ast->right, shell);
-		exit(status_cmd);
+		ft_free_shell(&shell);
+		exit(ft_throw_error("dup2"));
 	}
 	close(fd[0]);
 	close(fd[1]);
+	status = ft_exec_ast(node_child, shell);
+	ft_free_shell(&shell);
+	exit(status);
+}
+
+static int	ft_recup_status(int pid[2])
+{
+	int		i;
+	pid_t	pid_check;
+	int		status[2];
+	int		last_status;
+
 	i = -1;
+	last_status = 0;
 	while (++i < 2)
 	{
 		pid_check = wait(&status[i]);
 		if (pid_check == pid[1])
 			last_status = status[i];
 	}
+	return (last_status);
+}
+
+int	ft_exec_pipe(t_ast *ast, t_shell *shell)
+{
+	pid_t	pid[2];
+	int		fd[2];
+	int		status_cmd;
+	int		last_status;
+
+	if (pipe(fd) == -1)
+		return (ft_throw_error("pipe"));
+	pid[0] = fork();
+	if (pid[0] == -1)
+		return (ft_throw_error("fork"));
+	if (pid[0] == 0)
+		ft_exec_child(fd, ast->left, shell);
+	pid[1] = fork();
+	if (pid[1] == -1)
+		return (ft_throw_error("fork"));
+	if (pid[1] == 0)
+		ft_exec_child(fd, ast->right, shell);
+	close(fd[0]);
+	close(fd[1]);
+	last_status = ft_recup_status(pid);
 	if (WIFEXITED(last_status))
 		return (WEXITSTATUS(last_status));
 	else if (WIFSIGNALED(last_status))

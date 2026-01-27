@@ -4,37 +4,30 @@
 void	ft_free_segs(t_seg **seg)
 {
 	t_seg	*next;
-	t_seg	*tmp;
 
 	if (!seg || !*seg)
 		return ;
-	tmp = *seg;
-	while (tmp)
+	while (*seg)
 	{
-		next = tmp->next;
-		free(tmp->text);
-		tmp->text = NULL;
-		free(tmp);
-		tmp = NULL;
-		tmp = next;
+		next = (*seg)->next;
+		ft_free((void **)&((*seg)->text));
+		ft_free((void **)&(*seg));
+		*seg = next;
 	}
 }
 
 void	ft_free_tokens(t_token **tok)
 {
 	t_token	*next;
-	t_token	*tmp;
 
 	if (!tok || !*tok)
 		return ;
-	tmp = *tok;
-	while (tmp)
+	while (*tok)
 	{
-		next = tmp->next;
-		free(tmp->value);
-		ft_free_segs(&tmp->segs);
-		free(tmp);
-		tmp = NULL;
-		tmp = next;
+		next = (*tok)->next;
+		ft_free((void **)&((*tok)->value));
+		ft_free_segs(&((*tok)->segs));
+		ft_free((void **)&(*tok));
+		*tok = next;
 	}
 }

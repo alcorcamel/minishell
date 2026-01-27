@@ -19,6 +19,7 @@ int	ft_exec_append(t_ast *node, t_shell *shell)
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 		status = ft_exec_ast(node->left, shell);
+		ft_free_shell(&shell);
 		exit(status);
 	}
 	waitpid(pid, &status, 0);

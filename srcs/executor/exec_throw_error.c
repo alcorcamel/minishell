@@ -3,7 +3,7 @@
 
 int	ft_print_err_directory(char *dir)
 {
-	ft_putstr_fd("minishied: ", STDERR_FILENO);
+	ft_putstr_fd("minishield: ", STDERR_FILENO);
 	if (dir)
 		ft_putstr_fd(dir, STDERR_FILENO);
 	ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
@@ -14,7 +14,7 @@ int	ft_throw_error_cmd(char *cmd)
 {
 	if (cmd && ft_is_directory(cmd) == TRUE && ft_strchr(cmd, '/'))
 		return (ft_print_err_directory(cmd));
-	perror(cmd);
+	ft_perror(cmd);
 	if (errno == EACCES || errno == ENOEXEC)
 		return (126);
 	if (errno == ENOENT)
@@ -24,7 +24,7 @@ int	ft_throw_error_cmd(char *cmd)
 
 int	ft_throw_error(char *cmd)
 {
-	perror(cmd);
+	ft_perror(cmd);
 	if (errno == EACCES || errno == ENOEXEC)
 		return (126);
 	if (errno == ENOENT)
@@ -36,11 +36,13 @@ int	ft_throw_error_cmd_not_found(char *err_p)
 {
 	if (ft_strchr(err_p, '/'))
 	{
+		ft_putstr_fd("minishield: ", STDERR_FILENO);
 		ft_putstr_fd(err_p, STDERR_FILENO);
 		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 	}
 	else
 	{
+		ft_putstr_fd("minishield: ", STDERR_FILENO);
 		ft_putstr_fd(err_p, STDERR_FILENO);
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	}

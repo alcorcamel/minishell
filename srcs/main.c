@@ -66,6 +66,8 @@ int	main(int ac, char **av, char **envp)
 
 	shell.vars = NULL;
 	shell.last_status = 0;
+	ft_print_boot();
+	ft_boot_loading();
 	if (ft_cpy_enpv(envp, &shell) == FALSE)
 		exit(1);
 	if (isatty(fileno(stdin)) && ac == 1)
@@ -83,9 +85,8 @@ int	main(int ac, char **av, char **envp)
 			if (*line == '\0')
 			{
 				ft_free((void **)&line);
-				// free shell
-				clear_history();
-				return (1);
+				shell.last_status = 1;
+				continue ;
 			}
 			tokens = ft_lexer(line);
 			head = tokens;
@@ -104,7 +105,6 @@ int	main(int ac, char **av, char **envp)
 					}
 					else
 					{
-						// il faudrrat ggerrer le status selon l erruer du ft_explore_ast
 						ft_free_ast(&(shell.root_ast));
 						shell.last_status = 1;
 					}
@@ -143,9 +143,8 @@ int	main(int ac, char **av, char **envp)
 			if (*line == '\0')
 			{
 				ft_free((void **)&line);
-				// free shell
-				clear_history();
-				return (1);
+				shell.last_status = 1;
+				continue ;
 			}
 			tokens = ft_lexer(line);
 			head = tokens;

@@ -42,7 +42,7 @@ FILES_EXECUTOR = exec_and.c exec_append.c exec_ast.c exec_cmd.c \
 		 exec_subshell.c exec_get_path.c exec_throw_error.c exec_built.c \
 		 exec_here_doc.c
 
-FILES_ENV = env.c
+FILES_ENV = env.c env_free.c
 
 FILES_UTILS = utils.c
 

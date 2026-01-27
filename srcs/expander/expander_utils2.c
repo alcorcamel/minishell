@@ -8,8 +8,8 @@ void	ft_free_args(char **args)
 		return ;
 	i = -1;
 	while (args[++i])
-		free(args[i]);
-	free(args);
+		ft_free((void **)&args[i]);
+	ft_free((void **)&args);
 }
 
 int	ft_var_translator(t_ast *n, t_seg *segs, t_shell *shell)

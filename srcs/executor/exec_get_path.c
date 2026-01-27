@@ -33,23 +33,8 @@ void	ft_free_all_split_val(char ***split_val)
 	ft_free((void **)&free_val);
 }
 
-int	ft_access(char **path_params, t_ast p, char ***split_val, t_bool bool)
-{
-	int		acs_val;
-	char	*path;
-
-	path = *path_params;
-	if (!path)
-		return (0);
-	if (ft_strchr(path, '/') == NULL)
-		return (0);
-	acs_val = access(path, X_OK);
-	if (acs_val == 0)
-		return (1);
-	return (0);
-}
-
-int	ft_access_in_rep(char **path_params, t_ast p, char ***split_val)
+int	ft_access_in_rep(char **path_params, t_ast p, char ***split_val,
+	t_shell *shell)
 {
 	int		acs_val;
 	char	*path;
@@ -66,15 +51,16 @@ int	ft_access_in_rep(char **path_params, t_ast p, char ***split_val)
 		return (1);
 	if (errno == EACCES)
 	{
-		perror(path);
+		ft_perror(path);
 		ft_free_all_split_val(split_val);
-		// ft_free_all_node
+		ft_free_shell(&shell);
 		exit(126);
 	}
 	return (0);
 }
 
-char	*ft_try_paths(char ***split_val, char *cmd_name, t_ast p)
+char	*ft_try_paths(char ***split_val, char *cmd_name,
+	t_ast p, t_shell *shell)
 {
 	char	*path;
 	int		i;
@@ -87,7 +73,7 @@ char	*ft_try_paths(char ***split_val, char *cmd_name, t_ast p)
 		if (!path)
 		{
 			ft_free_all_split_val(split_val);
-			// ft_free_all_node
+			ft_free_shell(&shell);
 			exit(1);
 		}
 		if (ft_access(&path, p, split_val, TRUE))
@@ -110,7 +96,8 @@ char	*ft_get_path(t_ast *node, t_shell *shell)
 		return (NULL);
 	if (ft_strlen(cmd) == 0 || ft_str_is_space(cmd))
 		return (ft_strdup(cmd));
-	if (ft_access_in_rep(&(cmd), *node, NULL) || (ft_is_directory(cmd) == TRUE && ft_strchr(cmd, '/')))
+	if (ft_access_in_rep(&(cmd), *node, NULL, shell)
+		|| (ft_is_directory(cmd) == TRUE && ft_strchr(cmd, '/')))
 		return (ft_strdup(cmd));
 	var = ft_find_vars("PATH", shell);
 	if (!var || var->value == NULL || !*var->value)
@@ -118,14 +105,6 @@ char	*ft_get_path(t_ast *node, t_shell *shell)
 	split_val = ft_split(var->value, ':');
 	if (!split_val)
 		return (NULL);
-	path = ft_try_paths(&split_val, cmd, *node);
-	// if (errno == EACCES)
-	// {
-	// 	perror(path);
-	// 	ft_free((void **)&path);
-	// 	ft_free_all_split_val(&split_val);
-	// 	// ft_free_all_node
-	// 	exit(126);
-	// }
+	path = ft_try_paths(&split_val, cmd, *node, shell);
 	return (path);
 }

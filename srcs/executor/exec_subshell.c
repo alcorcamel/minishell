@@ -1,6 +1,5 @@
 
 #include "../../includes/executor.h"
-// pas gerer le cas pid == -1
 
 int	ft_exec_subshell(t_ast *node, t_shell *shell)
 {
@@ -9,11 +8,12 @@ int	ft_exec_subshell(t_ast *node, t_shell *shell)
 
 	pid = fork();
 	if (pid == -1)
-		return (-1);
+		return (ft_throw_error("fork"));
 	if (pid == 0)
 	{
 		ft_restore_signal();
 		status = ft_exec_ast(node->left, shell);
+		ft_free_shell(&shell);
 		exit(status);
 	}
 	waitpid(pid, &status, 0);

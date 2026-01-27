@@ -10,12 +10,11 @@ void	ft_free_new_args(t_new_args **tok)
 	while (tmp)
 	{
 		next = tmp->next;
-		free(tmp->value);
-		tmp->value = NULL;
-		free(tmp);
-		tmp = NULL;
+		ft_free((void **)&tmp->value);
+		ft_free((void **)&tmp);
 		tmp = next;
 	}
+	*tok = NULL;
 }
 
 void	ft_free_token(t_token **tok)
@@ -27,22 +26,18 @@ void	ft_free_token(t_token **tok)
 	while (tmp)
 	{
 		next = tmp->next;
-		free(tmp->value);
+		ft_free((void **)&tmp->value);
 		ft_free_segs(&tmp->segs);
-		free(tmp);
-		tmp = NULL;
+		ft_free((void **)&tmp);
 		tmp = next;
 	}
+	*tok = NULL;
 }
 
 void	ft_ast_cleaner(t_ast *n)
 {
-	if (n->type == NODE_HEREDOC && n->filename)
-		unlink(n->filename);
-	free(n->filename);
-	n->filename = NULL;
-	free(n->limiter);
-	n->limiter = NULL;
+	ft_free((void **)&n->filename);
+	ft_free((void **)&n->limiter);
 	ft_free_segs(&n->segs);
 	ft_free_args(n->args);
 }
@@ -59,6 +54,5 @@ void	ft_free_ast(t_ast **root)
 	if (n->right)
 		ft_free_ast(&n->right);
 	ft_ast_cleaner(n);
-	free(*root);
-	*root = NULL;
+	ft_free((void **)&(*root));
 }

@@ -269,6 +269,5 @@ char	**ft_make_envp(t_vars *vars)
 			return (ft_free_all_envp(&envp), NULL);
 		iterator = iterator->next;
 	}
-	envp[i] = NULL;
-	return (envp);
+	return (envp[i] = NULL, envp);
 }

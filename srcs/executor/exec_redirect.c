@@ -1,9 +1,7 @@
 
 #include "../../includes/executor.h"
 
-//manque a gerer les erreurs de open et de dup2 au cas ou ca foire
-
-int		ft_exec_redirect_in(t_ast *node, t_shell *shell)
+int	ft_exec_redirect_in(t_ast *node, t_shell *shell)
 {
 	pid_t	pid;
 	int		fd;
@@ -21,6 +19,7 @@ int		ft_exec_redirect_in(t_ast *node, t_shell *shell)
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 		status = ft_exec_ast(node->left, shell);
+		ft_free_shell(&shell);
 		exit(status);
 	}
 	waitpid(pid, &status, 0);
@@ -31,7 +30,7 @@ int		ft_exec_redirect_in(t_ast *node, t_shell *shell)
 	return (0);
 }
 
-int		ft_exec_redirect_out(t_ast *node, t_shell *shell)
+int	ft_exec_redirect_out(t_ast *node, t_shell *shell)
 {
 	pid_t	pid;
 	int		fd;
@@ -49,6 +48,7 @@ int		ft_exec_redirect_out(t_ast *node, t_shell *shell)
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 		status = ft_exec_ast(node->left, shell);
+		ft_free_shell(&shell);
 		exit(status);
 	}
 	waitpid(pid, &status, 0);
