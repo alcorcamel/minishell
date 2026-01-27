@@ -13,3 +13,17 @@ void	ft_free_all_env(t_vars **head)
 		*head = next;
 	}
 }
+
+void	ft_free_all_envp(char ***envp)
+{
+	int	i;
+
+	if (!envp || *envp)
+		return ((void)0);
+	i = -1;
+	while (*envp[++i])
+	{
+		ft_free((void **)&(*envp[i]));
+	}
+	ft_free((void **)&(*envp));
+}

@@ -2,10 +2,10 @@
 
 void	ft_print_err_id_invalide(char *err)
 {
-	ft_putstr_fd("export: ", STDERR_FILENO);
-	ft_putstr_fd("<< ", STDERR_FILENO);
+	ft_putstr_fd("minishield: export: ", STDERR_FILENO);
+	ft_putstr_fd("`", STDERR_FILENO);
 	ft_putstr_fd(err, STDERR_FILENO);
-	ft_putstr_fd(" >>", STDERR_FILENO);
+	ft_putstr_fd("'", STDERR_FILENO);
 	ft_putstr_fd(" : ", STDERR_FILENO);
 	ft_putstr_fd("not a valid identifier\n", STDERR_FILENO);
 }

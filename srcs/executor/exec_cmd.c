@@ -7,6 +7,13 @@ static void	ft_exit_err(t_shell *shell)
 	exit(1);
 }
 
+static void	ft_free_all_after_cmd_err(char **path, char ***envp, t_shell *shell)
+{
+	ft_free_all_envp(&(*envp));
+	ft_free((void **)&(*path));
+	ft_free_shell(&shell);
+}
+
 static void	ft_exec_child(t_ast *node, t_shell *shell)
 {
 	char	*path;
@@ -31,8 +38,7 @@ static void	ft_exec_child(t_ast *node, t_shell *shell)
 		ft_exit_err(shell);
 	execve(path, node->args, envp);
 	status = ft_throw_error_cmd(path);
-	ft_free((void **)&path);
-	ft_free_shell(&shell);
+	ft_free_all_after_cmd_err(&path, &envp, shell);
 	exit(status);
 }
 
