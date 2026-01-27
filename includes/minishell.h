@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 13:23:59 by demane            #+#    #+#             */
-/*   Updated: 2026/01/25 02:40:50 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/27 18:07:02 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,8 @@ void		ft_ignore_signal_exec(void);
 void		ft_ignore_signal_prompt(void);
 void		ft_verif_signal(t_shell *shell);
 void		ft_enable_echoctl(void);
+void		ft_free_ast(t_ast **root);
+void		ft_free_shell(t_shell *shell);
+void		ft_free_tokens(t_token **tok);
 
 #endif

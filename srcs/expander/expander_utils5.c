@@ -62,7 +62,7 @@ int	ft_star_anywhere(t_new_args **head, char *arg)
 
 	rep = opendir(".");
 	if (!rep)
-		return (perror("minishell: opendir"), 0);
+		return (ft_perror("opendir"), 0);
 	found = 0;
 	if (!ft_star_anywhere2(&rep, arg, head, &found))
 		return (0);

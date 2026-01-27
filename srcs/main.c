@@ -1,6 +1,5 @@
 
 #include "../includes/minishell.h"
-#include "../includes/parser.h"
 
 static char	*ft_type_printer(t_token_type t)
 {
@@ -62,12 +61,11 @@ int	main(int ac, char **av, char **envp)
 	t_token	*head;
 	t_shell	shell;
 	char	*prompt;
-	int		res;
 
 	shell.vars = NULL;
 	shell.last_status = 0;
-	ft_print_boot();
-	ft_boot_loading();
+	// ft_print_boot();
+	// ft_boot_loading();
 	if (ft_cpy_enpv(envp, &shell) == FALSE)
 		exit(1);
 	if (isatty(fileno(stdin)) && ac == 1)
@@ -85,7 +83,7 @@ int	main(int ac, char **av, char **envp)
 			if (*line == '\0')
 			{
 				ft_free((void **)&line);
-				shell.last_status = 1;
+				shell.last_status = 0;
 				continue ;
 			}
 			tokens = ft_lexer(line);
@@ -143,7 +141,8 @@ int	main(int ac, char **av, char **envp)
 			if (*line == '\0')
 			{
 				ft_free((void **)&line);
-				shell.last_status = 1;
+				shell.last_status = 0;
+				tmp = get_next_line(fd);
 				continue ;
 			}
 			tokens = ft_lexer(line);

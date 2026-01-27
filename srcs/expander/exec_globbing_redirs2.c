@@ -56,7 +56,7 @@ int	ft_inout_globber(t_ast *n)
 	readfile = NULL;
 	rep = opendir(".");
 	if (!rep)
-		return (perror("minishell: opendir"), 0);
+		return (ft_perror("opendir"), 0);
 	readfile = NULL;
 	ret = ft_inout_globber2(n, &rep, &readfile, &found);
 	closedir(rep);
