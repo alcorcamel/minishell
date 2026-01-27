@@ -54,6 +54,25 @@ static char	*ft_exp_onevar_helper(t_seg *seg, t_shell *shell, int j)
 	return (ft_strchr(seg->text + j + 1, '$'));
 }
 
+int	ft_varinseg2(char **name, t_shell *sh, char **f, t_ast *n)
+{
+	if (ft_find_vars(*name, sh))
+	{
+		*f = ft_strdup(ft_find_vars(*name, sh)->value);
+		if (!(*f))
+			return (0);
+	}
+	free(*name);
+	if (!(*f))
+	{
+		*f = ft_strdup("");
+		n->is_expanded = 1;
+		if (!(*f))
+			return (free(*name), 0);
+	}
+	return (1);
+}
+
 char	*ft_expand_one_varinseg(t_ast *n, t_seg *seg, t_shell *shell, char *s)
 {
 	char	*name;
@@ -72,46 +91,11 @@ char	*ft_expand_one_varinseg(t_ast *n, t_seg *seg, t_shell *shell, char *s)
 	name = ft_strndup(s + 1, len);
 	if (!name)
 		return ((char *)seg);
-	if (ft_find_vars(name, shell))
-	{
-		found = ft_strdup(ft_find_vars(name, shell)->value);
-		if (!found)
-			return ((char *)seg);
-	}
-	free(name);
-	if (!found)
-	{
-		found = ft_strdup("");
-		n->is_expanded = 1;
-		if (!found)
-			return (free(name), (char *)seg);
-	}
+	if (!ft_varinseg2(&name, shell, &found, n))
+		return ((char *)seg);
 	found_len = ft_strlen(found);
 	if (!ft_replace_var(found, seg, j, len))
 		return (free(found), (char *)seg);
 	free(found);
 	return (ft_strchr(seg->text + j + found_len, '$'));
-}
-
-int	ft_expand_seg_vars(t_ast *n, t_seg *seg, t_shell *shell)
-{
-	char	*s;
-
-	if ((seg->type != SEG_RAW && seg->type != SEG_DQ) || !seg->text)
-		return (1);
-	s = ft_strchr(seg->text, '$');
-	while (s)
-	{
-		if (*(s + 1) != '?' && ft_var_name_len(s + 1) == 0)
-		{
-			s = ft_strchr(s + 1, '$');
-			continue ;
-		}
-		s = ft_expand_one_varinseg(n, seg, shell, s);
-		if (s == (char *)seg)
-			return (0);
-		if (!s)
-			break ;
-	}
-	return (1);
 }

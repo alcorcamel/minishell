@@ -23,7 +23,7 @@ static int	ft_heredoc_rebuild_helper(t_ast *n)
 		return (0);
 	n->limiter = ft_join_segs_until_sep(segs);
 	if (!n->limiter)
-		return (0);// erreur ouverture?
+		return (0);
 	n->filename = ft_valid_filename_finder();
 	if (!n->filename)
 		return (free(n->limiter), n->limiter = NULL,
@@ -34,6 +34,7 @@ static int	ft_heredoc_rebuild_helper(t_ast *n)
 		n->limiter_quoted = FALSE;
 	return (1);
 }
+
 
 int	ft_heredoc_rebuild(t_ast *n)
 {
@@ -68,7 +69,9 @@ int	ft_heredoc_rebuild(t_ast *n)
 			line = get_next_line(0);
 			if (!line)
 			{
-				ft_printf("\nminishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", nb_lines, n->limiter);
+				ft_printf("\nminishell: warning: here-document at line ");
+				ft_printf("%d delimited by end-of-file (wanted `%s')\n",
+					nb_lines, n->limiter);
 				break ;
 			}
 			if (ft_is_limiter(line, n->limiter))

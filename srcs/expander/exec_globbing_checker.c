@@ -46,12 +46,12 @@ void	ft_sublist_sorter(t_new_args **head, t_ast *n)
 	}
 }
 
-int		ft_args_handler_loop(t_ast *n, int *found, int *i, t_new_args **head)
+int	ft_args_handler_loop(t_ast *n, int *found, int *i, t_new_args **head)
 {
 	t_new_args	*tmp;
 	char		*s;
 
-	if (ft_strchr(n->args[*i], (int)'\x1D'))
+	if (ft_strchr(n->args[*i], (int) '\x1D'))
 	{
 		*found = 1;
 		if (!ft_star_anywhere(head, n->args[*i]))
@@ -70,7 +70,7 @@ int		ft_args_handler_loop(t_ast *n, int *found, int *i, t_new_args **head)
 	return (1);
 }
 
-int		ft_args_handler(t_ast *n)
+int	ft_args_handler(t_ast *n)
 {
 	int			i;
 	t_new_args	*head;
@@ -84,12 +84,12 @@ int		ft_args_handler(t_ast *n)
 	while (n->args[++i])
 	{
 		if (!ft_args_handler_loop(n, &found, &i, &head))
-			return (ft_free_nargs(head), 0);//appel de la fonction qui free tout)
+			return (ft_free_nargs(head), 0);
 	}
 	if (found)
 		ft_sublist_sorter(&head, n);
 	if (!ft_new_args_maker(&head, n))
-		return (ft_free_nargs(head), 0);//appel de la fonction qui free tout
+		return (ft_free_nargs(head), 0);
 	ft_free_nargs(head);
 	return (1);
 }

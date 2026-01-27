@@ -31,6 +31,29 @@ int	ft_star_any2(t_new_args **head, struct dirent *readfile)
 	return (1);
 }
 
+int	ft_star_anywhere2(DIR **rep, char *arg, t_new_args **head, int *found)
+{
+	struct dirent	*readfile;
+
+	readfile = readdir(*rep);
+	while (readfile)
+	{
+		if (readfile->d_name[0] == '.' && arg[0] != '.')
+		{
+			readfile = readdir(*rep);
+			continue ;
+		}
+		if (ft_valid_star_any(readfile->d_name, arg))
+		{
+			*found = 1;
+			if (!ft_star_any2(head, readfile))
+				return (closedir(*rep), 0);
+		}
+		readfile = readdir(*rep);
+	}
+	return (1);
+}
+
 int	ft_star_anywhere(t_new_args **head, char *arg)
 {
 	DIR				*rep;
@@ -41,17 +64,8 @@ int	ft_star_anywhere(t_new_args **head, char *arg)
 	if (!rep)
 		return (perror("minishell: opendir"), 0);
 	found = 0;
-	while ((readfile = readdir(rep)))
-	{
-		if (readfile->d_name[0] == '.' && arg[0] != '.')
-			continue ;
-		if (ft_valid_star_any(readfile->d_name, arg))
-		{
-			found = 1;
-			if (!ft_star_any2(head, readfile))
-				return (closedir(rep), 0);
-		}
-	}
+	if (!ft_star_anywhere2(&rep, arg, head, &found))
+		return (0);
 	if (!found)
 	{
 		if (!ft_star_any3(head, arg))
@@ -60,7 +74,7 @@ int	ft_star_anywhere(t_new_args **head, char *arg)
 	return (closedir(rep), 1);
 }
 
-int		ft_new_args_maker(t_new_args **head, t_ast *n)
+int	ft_new_args_maker(t_new_args **head, t_ast *n)
 {
 	int			size;
 	char		**ret;

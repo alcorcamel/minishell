@@ -39,3 +39,26 @@ int	ft_restore_args(char **args)
 	}
 	return (1);
 }
+
+int	ft_is_empty(char *s)
+{
+	int	i;
+
+	if (!s)
+		return (1);
+	i = -1;
+	while (s[++i])
+	{
+		if (s[i] != ' ')
+			return (0);
+	}
+	return (1);
+}
+
+int	ft_set_empty_cmd(t_ast *n, char *ret)
+{
+	free(ret);
+	ft_free_args(n->args);
+	n->args = NULL;
+	return (1);
+}

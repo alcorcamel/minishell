@@ -41,5 +41,8 @@ void		ft_arg_add_back(t_new_args **lst, t_new_args *new, int i);
 int			ft_inout_globber(t_ast *n);
 int			ft_new_args_maker(t_new_args **head, t_ast *n);
 int			ft_star_anywhere(t_new_args **head, char *arg);
+char		*ft_expand_one_varinseg(t_ast *n, t_seg *seg, t_shell *shell, char *s);
+int			ft_set_empty_cmd(t_ast *n, char *ret);
+int			ft_is_empty(char *s);
 
 #endif

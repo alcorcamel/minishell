@@ -6,7 +6,7 @@ static int	ft_rebuild_node(t_ast *n)
 		|| n->type == NODE_REDIR_APPEND)
 	{
 		if (!ft_redir_rebuild(n))
-			return (0);// gestion erreur
+			return (0);
 	}
 	return (1);
 }
@@ -17,12 +17,12 @@ static int	ft_expand_node(t_ast *n, t_shell *shell)
 		|| n->type == NODE_REDIR_APPEND)
 	{
 		if (!ft_redir_expand(n, shell))
-			return (0);// gestion erreur
+			return (0);
 	}
 	if (n->type == NODE_HEREDOC)
 	{
 		if (!ft_heredoc_rebuild(n))
-			return (0);// gestion erreur
+			return (0);
 	}
 	return (1);
 }

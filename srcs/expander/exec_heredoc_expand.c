@@ -71,7 +71,7 @@ static char	*ft_expand_vars_in_line(char *line, t_shell *shell)
 	return (line);
 }
 
-static int	ft_heredoc_exp_helper(t_shell *shell, int fd_src, int fd_dst, char *old)
+static int	ft_hd_exp_helper(t_shell *shell, int fd_src, int fd_dst, char *old)
 {
 	char	*line;
 
@@ -104,7 +104,7 @@ int	ft_heredoc_expand(t_ast *n, t_shell *shell)
 		return (1);
 	fd_src = open(n->filename, O_RDONLY);
 	if (fd_src < 0)
-		return (0);// erreur ouverture?
+		return (0);
 	old = n->filename;
 	n->filename = ft_valid_filename_finder();
 	if (!n->filename)
@@ -112,9 +112,9 @@ int	ft_heredoc_expand(t_ast *n, t_shell *shell)
 	fd_dst = open(n->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd_dst < 0)
 		return (close(fd_src), free(n->filename), n->filename = old, 0);
-	if (!ft_heredoc_exp_helper(shell, fd_src, fd_dst, old))
-		return (unlink(n->filename), close(fd_src), close(fd_dst), free(n->filename),
-			n->filename = old, 0);
+	if (!ft_hd_exp_helper(shell, fd_src, fd_dst, old))
+		return (unlink(n->filename), close(fd_src), close(fd_dst),
+			free(n->filename), n->filename = old, 0);
 	free(old);
 	return (1);
 }

@@ -12,7 +12,6 @@ t_new_args	*ft_argnew(char *value)
 	return (ret);
 }
 
-
 int	ft_arg_restorer_bis(char *arg)
 {
 	int	i;

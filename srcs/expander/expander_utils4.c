@@ -45,7 +45,7 @@ void	ft_arg_add_back(t_new_args **lst, t_new_args *new, int i)
 		*lst = new;
 		if (i == 1)
 			new->globbed = 1;
-		return;
+		return ;
 	}
 	temp = *lst;
 	while (temp->next)

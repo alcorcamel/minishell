@@ -1,6 +1,6 @@
 #include "../../includes/expander.h"
 
-int		ft_inout_globber3(t_ast *n, int *found, char **s)
+int	ft_inout_globber3(t_ast *n, int *found, char **s)
 {
 	if (*found == 1)
 	{
@@ -14,7 +14,7 @@ int		ft_inout_globber3(t_ast *n, int *found, char **s)
 	return (free(*s), *s = NULL, 1);
 }
 
-int		ft_inout_globber2(t_ast *n, DIR **rep, struct dirent **rf, int *found)
+int	ft_inout_globber2(t_ast *n, DIR **rep, struct dirent **rf, int *found)
 {
 	char	*s;
 
@@ -27,7 +27,7 @@ int		ft_inout_globber2(t_ast *n, DIR **rep, struct dirent **rf, int *found)
 		if (*rf == NULL)
 			break ;
 		if ((*rf)->d_name[0] == '.' && n->filename[0] != '.')
-			continue;
+			continue ;
 		if (ft_valid_star_any_inout((*rf)->d_name, n->filename))
 		{
 			(*found)++;
@@ -40,9 +40,9 @@ int		ft_inout_globber2(t_ast *n, DIR **rep, struct dirent **rf, int *found)
 	return (ft_inout_globber3(n, found, &s));
 }
 
-int		ft_inout_globber(t_ast *n)
+int	ft_inout_globber(t_ast *n)
 {
-	DIR*			rep;
+	DIR				*rep;
 	struct dirent	*readfile;
 	int				found;
 	int				ret;
