@@ -72,12 +72,21 @@ t_vars	*ft_create_new_vars(char *var_envp, t_bool is_exported)
 
 void	ft_add_vars(t_shell *shell, t_vars *vars)
 {
-	t_vars	*iterator;
+	t_vars	*current;
 
-	iterator = shell->vars;
-	if (!iterator)
-		return (shell->vars = vars, (void)0);
-	while (iterator->next != NULL)
-		iterator = iterator->next;
-	iterator->next = vars;
+	if (!vars)
+		return ((void)0);
+	if (!shell->vars || ft_strncmp(vars->key, shell->vars->key,
+			ft_strlen(vars->key) + 1) < 0)
+	{
+		vars->next = shell->vars;
+		shell->vars = vars;
+		return ((void)0);
+	}
+	current = shell->vars;
+	while (current->next && ft_strncmp(vars->key, current->next->key,
+			ft_strlen(vars->key) + 1) > 0)
+		current = current->next;
+	vars->next = current->next;
+	current->next = vars;
 }

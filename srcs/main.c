@@ -81,7 +81,7 @@ int	main(int ac, char **av, char **envp)
 			ft_verif_signal(&shell);
 			ft_ignore_signal();
 			if (!line)
-				break ;
+				return (ft_free_shell(&shell), 1);
 			if (*line == '\0')
 			{
 				ft_free((void **)&line);

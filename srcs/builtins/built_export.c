@@ -50,17 +50,15 @@ void	ft_add_or_replace_vars(char *arg, t_shell *shell)
 	if (!search_vars)
 	{
 		search_vars = ft_create_new_vars(arg, TRUE);
-		ft_add_vars(shell, search_vars);
-		return ((void)0);
+		if (!search_vars)
+			return (ft_exit_urgency(shell));
+		return (ft_add_vars(shell, search_vars), (void)0);
 	}
 	if (ft_get_value_from_var_envp(arg, &new_value) == FALSE)
-		return ((void)0);
+		return (ft_exit_urgency(shell));
 	if (new_value != NULL)
-	{
-		tmp = search_vars->value;
-		search_vars->value = new_value;
-		ft_free((void **)&tmp);
-	}
+		return (tmp = search_vars->value, search_vars->value = new_value,
+			ft_free((void **)&tmp));
 }
 
 static int	ft_print_envp_for_export(t_shell *shell)

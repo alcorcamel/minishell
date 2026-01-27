@@ -31,7 +31,7 @@ static t_bool	ft_create_path_emergency(t_shell *shell)
 	char	*cwd;
 	char	*tmp;
 
-	var = ft_create_new_vars("PATH=/bin:/usr/bin:/sbin:/usr/sbin/:/usr/local/bin:\
+	var = ft_create_new_vars("PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:\
 /snap/bin:/var/lib/flatpak/exports/bin", FALSE);
 	if (!var)
 		return (FALSE);

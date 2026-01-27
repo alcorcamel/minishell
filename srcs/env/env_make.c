@@ -8,7 +8,10 @@ static char	*ft_make_envp_line(t_vars *var)
 
 	if (!var)
 		return (NULL);
-	j = ft_strlen(var->key) + ft_strlen(var->value) + 2;
+	if (var->key && var->value)
+		j = ft_strlen(var->key) + ft_strlen(var->value) + 2;
+	else
+		j = ft_strlen(var->key) + 1;
 	line = (char *)ft_calloc(j, sizeof(char));
 	if (!line)
 		return (NULL);

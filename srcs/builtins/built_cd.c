@@ -42,14 +42,18 @@ t_bool	ft_assign_path(char **args, t_shell *shell, char **path)
 		if (var && var->value)
 		{
 			*path = ft_strdup(var->value);
-			if (!path)
+			if (!*path)
 				return (FALSE);
 		}
 		else
 			*path = NULL;
 	}
 	else
+	{
 		*path = ft_strdup(args[1]);
+		if (!(*path))
+			return (FALSE);
+	}
 	return (TRUE);
 }
 
@@ -75,7 +79,7 @@ t_bool	ft_check_sign(char **path, t_shell *shell)
 	return (TRUE);
 }
 
-void	ft_assign_new_pwd(t_shell *shell)
+void	ft_assign_new_pwd(t_shell *shell, char *last_path)
 {
 	char	*var_envp;
 	char	*cwd;
@@ -93,12 +97,14 @@ void	ft_assign_new_pwd(t_shell *shell)
 	{
 		cwd = getcwd(NULL, 0);
 		var = ft_create_new_vars("PWD", TRUE);
+		if (!var)
+			return (ft_free((void **)&last_path), ft_exit_urgency(shell));
 		var->value = cwd;
 		ft_add_vars(shell, var);
 	}
 }
 
-void	ft_assign_new_oldpwd(t_shell *shell, char *last_path)
+void	ft_assign_oldpwd(t_shell *shell, char *last_path)
 {
 	t_vars	*var;
 	char	*tmp;
@@ -110,6 +116,8 @@ void	ft_assign_new_oldpwd(t_shell *shell, char *last_path)
 		if (last_path)
 		{
 			var->value = ft_strdup(last_path);
+			if (!var->value)
+				return (ft_free((void **)&last_path), ft_exit_urgency(shell));
 			ft_free((void **)&tmp);
 		}
 	}
@@ -129,14 +137,14 @@ int	ft_cd(char **args, t_shell *shell)
 	t_vars	*var;
 	char	*path;
 	char	*tmp;
-	char	*last_path;
+	char	*l_path;
 
-	last_path = NULL;
+	l_path = NULL;
 	path = NULL;
 	if (args[1] && args[2])
 		return (ft_print_err_cd());
 	if (ft_assign_path(args, shell, &path) == FALSE)
-		return (1);
+		return (ft_exit_urgency(shell), 1);
 	if (!path)
 		return (ft_putstr_fd("minishield: cd: << HOME >> not defined", \
 			STDERR_FILENO), 1);
@@ -145,12 +153,12 @@ int	ft_cd(char **args, t_shell *shell)
 	if (!path)
 		return (ft_putstr_fd("minishield: cd: << OLDPWD >> not defined", \
 			STDERR_FILENO), 1);
-	last_path = getcwd(NULL, 0);
-	if (!last_path)
+	l_path = getcwd(NULL, 0);
+	if (!l_path)
 		ft_putstr_fd("minishield: chdir: error retrieving current directory: getcwd:\
 cannot access parent directories: No such file or directory\n", STDERR_FILENO);
 	if (chdir(path) == -1)
 		return (ft_print_err_cd_no_directory(args[1]));
-	return (ft_assign_new_pwd(shell), ft_assign_new_oldpwd(shell, last_path),
-		ft_free((void **)&path), ft_free((void **)&last_path), 0);
+	return (ft_assign_new_pwd(shell, l_path), ft_assign_oldpwd(shell, l_path),
+		ft_free((void **)&path), ft_free((void **)&l_path), 0);
 }
