@@ -55,4 +55,5 @@ void	ft_free_ast(t_ast **root)
 		ft_free_ast(&n->right);
 	ft_ast_cleaner(n);
 	ft_free((void **)&(*root));
+	*root = NULL;
 }

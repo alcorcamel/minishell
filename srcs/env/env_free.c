@@ -10,6 +10,7 @@ void	ft_free_all_env(t_vars **head)
 		ft_free((void **)&((*head)->value));
 		ft_free((void **)&((*head)->key));
 		ft_free((void **)&(*head));
+		*head = NULL;
 		*head = next;
 	}
 }
@@ -26,4 +27,5 @@ void	ft_free_all_envp(char ***envp)
 		ft_free((void **)&(*envp[i]));
 	}
 	ft_free((void **)&(*envp));
+	*envp = NULL;
 }

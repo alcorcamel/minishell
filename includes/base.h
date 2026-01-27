@@ -117,6 +117,9 @@ typedef struct s_shell
 	t_vars	*vars;
 	int		last_status;
 	t_ast	*root_ast;
+	t_bool	should_exit;
+	t_bool	interactive;
+	char 	*prompt;
 }	t_shell;
 
 

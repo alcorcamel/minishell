@@ -33,9 +33,10 @@ static void	ft_handle_sigint_heredoc(int sig)
 	exit(130);
 }
 
-void	ft_ignore_signal_exec(void)
+void	ft_ignore_signal_exec(t_shell *shell)
 {
-	ft_enable_echoctl();
+	if (shell->interactive == TRUE)
+		ft_enable_echoctl();
 	signal(SIGINT, ft_handle_sigint_exec);
 	signal(SIGQUIT, ft_handle_sigquit);
 }

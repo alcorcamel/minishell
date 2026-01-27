@@ -1,34 +1,18 @@
 #include "../../includes/builtins.h"
 
-int	ft_print_err_exit(void)
-{
-	ft_putstr_fd("minishield: exit : too many arguments\n", STDERR_FILENO);
-	return (1);
-}
-
-static void	ft_print_err_exit_nb_args(t_shell *shell)
-{
-	ft_putstr_fd("minishield: exit : numeric argument required\n",
-		STDERR_FILENO);
-	ft_free_shell(&shell);
-	exit(2);
-}
-
-static t_bool	ft_is_valid_args_exit(char *arg, t_shell *shell)
+static t_bool	ft_is_valid_numeric(char *arg)
 {
 	int	i;
 
 	i = 0;
-	if (arg[i] != '-' || arg[i] != '+')
+	if (arg[i] == '+' || arg[i] == '-')
 		i++;
+	if (!arg[i])
+		return (FALSE);
 	while (arg[i])
 	{
 		if (!ft_isdigit(arg[i]))
-		{
-			ft_print_err_exit_nb_args(shell);
-			return ((FALSE));
-			break ;
-		}
+			return (FALSE);
 		i++;
 	}
 	return (TRUE);
@@ -42,10 +26,9 @@ static t_bool	ft_verif(char *s, int sign)
 	result = 0;
 	while (*s)
 	{
-		if (*s < '0' || *s > '9')
-			return (FALSE);
-
 		digit = *s - '0';
+		if (digit < 0 || digit > 9)
+			return (FALSE);
 		if (sign == 1)
 		{
 			if (result > (unsigned long)(LONG_MAX - digit) / 10)
@@ -62,43 +45,46 @@ static t_bool	ft_verif(char *s, int sign)
 	return (TRUE);
 }
 
-static t_bool	ft_verif_overflow(char *s)
+static t_bool	ft_check_overflow(char *s)
 {
-	int				sign;
+	int	sign;
 
 	sign = 1;
-	if (*s == '-' || *s == '+')
+	if (*s == '+' || *s == '-')
 	{
 		if (*s == '-')
 			sign = -1;
 		s++;
 	}
-	if (!*s)
-		return (FALSE);
-	return (ft_verif(s, sign));
+	return (*s && ft_verif(s, sign));
 }
 
 int	ft_exit(char **args, t_shell *shell)
 {
-	int	status;
-	int	i;
+	long	status;
 
-	ft_printf("exit\n");
+	if (shell->interactive)
+		ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (!args[1])
 	{
-		ft_free_shell(&shell);
-		exit(shell->last_status);
+		shell->should_exit = 1;
+		return (shell->last_status);
 	}
-	if (args[2] && ft_is_valid_args_exit(args[1], shell))
-		return (ft_print_err_exit());
-	i = 0;
-	if (ft_is_valid_args_exit(args[1], shell) == (FALSE))
-		ft_print_err_exit_nb_args(shell);
-	if (ft_verif_overflow(args[1]) == (FALSE))
-		return (ft_print_err_exit_nb_args(shell), 2);
-	status = ft_atol(args[1]);
-	status = status % 256;
-	ft_free_shell(&shell);
-	exit(status);
-	return (0);
+	if (args[2])
+	{
+		ft_putstr_fd("minishield: exit: too many arguments\n", STDERR_FILENO);
+		shell->last_status = 1;
+		return (1);
+	}
+	if (!ft_is_valid_numeric(args[1]) || !ft_check_overflow(args[1]))
+	{
+		ft_putstr_fd("minishield: exit: numeric argument required\n",
+			STDERR_FILENO);
+		shell->last_status = 2;
+		shell->should_exit = 1;
+		return (2);
+	}
+	return (status = ft_atol(args[1]), shell->last_status = (unsigned char)status,
+		shell->should_exit = 1, shell->last_status);
 }
+

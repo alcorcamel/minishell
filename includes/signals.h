@@ -3,7 +3,7 @@
 
 #include "base.h"
 
-void	ft_ignore_signal_exec(void);
+void	ft_ignore_signal_exec(t_shell *shell);
 void	ft_ignore_signal_prompt(void);
 void	ft_restore_signal(void);
 void	ft_verif_signal(t_shell *shell);
