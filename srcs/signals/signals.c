@@ -29,8 +29,6 @@ static void	ft_handle_sigint_heredoc(int sig)
 {
 	(void)sig;
 	g_signal = SIGINT;
-	ft_putstr_fd("^C\n", STDOUT_FILENO);
-	exit(130);
 }
 
 void	ft_ignore_signal_exec(t_shell *shell)

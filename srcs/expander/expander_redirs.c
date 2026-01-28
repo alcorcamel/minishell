@@ -52,6 +52,11 @@ int	ft_heredoc_rebuild(t_ast *n, t_shell *shell)
 	if (pid == 0)
 	{
 		ft_restore_signal_heredoc();
+		if (g_signal == SIGINT)
+		{
+			ft_free_shell(&shell);
+			exit (1);
+		}
 		fd = open(n->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd < 0)
 		{
@@ -66,7 +71,7 @@ int	ft_heredoc_rebuild(t_ast *n, t_shell *shell)
 			line = get_next_line(0);
 			if (!line)
 			{
-				ft_printf("\nminishell: warning: here-document at line ");
+				ft_printf("\nminishield: warning: here-document at line ");
 				ft_printf("%d delimited by end-of-file (wanted `%s')\n",
 					nb_lines, n->limiter);
 				break ;

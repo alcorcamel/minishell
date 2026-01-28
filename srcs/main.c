@@ -54,6 +54,20 @@ static void	ft_printer(t_token *lst)
 	}
 }
 
+static t_bool	ft_isinvalid(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != '\t' && str[i] != 32)
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
+}
+
 int main(int ac, char **av, char **envp)
 {
 	char	*line;
@@ -72,6 +86,8 @@ int main(int ac, char **av, char **envp)
 	shell.vars = NULL;
 	shell.prompt = NULL;
 	shell.last_status = 0;
+	shell.interactive = 0;
+	line = NULL;
 	if (ft_cpy_enpv(envp, &shell) == FALSE)
 		exit(1);
 	shell.interactive = isatty(STDIN_FILENO);
@@ -90,7 +106,7 @@ int main(int ac, char **av, char **envp)
 			if (!line)
 				break ;
 
-			if (*line == '\0')
+			if (*line == '\0' || ft_isinvalid(line))
 			{
 				ft_free((void **)&line);
 				shell.last_status = 0;
@@ -160,10 +176,8 @@ int main(int ac, char **av, char **envp)
 			fd = open(av[1], O_RDONLY);
 		else
 			fd = STDIN_FILENO;
-
 		if (fd < 0)
 			exit(1);
-
 		tmp = get_next_line(fd);
 		while (tmp)
 		{
@@ -227,7 +241,7 @@ int main(int ac, char **av, char **envp)
 
 			tmp = get_next_line(fd);
 		}
-
+		ft_free((void **)&line);
 		if (fd != STDIN_FILENO)
 			close(fd);
 	}
