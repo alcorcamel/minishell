@@ -62,7 +62,7 @@ int	ft_exec_redirect_out(t_ast *node, t_shell *shell)
 	if (pid == 0)
 	{
 		ft_restore_signal();
-		ft_expand_and_rebuild_out(node, shell);
+		ft_expand_and_rebuild_out(node, shell, &fd);
 		if (fd == -1)
 			return (ft_throw_error(node->filename));
 		dup2(fd, STDOUT_FILENO);
