@@ -73,8 +73,8 @@ static int	ft_cmd_rebuild_helper(t_seg *segs, size_t *size, char **ret)
 	t_seg	*tmp;
 
 	tmp = segs;
-	if (!segs)
-		return (0);
+	// if (!segs)
+	// 	return (0);
 	*size = 0;
 	while (tmp)
 	{
