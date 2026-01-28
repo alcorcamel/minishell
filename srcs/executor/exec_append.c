@@ -13,6 +13,11 @@ int	ft_exec_append(t_ast *node, t_shell *shell)
 	if (pid == 0)
 	{
 		ft_restore_signal();
+		if (ft_redir_expand(node, shell) == 0 || ft_redir_rebuild(node) == 0)
+		{
+			ft_free_shell(&shell);
+			exit(1);
+		}
 		fd = open(node->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (fd == -1)
 			return (ft_throw_error(node->filename));
