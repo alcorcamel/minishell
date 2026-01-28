@@ -67,17 +67,15 @@ int	ft_exit(char **args, t_shell *shell)
 		ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (!args[1])
 		return (shell->should_exit = 1, shell->last_status);
-	if (args[2])
+	if (args[2] && ft_is_valid_numeric(args[1]) == TRUE)
 	{
 		ft_putstr_fd("minishield: exit: too many arguments\n", STDERR_FILENO);
-		shell->last_status = 1;
 		return (1);
 	}
 	if (!ft_is_valid_numeric(args[1]) || !ft_check_overflow(args[1]))
 	{
 		ft_putstr_fd("minishield: exit: numeric argument required\n",
 			STDERR_FILENO);
-		shell->last_status = 2;
 		shell->should_exit = 1;
 		return (2);
 	}
