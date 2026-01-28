@@ -22,7 +22,7 @@ char		*ft_join_segs_until_sep(t_seg *seg);
 int			ft_is_limiter(char *line, char *limiter);
 int			ft_var_translator(t_ast *n, t_seg *segs, t_shell *shell);
 int			ft_is_quoted(t_ast *n);
-int			ft_heredoc_rebuild(t_ast *n);
+int			ft_heredoc_rebuild(t_ast *n, t_shell *shell);
 int			ft_redir_rebuild(t_ast *n);
 int			ft_redir_expand(t_ast *n, t_shell *shell);
 int			ft_args_handler(t_ast *n);

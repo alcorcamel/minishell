@@ -21,7 +21,7 @@ static int	ft_expand_node(t_ast *n, t_shell *shell)
 	// }
 	if (n->type == NODE_HEREDOC)
 	{
-		if (!ft_heredoc_rebuild(n))
+		if (!ft_heredoc_rebuild(n, shell))
 			return (0);
 	}
 	return (1);

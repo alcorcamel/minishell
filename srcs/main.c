@@ -169,13 +169,10 @@ int main(int ac, char **av, char **envp)
 		{
 			line = ft_strtrim(tmp, "\n");
 			ft_free((void **)&tmp);
-
 			ft_verif_signal(&shell);
 			ft_ignore_signal();
-
 			if (!line)
 				break ;
-
 			if (*line == '\0')
 			{
 				ft_free((void **)&line);
@@ -183,7 +180,6 @@ int main(int ac, char **av, char **envp)
 				tmp = get_next_line(fd);
 				continue ;
 			}
-
 			tokens = ft_lexer(line);
 			if (!tokens)
 			{
@@ -192,7 +188,6 @@ int main(int ac, char **av, char **envp)
 				shell.last_status = 1;
 			}
 			head = tokens;
-
 			if (ft_parser(tokens))
 			{
 				shell.root_ast = ft_build_and_or(&tokens);
@@ -218,7 +213,6 @@ int main(int ac, char **av, char **envp)
 						shell.should_exit = 1;
 					shell.last_status = 1;
 				}
-
 			}
 			else
 			{

@@ -36,7 +36,7 @@ static int	ft_heredoc_rebuild_helper(t_ast *n)
 }
 
 
-int	ft_heredoc_rebuild(t_ast *n)
+int	ft_heredoc_rebuild(t_ast *n, t_shell *shell)
 {
 	int		fd;
 	char	*line;
@@ -55,10 +55,7 @@ int	ft_heredoc_rebuild(t_ast *n)
 		fd = open(n->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd < 0)
 		{
-			free(n->limiter);
-			n->limiter = NULL;
-			free(n->filename);
-			n->filename = NULL;
+			ft_free_shell(&shell);
 			exit(1);
 		}
 		nb_lines = 0;
@@ -82,6 +79,7 @@ int	ft_heredoc_rebuild(t_ast *n)
 			write(fd, line, ft_strlen(line));
 			free(line);
 		}
+		ft_free_shell(&shell);
 		close(fd);
 		exit(0);
 	}
