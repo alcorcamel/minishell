@@ -74,7 +74,6 @@ int main(int ac, char **av, char **envp)
 	shell.last_status = 0;
 	if (ft_cpy_enpv(envp, &shell) == FALSE)
 		exit(1);
-
 	shell.interactive = isatty(STDIN_FILENO);
 	if (shell.interactive && ac == 1)
 	{
@@ -99,33 +98,49 @@ int main(int ac, char **av, char **envp)
 			}
 
 			tokens = ft_lexer(line);
-			head = tokens;
-			add_history(line);
-
-			if (ft_parser(tokens))
+			if (!tokens)
 			{
-				shell.root_ast = ft_build_and_or(&tokens);
-				ft_free_tokens(&head);
-
-				if (shell.root_ast && ft_explore_ast(&shell.root_ast, &shell))
-				{
-					ft_ignore_signal_exec(&shell);
-					shell.last_status = ft_exec_ast(shell.root_ast, &shell);
-					ft_free_ast(&shell.root_ast);
-				}
-				else
-				{
-					if (shell.root_ast)
-						ft_free_ast(&shell.root_ast);
-					shell.last_status = 1;
-				}
+				if (errno == 12)
+					shell.should_exit = 1;
+				shell.last_status = 1;
 			}
 			else
 			{
-				ft_free_tokens(&head);
-				shell.last_status = 2;
-			}
+				head = tokens;
+				add_history(line);
 
+				if (ft_parser(tokens))
+				{
+					shell.root_ast = ft_build_and_or(&tokens);
+					if (shell.root_ast)
+					{
+						ft_free_tokens(&head);
+						if (ft_explore_ast(&shell.root_ast, &shell))
+						{
+							ft_ignore_signal_exec(&shell);
+							shell.last_status = ft_exec_ast(shell.root_ast, &shell);
+							ft_free_ast(&shell.root_ast);
+						}
+						else
+						{
+							if (shell.root_ast)
+								ft_free_ast(&shell.root_ast);
+							shell.last_status = 1;
+						}
+					}
+					else
+					{
+						if (errno == 12)
+							shell.should_exit = 1;
+						shell.last_status = 1;
+					}
+				}
+				else
+				{
+					ft_free_tokens(&head);
+					shell.last_status = 2;
+				}
+			}
 			ft_free((void **)&line);
 			ft_verif_signal(&shell);
 
@@ -170,24 +185,40 @@ int main(int ac, char **av, char **envp)
 			}
 
 			tokens = ft_lexer(line);
+			if (!tokens)
+			{
+				if (errno == 12)
+					shell.should_exit = 1;
+				shell.last_status = 1;
+			}
 			head = tokens;
 
 			if (ft_parser(tokens))
 			{
 				shell.root_ast = ft_build_and_or(&tokens);
-				ft_free_tokens(&head);
-
-				if (shell.root_ast && ft_explore_ast(&shell.root_ast, &shell))
+				if (shell.root_ast)
 				{
-					ft_ignore_signal_exec(&shell);
-					shell.last_status = ft_exec_ast(shell.root_ast, &shell);
-					ft_free_ast(&shell.root_ast);
+					ft_free_tokens(&head);
+					if (ft_explore_ast(&shell.root_ast, &shell))
+					{
+						ft_ignore_signal_exec(&shell);
+						shell.last_status = ft_exec_ast(shell.root_ast, &shell);
+						ft_free_ast(&shell.root_ast);
+					}
+					else
+					{
+						if (shell.root_ast)
+							ft_free_ast(&shell.root_ast);
+						shell.last_status = 1;
+					}
 				}
 				else
 				{
-					ft_free_ast(&shell.root_ast);
+					if (errno == 12)
+						shell.should_exit = 1;
 					shell.last_status = 1;
 				}
+
 			}
 			else
 			{

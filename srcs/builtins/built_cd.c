@@ -98,7 +98,8 @@ void	ft_assign_new_pwd(t_shell *shell, char *last_path)
 		cwd = getcwd(NULL, 0);
 		var = ft_create_new_vars("PWD", TRUE);
 		if (!var)
-			return (ft_free((void **)&last_path), ft_exit_urgency(shell));
+			return (ft_free((void **)&last_path),
+				shell->should_exit = 1, (void)0);
 		var->value = cwd;
 		ft_add_vars(shell, var);
 	}
@@ -117,7 +118,8 @@ void	ft_assign_oldpwd(t_shell *shell, char *last_path)
 		{
 			var->value = ft_strdup(last_path);
 			if (!var->value)
-				return (ft_free((void **)&last_path), ft_exit_urgency(shell));
+				return (ft_free((void **)&last_path),
+					shell->should_exit = 1, (void)0);
 			ft_free((void **)&tmp);
 		}
 	}
@@ -144,7 +146,7 @@ int	ft_cd(char **args, t_shell *shell)
 	if (args[1] && args[2])
 		return (ft_print_err_cd());
 	if (ft_assign_path(args, shell, &path) == FALSE)
-		return (ft_exit_urgency(shell), 1);
+		return (shell->should_exit = 1, 1);
 	if (!path)
 		return (ft_putstr_fd("minishield: cd: << HOME >> not defined", \
 			STDERR_FILENO), 1);

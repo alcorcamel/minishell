@@ -51,11 +51,11 @@ void	ft_add_or_replace_vars(char *arg, t_shell *shell)
 	{
 		search_vars = ft_create_new_vars(arg, TRUE);
 		if (!search_vars)
-			return (ft_exit_urgency(shell));
+			return (shell->should_exit = 1, (void)0);
 		return (ft_add_vars(shell, search_vars), (void)0);
 	}
 	if (ft_get_value_from_var_envp(arg, &new_value) == FALSE)
-		return (ft_exit_urgency(shell));
+		return (shell->should_exit = 1, (void)0);
 	if (new_value != NULL)
 		return (tmp = search_vars->value, search_vars->value = new_value,
 			ft_free((void **)&tmp));

@@ -66,10 +66,7 @@ int	ft_exit(char **args, t_shell *shell)
 	if (shell->interactive)
 		ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (!args[1])
-	{
-		shell->should_exit = 1;
-		return (shell->last_status);
-	}
+		return (shell->should_exit = 1, shell->last_status);
 	if (args[2])
 	{
 		ft_putstr_fd("minishield: exit: too many arguments\n", STDERR_FILENO);
@@ -84,7 +81,8 @@ int	ft_exit(char **args, t_shell *shell)
 		shell->should_exit = 1;
 		return (2);
 	}
-	return (status = ft_atol(args[1]), shell->last_status = (unsigned char)status,
+	status = ft_atol(args[1]);
+	return (shell->last_status = (unsigned char)status,
 		shell->should_exit = 1, shell->last_status);
 }
 

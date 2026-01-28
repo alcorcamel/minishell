@@ -29,9 +29,3 @@ void	ft_free_shell(t_shell **shell)
 	if ((*shell)->root_ast)
 		ft_free_ast(&((*shell)->root_ast));
 }
-
-void	ft_exit_urgency(t_shell *shell)
-{
-	ft_free_shell(&shell);
-	exit(1);
-}
