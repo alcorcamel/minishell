@@ -14,6 +14,7 @@ static void	ft_handle_sigint_prompt(int sig)
 
 static void	ft_handle_sigquit(int sig)
 {
+	(void)sig;
 	g_signal = SIGQUIT;
 }
 
@@ -29,7 +30,7 @@ static void	ft_handle_sigint_heredoc(int sig)
 	g_signal = SIGINT;
 }
 
-void	ft_ignore_signal_exec(t_shell *shell)
+void	ft_ignore_signal_exec()
 {
 	signal(SIGINT, ft_handle_sigint_exec);
 	signal(SIGQUIT, ft_handle_sigquit);

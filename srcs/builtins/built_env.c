@@ -9,7 +9,6 @@ static int	ft_print_err_env(void)
 static int	ft_print_envp_for_env(t_shell *shell)
 {
 	t_vars	*iterator;
-	int		nb_printed;
 
 	iterator = shell->vars;
 	while (iterator)

@@ -53,7 +53,6 @@ int	ft_exec_pipe(t_ast *ast, t_shell *shell)
 {
 	pid_t	pid[2];
 	int		fd[2];
-	int		status_cmd;
 	int		last_status;
 
 	if (pipe(fd) == -1)

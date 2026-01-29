@@ -50,8 +50,6 @@ t_vars	*ft_create_new_vars(char *var_envp, t_bool is_exported)
 {
 	char	*key;
 	char	*value;
-	int		i;
-	int		j;
 	t_vars	*new;
 
 	key = NULL;

@@ -97,7 +97,10 @@ int	ft_heredoc_rebuild(t_ast *n, t_shell *shell)
 		else
 		{
 			if (WEXITSTATUS(status) == 130)
+			{
+				ft_putchar_fd('\n', STDOUT_FILENO);
 				g_signal = SIGINT;
+			}
 			unlink(n->filename);
 			return (0);
 		}

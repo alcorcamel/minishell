@@ -26,7 +26,6 @@ static void	ft_exec_child(t_shell *shell, t_ast *node)
 int	ft_exec_here_doc(t_ast *node, t_shell *shell)
 {
 	pid_t	pid;
-	int		fd;
 	int		status;
 
 	pid = fork();

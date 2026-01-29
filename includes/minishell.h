@@ -6,14 +6,14 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 13:23:59 by demane            #+#    #+#             */
-/*   Updated: 2026/01/28 20:48:56 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/29 11:38:40 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include "base.h"
+# include "base.h"
 
 t_token		*ft_lexer(char *input);
 int			ft_parser(t_token *tokens);
@@ -31,5 +31,15 @@ void		ft_verif_signal(t_shell *shell);
 void		ft_free_ast(t_ast **root);
 void		ft_free_shell(t_shell **shell);
 void		ft_free_tokens(t_token **tok);
+t_bool		ft_isinvalid(char *str);
+void		ft_handle_ast_error(t_shell *shell);
+void		ft_execute_ast(t_shell *shell);
+void		ft_execute_tokens(t_token **tokens, t_token **head, t_shell *shell);
+int			ft_process_minishell(int ac, char **av, char **envp);
+int			ft_process_line(char *line, t_shell *shell);
+void		ft_interactive_mode(t_shell *shell);
+void		ft_init_shell(t_shell *shell, char **envp);
+void		ft_cleanup_and_exit(t_shell *shell);
+int			ft_handle_lexer_error(char **line, t_shell *shell);
 
 #endif

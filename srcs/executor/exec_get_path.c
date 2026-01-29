@@ -33,7 +33,7 @@ void	ft_free_all_split_val(char ***split_val)
 	ft_free((void **)&free_val);
 }
 
-int	ft_access(char **path_params, t_ast p, char ***split_val, t_bool bool)
+int	ft_access(char **path_params)
 {
 	int		acs_val;
 	char	*path;
@@ -49,7 +49,7 @@ int	ft_access(char **path_params, t_ast p, char ***split_val, t_bool bool)
 	return (0);
 }
 
-int	ft_access_in_rep(char **path_params, t_ast p, char ***split_val,
+int	ft_access_in_rep(char **path_params, char ***split_val,
 	t_shell *shell)
 {
 	int		acs_val;
@@ -75,8 +75,7 @@ int	ft_access_in_rep(char **path_params, t_ast p, char ***split_val,
 	return (0);
 }
 
-char	*ft_try_paths(char ***split_val, char *cmd_name,
-	t_ast p, t_shell *shell)
+char	*ft_try_paths(char ***split_val, char *cmd_name, t_shell *shell)
 {
 	char	*path;
 	int		i;
@@ -92,7 +91,7 @@ char	*ft_try_paths(char ***split_val, char *cmd_name,
 			ft_free_shell(&shell);
 			exit(1);
 		}
-		if (ft_access(&path, p, split_val, TRUE))
+		if (ft_access(&path))
 			return (ft_free_all_split_val(split_val), path);
 		ft_free((void **)&path);
 	}
@@ -112,7 +111,7 @@ char	*ft_get_path(t_ast *node, t_shell *shell)
 		return (NULL);
 	if (ft_strlen(cmd) == 0 || ft_str_is_space(cmd))
 		return (NULL);
-	if (ft_access_in_rep(&(cmd), *node, NULL, shell)
+	if (ft_access_in_rep(&(cmd), NULL, shell)
 		|| (ft_is_directory(cmd) == TRUE && ft_strchr(cmd, '/')))
 		return (ft_strdup(cmd));
 	var = ft_find_vars("PATH", shell);
@@ -121,6 +120,6 @@ char	*ft_get_path(t_ast *node, t_shell *shell)
 	split_val = ft_split(var->value, ':');
 	if (!split_val)
 		return (NULL);
-	path = ft_try_paths(&split_val, cmd, *node, shell);
+	path = ft_try_paths(&split_val, cmd, shell);
 	return (path);
 }

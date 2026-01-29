@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:32:17 by demane            #+#    #+#             */
-/*   Updated: 2026/01/29 02:43:27 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/29 11:44:06 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,27 +121,6 @@ t_line	*ft_init_line(t_line *l, int fd)
 	return ((tmp)->fd = fd, tmp->line = NULL, tmp->next = NULL, tmp);
 }
 
-void	ft_free_all_line(t_line *l)
-{
-	t_line	*next;
-	int		i;
-
-	if (!l)
-		return ((void)0);
-	i = 0;
-	while (l)
-	{
-		next = l->next;
-		if (l->line)
-			ft_free((void **)&l->line);
-		if (i > 0)
-			ft_free((void **)&l);
-		l->fd = 0;
-		l = next;
-		i++;
-	}
-}
-
 char	*get_next_line(int fd)
 {
 	static t_line	l;
@@ -149,8 +128,6 @@ char	*get_next_line(int fd)
 	int				result_recup;
 	char			*rv;
 
-	if (fd == -1000)
-		return (ft_free_all_line(&l), NULL);
 	if ((fd < 0 || BUFFER_SIZE < 1))
 		return (NULL);
 	current = ft_init_line(&l, fd);

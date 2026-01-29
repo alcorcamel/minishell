@@ -81,7 +81,6 @@ t_bool	ft_check_sign(char **path, t_shell *shell)
 
 void	ft_assign_new_pwd(t_shell *shell, char *last_path)
 {
-	char	*var_envp;
 	char	*cwd;
 	t_vars	*var;
 	char	*tmp;
@@ -136,9 +135,7 @@ void	ft_assign_oldpwd(t_shell *shell, char *last_path)
 
 int	ft_cd(char **args, t_shell *shell)
 {
-	t_vars	*var;
 	char	*path;
-	char	*tmp;
 	char	*l_path;
 
 	l_path = NULL;

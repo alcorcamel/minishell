@@ -1,7 +1,6 @@
 NAME        = minishell
 CC          = @cc
-# CFLAGS      = -Wall -Wextra -Werror -I./includes
-CFLAGS      = -I./includes -g3
+CFLAGS      = -Wall -Wextra -Werror -I./includes
 
 DIR_SRCS    = srcs
 DIR_OBJS    = objs
@@ -64,7 +63,8 @@ SRCS_SIGNALS   = $(addprefix $(DIR_SRCS)/$(DIR_SIGNALS)/, $(FILES_SIGNALS))
 
 SRCS =  $(SRCS_LEXER) $(SRCS_PARSER) $(SRCS_EXPANDER) \
 	$(SRCS_BUILTINS) $(SRCS_EXECUTOR) $(SRCS_ENV)\
-	$(SRCS_STYLES) $(SRCS_UTILS) $(SRCS_SIGNALS) $(DIR_SRCS)/main.c
+	$(SRCS_STYLES) $(SRCS_UTILS) $(SRCS_SIGNALS) $(DIR_SRCS)/process_minishell2.c \
+	$(DIR_SRCS)/process_minishell.c $(DIR_SRCS)/main.c
 
 # ================= OBJS =================
 

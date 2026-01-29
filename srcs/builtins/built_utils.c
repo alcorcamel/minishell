@@ -2,6 +2,7 @@
 
 t_bool	ft_is_builtin(t_ast *node, t_shell *shell)
 {
+	(void)shell;
 	if (!node || !node->args || !node->args[0])
 		return (FALSE);
 	if (!ft_strncmp(node->args[0], "echo", 4) && ft_strlen(node->args[0]) == 4)
