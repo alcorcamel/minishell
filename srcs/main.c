@@ -307,6 +307,7 @@ int	main(int ac, char **av, char **envp)
 	if (shell.interactive && ac == 1)
 		ft_interactive_mode(&shell);
 	else
-		ft_script_mode(&shell, ac, av);
+		printf("Not implement for not required in sujet\n");
+		// ft_script_mode(&shell, ac, av); // 
 	ft_cleanup_and_exit(&shell);
 }
