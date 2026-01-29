@@ -5,6 +5,8 @@ static t_bool	ft_is_valid_numeric(char *arg)
 	int	i;
 
 	i = 0;
+	while(arg[i] == 32 || arg[i] == '\t')
+		i++;
 	if (arg[i] == '+' || arg[i] == '-')
 		i++;
 	if (!arg[i])
@@ -50,6 +52,8 @@ static t_bool	ft_check_overflow(char *s)
 	int	sign;
 
 	sign = 1;
+	while (*s == 32 || *s == '\t')
+		s++;
 	if (*s == '+' || *s == '-')
 	{
 		if (*s == '-')

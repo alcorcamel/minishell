@@ -35,7 +35,11 @@ int	ft_exec_redirect_in(t_ast *node, t_shell *shell)
 		ft_ignore_signal();
 		ft_expand_and_rebuild_in(node, shell, &fd);
 		if (fd == -1)
-			return (ft_throw_error(node->filename));
+		{
+			status = ft_throw_error(node->filename);
+			ft_free_shell(&shell);
+			exit(status);
+		}
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 		status = ft_exec_ast(node->left, shell);
@@ -44,7 +48,12 @@ int	ft_exec_redirect_in(t_ast *node, t_shell *shell)
 	}
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
+	{
+		if (WEXITSTATUS(status) == 127 || WEXITSTATUS(status) == 126)
+			return (1);
+		else
+			return (WEXITSTATUS(status));
+	}
 	if (WIFSIGNALED(status))
 		return (128 + WTERMSIG(status));
 	return (0);
@@ -64,7 +73,11 @@ int	ft_exec_redirect_out(t_ast *node, t_shell *shell)
 		ft_ignore_signal();
 		ft_expand_and_rebuild_out(node, shell, &fd);
 		if (fd == -1)
-			return (ft_throw_error(node->filename));
+		{
+			status = ft_throw_error(node->filename);
+			ft_free_shell(&shell);
+			exit(status);
+		}
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 		status = ft_exec_ast(node->left, shell);
@@ -73,7 +86,13 @@ int	ft_exec_redirect_out(t_ast *node, t_shell *shell)
 	}
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
+	if (WIFEXITED(status))
+	{
+		if (WEXITSTATUS(status) == 127 || WEXITSTATUS(status) == 126)
+			return (1);
+		else
+			return (WEXITSTATUS(status));
+	}
 	if (WIFSIGNALED(status))
 		return (128 + WTERMSIG(status));
 	return (0);

@@ -20,8 +20,6 @@ static void	ft_exec_child(t_ast *node, t_shell *shell)
 	char	**envp;
 	int		status;
 
-	// if (!(ft_strncmp(node->args[0], "./minishell", 12) == 0 
-	// 		&& ft_strlen(node->args[0]) == 12))
 	ft_restore_signal();
 	if (ft_strlen(node->args[0]) == 0 && node->is_expanded)
 	{

@@ -37,16 +37,16 @@ int	ft_throw_error_cmd_not_found(char *err_p)
 	if (ft_strchr(err_p, '/'))
 	{
 		ft_putstr_fd("minishield: ", STDERR_FILENO);
-		ft_putstr_fd(err_p, STDERR_FILENO);
+		if (err_p)
+			ft_putstr_fd(err_p, STDERR_FILENO);
 		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-		return (1);
 	}
 	else
 	{
 		ft_putstr_fd("minishield: ", STDERR_FILENO);
-		ft_putstr_fd(err_p, STDERR_FILENO);
+		if (err_p)
+			ft_putstr_fd(err_p, STDERR_FILENO);
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		return (127);
 	}
-	return (1);
+	return (127);
 }

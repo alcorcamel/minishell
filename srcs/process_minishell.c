@@ -26,7 +26,6 @@ void	ft_interactive_mode(t_shell *shell)
 {
 	char	*line;
 
-	rl_outstream = stderr;
 	while (1)
 	{
 		ft_ignore_signal_prompt();
@@ -51,7 +50,7 @@ void	ft_init_shell(t_shell *shell, char **envp)
 	g_signal = 0;
 	if (ft_cpy_enpv(envp, shell) == FALSE)
 		exit(1);
-	shell->interactive = isatty(STDIN_FILENO);
+	shell->interactive = isatty(STDIN_FILENO) && isatty(STDOUT_FILENO);
 	signal(SIGQUIT, SIG_IGN);
 }
 
@@ -71,11 +70,12 @@ int	ft_process_minishell(int ac, char **av, char **envp)
 	t_shell	shell;
 
 	(void)av;
+	(void)ac;
 	ft_init_shell(&shell, envp);
-	if (shell.interactive && ac == 1)
+	// if (shell.interactive && ac == 1)
 		ft_interactive_mode(&shell);
-	else
-		printf("Not implement for not required in sujet\n");
+	// else
+	// 	printf("Not implement for not required in sujet\n");
 	ft_cleanup_and_exit(&shell);
 	return (0);
 }
