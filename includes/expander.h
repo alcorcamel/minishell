@@ -46,5 +46,8 @@ char		*ft_expand_oneinseg(t_ast *n, t_seg *seg, t_shell *shell, char *s);
 int			ft_set_empty_cmd(t_ast *n, char *ret);
 int			ft_is_empty(char *s);
 int			ft_cmd_rebuild2(t_ast *n, char **ret);
+int			ft_cmd_rebuild_noifs(t_ast *n);
+int			ft_cmd_rebuild2_noifs(t_ast *n, char **ret);
+int			ft_is_empty_noifs(char *s);
 
 #endif
