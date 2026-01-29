@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_cmd_rebuild_noifs.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/29 15:17:28 by demane            #+#    #+#             */
+/*   Updated: 2026/01/29 15:17:28 by demane           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/executor.h"
 
 static void	ft_append_seg_special(char *dst, t_seg *seg, size_t *i)

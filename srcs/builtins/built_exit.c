@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   built_exit.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/29 15:20:41 by demane            #+#    #+#             */
+/*   Updated: 2026/01/29 15:21:02 by demane           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/builtins.h"
 
 static t_bool	ft_is_valid_numeric(char *arg)
@@ -5,7 +17,7 @@ static t_bool	ft_is_valid_numeric(char *arg)
 	int	i;
 
 	i = 0;
-	while(arg[i] == 32 || arg[i] == '\t')
+	while (arg[i] == 32 || arg[i] == '\t')
 		i++;
 	if (arg[i] == '+' || arg[i] == '-')
 		i++;

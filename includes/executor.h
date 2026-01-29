@@ -1,14 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/29 15:01:42 by demane            #+#    #+#             */
+/*   Updated: 2026/01/29 15:01:43 by demane           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
-// #include "../lexer/lexer.h"
 # include "parser.h"
 # include "expander.h"
 # include "builtins.h"
 # include "utils.h"
 # include "signals.h"
 
-// int			ft_exec_root(t_ast *node, t_shell *shell);
 int			ft_exec_pipe(t_ast *node, t_shell *shell);
 int			ft_exec_cmd(t_ast *node, t_shell *shell);
 int			ft_exec_subshell(t_ast *node, t_shell *shell);

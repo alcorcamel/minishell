@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/29 15:01:10 by demane            #+#    #+#             */
+/*   Updated: 2026/01/29 15:01:11 by demane           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef ENV_H
 # define ENV_H
 
-#include "base.h"
+# include "base.h"
 
 t_vars	*ft_create_new_vars(char *var_envp, t_bool is_exported);
 void	ft_add_vars(t_shell *shell, t_vars *vars);

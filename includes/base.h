@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   base.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/29 15:04:27 by demane            #+#    #+#             */
+/*   Updated: 2026/01/29 15:08:49 by demane           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef BASE_H
 # define BASE_H
 
@@ -18,9 +30,9 @@
 # define _GNU_SOURCE
 # include <termios.h>
 
-extern volatile sig_atomic_t g_signal;
+extern volatile sig_atomic_t	g_signal;
 
-typedef struct sigaction t_sigaction;
+typedef struct sigaction		t_sigaction;
 
 typedef enum e_bool
 {
@@ -42,12 +54,6 @@ typedef struct s_new_args
 	struct s_new_args	*next;
 	t_bool				globbed;
 }	t_new_args;
-
-// typedef struct s_exit
-// {
-// 	int		status;
-// 	t_bool	is_exited;
-// }	t_exit;
 
 typedef enum e_segtype
 {
@@ -119,8 +125,7 @@ typedef struct s_shell
 	t_ast	*root_ast;
 	t_bool	should_exit;
 	t_bool	interactive;
-	char 	*prompt;
+	char	*prompt;
 }	t_shell;
-
 
 #endif

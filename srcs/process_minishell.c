@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   process_minishell.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/29 15:10:17 by demane            #+#    #+#             */
+/*   Updated: 2026/01/29 15:13:59 by demane           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 int	ft_process_line(char *line, t_shell *shell)
@@ -33,7 +45,10 @@ void	ft_interactive_mode(t_shell *shell)
 		ft_verif_signal(shell);
 		ft_ignore_signal();
 		if (!line)
+		{
+			printf("exit\n");
 			break ;
+		}
 		if (!ft_process_line(line, shell))
 			break ;
 	}
@@ -50,8 +65,7 @@ void	ft_init_shell(t_shell *shell, char **envp)
 	g_signal = 0;
 	if (ft_cpy_enpv(envp, shell) == FALSE)
 		exit(1);
-	shell->interactive = isatty(STDIN_FILENO) && isatty(STDOUT_FILENO);
-	// signal(SIGQUIT, SIG_IGN);
+	shell->interactive = (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO));
 }
 
 void	ft_cleanup_and_exit(t_shell *shell)
@@ -74,7 +88,8 @@ int	ft_process_minishell(int ac, char **av, char **envp)
 	if (shell.interactive && ac == 1)
 		ft_interactive_mode(&shell);
 	else
-		ft_putstr_fd("Not implemented because not required in the subject\n", STDERR_FILENO);
+		ft_putstr_fd("Not implemented because not required in the subject\n",
+			STDERR_FILENO);
 	ft_cleanup_and_exit(&shell);
 	return (0);
 }

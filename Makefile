@@ -14,7 +14,6 @@ DIR_ENV     = env
 DIR_EXECUTOR= executor
 DIR_UTILS   = utils
 DIR_SIGNALS = signals
-DIR_STYLES  = styles
 
 # ================= FILES =================
 
@@ -48,8 +47,6 @@ FILES_UTILS = utils.c
 
 FILES_SIGNALS = signals.c
 
-FILES_STYLES = ft_print_boot.c
-
 # ================= SRCS =================
 
 SRCS_LEXER     = $(addprefix $(DIR_SRCS)/$(DIR_LEXER)/, $(FILES_LEXER))
@@ -58,13 +55,12 @@ SRCS_EXPANDER = $(addprefix $(DIR_SRCS)/$(DIR_EXPANDER)/, $(FILES_EXPANDER))
 SRCS_BUILTINS = $(addprefix $(DIR_SRCS)/$(DIR_BUILTINS)/, $(FILES_BUILTINS))
 SRCS_EXECUTOR = $(addprefix $(DIR_SRCS)/$(DIR_EXECUTOR)/, $(FILES_EXECUTOR))
 SRCS_ENV      = $(addprefix $(DIR_SRCS)/$(DIR_ENV)/, $(FILES_ENV))
-SRCS_STYLES   = $(addprefix $(DIR_SRCS)/$(DIR_STYLES)/, $(FILES_STYLES))
 SRCS_UTILS   = $(addprefix $(DIR_SRCS)/$(DIR_UTILS)/, $(FILES_UTILS))
 SRCS_SIGNALS   = $(addprefix $(DIR_SRCS)/$(DIR_SIGNALS)/, $(FILES_SIGNALS))
 
 SRCS =  $(SRCS_LEXER) $(SRCS_PARSER) $(SRCS_EXPANDER) \
 	$(SRCS_BUILTINS) $(SRCS_EXECUTOR) $(SRCS_ENV)\
-	$(SRCS_STYLES) $(SRCS_UTILS) $(SRCS_SIGNALS) $(DIR_SRCS)/process_minishell2.c \
+	$(SRCS_UTILS) $(SRCS_SIGNALS) $(DIR_SRCS)/process_minishell2.c \
 	$(DIR_SRCS)/process_minishell.c $(DIR_SRCS)/main.c
 
 # ================= OBJS =================
