@@ -57,7 +57,6 @@ int	ft_star_anywhere2(DIR **rep, char *arg, t_new_args **head, int *found)
 int	ft_star_anywhere(t_new_args **head, char *arg)
 {
 	DIR				*rep;
-	struct dirent	*readfile;
 	int				found;
 
 	rep = opendir(".");
