@@ -15,14 +15,12 @@ static void	ft_handle_sigint_prompt(int sig)
 static void	ft_handle_sigquit(int sig)
 {
 	g_signal = SIGQUIT;
-	ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
 }
 
 static void	ft_handle_sigint_exec(int sig)
 {
 	(void)sig;
 	g_signal = SIGINT;
-	ft_putchar_fd('\n', STDOUT_FILENO);
 }
 
 static void	ft_handle_sigint_heredoc(int sig)
@@ -33,17 +31,9 @@ static void	ft_handle_sigint_heredoc(int sig)
 
 void	ft_ignore_signal_exec(t_shell *shell)
 {
-	if (shell->interactive == TRUE)
-		ft_enable_echoctl();
 	signal(SIGINT, ft_handle_sigint_exec);
 	signal(SIGQUIT, ft_handle_sigquit);
 }
-
-// void	ft_ignore_signal_heredoc(void)
-// {
-// 	signal(SIGINT, ft_handle_sigint_heredoc);
-// 	signal(SIGQUIT, SIG_IGN);
-// }
 
 void	ft_ignore_signal_prompt(void)
 {
@@ -63,10 +53,15 @@ void	ft_ignore_signal(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	ft_restore_signal_heredoc(void)
+void ft_restore_signal_heredoc(void)
 {
-	ft_disable_echoctl();
-	signal(SIGINT, ft_handle_sigint_heredoc);
+	t_sigaction	sa;
+
+	sa.sa_handler = ft_handle_sigint_heredoc;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+
+	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
 }
 
@@ -82,22 +77,4 @@ void	ft_verif_signal(t_shell *shell)
 		shell->last_status = 131;
 		g_signal = 0;
 	}
-}
-
-void ft_disable_echoctl(void)
-{
-	struct termios	term;
-
-	tcgetattr(STDIN_FILENO, &term);
-	term.c_lflag &= ~ECHOCTL;  // désactiver l'affichage ^C, ^\ //
-	tcsetattr(STDIN_FILENO, TCSANOW, &term);
-}
-
-void ft_enable_echoctl(void)
-{
-	struct termios	term;
-
-	tcgetattr(STDIN_FILENO, &term);
-	term.c_lflag |= ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }

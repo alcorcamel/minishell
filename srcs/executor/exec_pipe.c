@@ -18,7 +18,7 @@ static void	ft_exec_child(int fd[2], t_ast *node_child, t_shell *shell,
 		index_fd = 0;
 		dup_fd = STDIN_FILENO;
 	}
-	ft_restore_signal();
+	ft_ignore_signal();
 	if (dup2(fd[index_fd], dup_fd) < 0)
 	{
 		ft_free_shell(&shell);

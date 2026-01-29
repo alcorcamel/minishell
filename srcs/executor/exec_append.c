@@ -22,7 +22,7 @@ int	ft_exec_append(t_ast *node, t_shell *shell)
 		return (ft_throw_error("fork"));
 	if (pid == 0)
 	{
-		ft_restore_signal();
+		ft_ignore_signal();
 		ft_expand_and_rebuild_append(node, shell, &fd);
 		if (fd == -1)
 			return (ft_throw_error(node->filename));

@@ -11,7 +11,7 @@ int	ft_exec_subshell(t_ast *node, t_shell *shell)
 		return (ft_throw_error("fork"));
 	if (pid == 0)
 	{
-		ft_restore_signal();
+		ft_ignore_signal();
 		status = ft_exec_ast(node->left, shell);
 		ft_free_shell(&shell);
 		exit(status);

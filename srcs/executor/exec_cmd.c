@@ -9,8 +9,8 @@ static void	ft_exit_err(t_shell *shell)
 
 static void	ft_free_all_after_cmd_err(char **path, char ***envp, t_shell *shell)
 {
-	ft_free_all_envp(&(*envp));
-	ft_free((void **)&(*path));
+	ft_free_all_envp(envp);
+	ft_free((void **)path);
 	ft_free_shell(&shell);
 }
 
@@ -20,6 +20,8 @@ static void	ft_exec_child(t_ast *node, t_shell *shell)
 	char	**envp;
 	int		status;
 
+	// if (!(ft_strncmp(node->args[0], "./minishell", 12) == 0 
+	// 		&& ft_strlen(node->args[0]) == 12))
 	ft_restore_signal();
 	if (ft_strlen(node->args[0]) == 0 && node->is_expanded)
 	{
@@ -62,6 +64,13 @@ int	ft_exec_cmd(t_ast *node, t_shell *shell)
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
+	{
+		status = 128 + WTERMSIG(status);
+		if (status == 131)
+			ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
+		if (status == 130)
+			ft_putstr_fd("\n", STDOUT_FILENO);
+		return (status);
+	}
 	return (0);
 }

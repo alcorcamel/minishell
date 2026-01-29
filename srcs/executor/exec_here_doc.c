@@ -5,7 +5,7 @@ static void	ft_exec_child(t_shell *shell, t_ast *node)
 	int	fd;
 	int	status;
 
-	ft_restore_signal();
+	ft_ignore_signal();
 	if (ft_heredoc_expand(node, shell) == 0)
 	{
 		ft_free_shell(&shell);

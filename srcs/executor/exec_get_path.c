@@ -111,7 +111,7 @@ char	*ft_get_path(t_ast *node, t_shell *shell)
 	if (!cmd)
 		return (NULL);
 	if (ft_strlen(cmd) == 0 || ft_str_is_space(cmd))
-		return (ft_strdup(cmd));
+		return (NULL);
 	if (ft_access_in_rep(&(cmd), *node, NULL, shell)
 		|| (ft_is_directory(cmd) == TRUE && ft_strchr(cmd, '/')))
 		return (ft_strdup(cmd));
