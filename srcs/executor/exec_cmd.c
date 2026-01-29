@@ -20,7 +20,7 @@ static void	ft_exec_child(t_ast *node, t_shell *shell)
 	char	**envp;
 	int		status;
 
-	// if (!(ft_strncmp(node->args[0], "./minishell", 12) == 0 
+	// if (!(ft_strncmp(node->args[0], "./minishell", 12) == 0
 	// 		&& ft_strlen(node->args[0]) == 12))
 	ft_restore_signal();
 	if (ft_strlen(node->args[0]) == 0 && node->is_expanded)
@@ -53,6 +53,15 @@ int	ft_exec_cmd(t_ast *node, t_shell *shell)
 		return (1);
 	if (!node->args || !node->args[0])
 		return (0);
+	if (ft_strncmp(node->args[0], "export", 7) == 0)
+	{
+		ft_free_args(node->args);
+		node->args = NULL;
+		if (ft_cmd_rebuild_noifs(node) == 0)
+			return (1);
+		if (!node->args || !node->args[0])
+			return (0);
+	}
 	if (ft_is_builtin(node, shell) == TRUE)
 		return (ft_exec_built(node, shell));
 	pid = fork();
