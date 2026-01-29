@@ -26,7 +26,11 @@ int	ft_exec_append(t_ast *node, t_shell *shell)
 		ft_expand_and_rebuild_append(node, shell, &fd);
 		if (fd == -1)
 			return (ft_throw_error(node->filename));
-		dup2(fd, STDOUT_FILENO);
+		if (dup2(fd, STDOUT_FILENO) < 0)
+		{
+			ft_free_shell(&shell);
+			exit(1);
+		}
 		close(fd);
 		status = ft_exec_ast(node->left, shell);
 		ft_free_shell(&shell);

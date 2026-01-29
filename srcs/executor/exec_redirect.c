@@ -40,7 +40,11 @@ int	ft_exec_redirect_in(t_ast *node, t_shell *shell)
 			ft_free_shell(&shell);
 			exit(status);
 		}
-		dup2(fd, STDIN_FILENO);
+		if (dup2(fd, STDIN_FILENO) < 0)
+		{
+			ft_free_shell(&shell);
+			exit(1);
+		}
 		close(fd);
 		status = ft_exec_ast(node->left, shell);
 		ft_free_shell(&shell);
@@ -78,14 +82,17 @@ int	ft_exec_redirect_out(t_ast *node, t_shell *shell)
 			ft_free_shell(&shell);
 			exit(status);
 		}
-		dup2(fd, STDOUT_FILENO);
+		if (dup2(fd, STDOUT_FILENO) < 0)
+		{
+			ft_free_shell(&shell);
+			exit(1);
+		}
 		close(fd);
 		status = ft_exec_ast(node->left, shell);
 		ft_free_shell(&shell);
 		exit(status);
 	}
 	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
 	if (WIFEXITED(status))
 	{
 		if (WEXITSTATUS(status) == 127 || WEXITSTATUS(status) == 126)

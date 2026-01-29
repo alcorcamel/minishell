@@ -14,7 +14,11 @@ static void	ft_exec_child(t_shell *shell, t_ast *node)
 	fd = open(node->filename, O_RDONLY);
 	if (fd == -1)
 		return (ft_free_shell(&shell), exit(ft_throw_error("open")));
-	dup2(fd, STDIN_FILENO);
+	if (dup2(fd, STDIN_FILENO) < 0)
+	{
+		ft_free_shell(&shell);
+		exit(1);
+	}
 	if (unlink(node->filename) == -1)
 		return (ft_free_shell(&shell), exit(ft_throw_error("unlink")));
 	close(fd);
