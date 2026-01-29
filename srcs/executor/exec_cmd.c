@@ -51,6 +51,15 @@ int	ft_exec_cmd(t_ast *node, t_shell *shell)
 		return (1);
 	if (!node->args || !node->args[0])
 		return (0);
+	if (ft_strncmp(node->args[0], "export", 7) == 0)
+	{
+		ft_free_args(node->args);
+		node->args = NULL;
+		if (ft_cmd_rebuild_noifs(node) == 0)
+			return (1);
+		if (!node->args || !node->args[0])
+			return (0);
+	}
 	if (ft_is_builtin(node, shell) == TRUE)
 		return (ft_exec_built(node, shell));
 	pid = fork();

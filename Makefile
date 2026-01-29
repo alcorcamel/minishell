@@ -31,7 +31,8 @@ FILES_EXPANDER = expander.c exec_cmd_expand.c exec_cmd_expand2.c \
 		   exec_heredoc_expand2.c expander_utils.c expander_utils2.c \
 		   expander_redirs.c exec_globbing_checker.c expander_error.c \
 		   exec_globbing_redirs.c exec_globbing_any.c expander_utils3.c \
-		   expander_utils4.c exec_globbing_redirs2.c expander_utils5.c
+		   expander_utils4.c exec_globbing_redirs2.c expander_utils5.c \
+		   exec_cmd_rebuild_noifs.c exec_cmd_rebuild_noifs2.c
 
 FILES_BUILTINS = built_cd.c built_echo.c built_env.c built_exit.c \
 		 built_export.c built_pwd.c built_unset.c built_utils.c
