@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/30 00:15:44 by demane            #+#    #+#             */
-/*   Updated: 2026/01/30 00:40:59 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/30 02:38:42 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 static int	ft_handle_eof(int fd, int nb_lines, char *limiter, t_shell *shell)
 {
+	close(fd);
 	if (g_signal == SIGINT)
 	{
 		ft_free_shell(&shell);
-		close(fd);
 		exit(130);
 	}
-	ft_printf_fd(STDERR_FILENO, "\nminishield: warning: here-document \
-at line ");
+	ft_putstr_fd("\nminishield: warning: here-document \
+at line ", STDERR_FILENO);
 	ft_printf_fd(STDERR_FILENO, "%d delimited by end-of-file (wanted `%s')\n",
 		nb_lines, limiter);
 	return (0);
@@ -37,7 +37,7 @@ int	ft_handle_heredoc_line(int fd, t_ast *n, int *nb_lines, t_shell *shell)
 	if (!line)
 		return (ft_handle_eof(fd, *nb_lines, n->limiter, shell));
 	if (ft_is_limiter(line, n->limiter))
-		return (free(line), 0);
+		return (free(line), close(fd), 0);
 	write(fd, line, ft_strlen(line));
 	free(line);
 	return (1);
@@ -66,7 +66,6 @@ void	ft_heredoc_child(t_ast *n, t_shell *shell)
 			exit(130);
 	}
 	ft_free_shell(&shell);
-	close(fd);
 	exit(0);
 }
 
