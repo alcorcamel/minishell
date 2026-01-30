@@ -6,7 +6,7 @@
 /*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:19:37 by demane            #+#    #+#             */
-/*   Updated: 2026/01/30 10:27:44 by rbourdon         ###   ########.fr       */
+/*   Updated: 2026/01/30 12:57:05 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,8 @@ void	ft_pars_err(int i, char *s)
 		ft_putstr_fd("'\n", 2);
 	}
 	else if (i == 2)
-		ft_putstr_fd("minishield: syntax error near unexpected token newline\n", 2);
+	{
+		ft_putstr_fd("minishield: syntax error near unexpected", 2);
+		ft_putstr_fd(" token newline\n", 2);
+	}
 }
