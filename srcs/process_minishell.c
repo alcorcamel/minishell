@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_minishell.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
+/*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:10:17 by demane            #+#    #+#             */
-/*   Updated: 2026/01/30 01:45:03 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/30 10:30:04 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	ft_cleanup_and_exit(t_shell *shell)
 {
 	t_shell	*p;
 
-	clear_history();
+	rl_clear_history();
 	p = shell;
 	ft_free_shell(&p);
 	exit(shell->last_status);

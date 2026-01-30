@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
+/*   By: rbourdon <rbourdon@student.42paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:19:50 by demane            #+#    #+#             */
-/*   Updated: 2026/01/29 15:19:50 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/30 10:12:40 by rbourdon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ static int	ft_in_checker(t_token *tok, t_token_type prev)
 
 static int	ft_last_tok_checker(t_token *tok)
 {
-	if (tok->type == TOKEN_PIPE)
+	if (tok->type == TOKEN_PIPE || tok->type == TOKEN_AND
+		|| tok->type == TOKEN_OR)
 		return (ft_pars_err(2, NULL), 0);
 	if (tok->type == TOKEN_REDIR_IN || tok->type == TOKEN_REDIR_OUT
 		|| tok->type == TOKEN_APPEND || tok->type == TOKEN_HEREDOC
