@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:21:19 by demane            #+#    #+#             */
-/*   Updated: 2026/01/29 22:46:52 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/30 13:10:28 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ t_bool	ft_is_builtin(t_ast *node, t_shell *shell)
 		return (TRUE);
 	if (!ft_strncmp(node->args[0], "pwd", 3) && ft_strlen(node->args[0]) == 3)
 		return (TRUE);
-	if (!ft_strncmp(node->args[0], "export", 6) \
-&& ft_strlen(node->args[0]) == 6)
+	if (!ft_strncmp(node->args[0], "export", 6)
+		&& ft_strlen(node->args[0]) == 6)
 		return (TRUE);
 	if (!ft_strncmp(node->args[0], "unset", 5) && ft_strlen(node->args[0]) == 5)
 		return (TRUE);

@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:18:50 by demane            #+#    #+#             */
-/*   Updated: 2026/01/30 01:53:28 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/30 13:18:41 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ static int	ft_wait_child(pid_t pid)
 	{
 		status = 128 + WTERMSIG(status);
 		if (status == 131)
-			ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
+			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 		if (status == 130)
-			ft_putstr_fd("\n", STDOUT_FILENO);
+			ft_putstr_fd("\n", STDERR_FILENO);
 		return (status);
 	}
 	return (0);
