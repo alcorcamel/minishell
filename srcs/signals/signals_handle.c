@@ -1,32 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander_error.c                                   :+:      :+:    :+:   */
+/*   signals_handle.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/29 15:18:09 by demane            #+#    #+#             */
-/*   Updated: 2026/01/30 01:37:30 by demane           ###   ########.fr       */
+/*   Created: 2026/01/29 22:48:51 by demane            #+#    #+#             */
+/*   Updated: 2026/01/29 22:50:50 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/expander.h"
+#include "../../includes/signals.h"
 
-void	ft_expander_error(char *s, int i)
+void	ft_handle_sigint_prompt(int sig)
 {
-	if (i == 1)
-		ft_printf_fd(STDERR_FILENO, "minishield: %s: ambigous redirect\n", s);
+	(void)sig;
+	g_signal = SIGINT;
+	write(STDOUT_FILENO, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }
 
-void	ft_free_nargs(t_new_args *node)
+void	ft_handle_sigquit(int sig)
 {
-	t_new_args	*next;
+	(void)sig;
+	g_signal = SIGQUIT;
+}
 
-	while (node)
-	{
-		next = node->next;
-		free(node->value);
-		free(node);
-		node = next;
-	}
+void	ft_handle_sigint_exec(int sig)
+{
+	(void)sig;
+	g_signal = SIGINT;
+}
+
+void	ft_handle_sigint_heredoc(int sig)
+{
+	(void)sig;
+	g_signal = SIGINT;
 }

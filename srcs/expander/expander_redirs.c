@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:18:13 by demane            #+#    #+#             */
-/*   Updated: 2026/01/29 15:18:14 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/30 00:17:17 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,9 @@ static int	ft_heredoc_rebuild_helper(t_ast *n)
 	return (1);
 }
 
-
 int	ft_heredoc_rebuild(t_ast *n, t_shell *shell)
 {
-	int		fd;
-	char	*line;
 	pid_t	pid;
-	int		status;
-	int		nb_lines;
 
 	if (!ft_heredoc_rebuild_helper(n))
 		return (0);
@@ -62,67 +57,8 @@ int	ft_heredoc_rebuild(t_ast *n, t_shell *shell)
 	if (pid == -1)
 		return (0);
 	if (pid == 0)
-	{
-		ft_restore_signal_heredoc();
-		fd = open(n->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (fd < 0)
-		{
-			ft_free_shell(&shell);
-			exit(1);
-		}
-		nb_lines = 0;
-		while (1)
-		{
-			nb_lines++;
-			write(1, "> ", 2);
-			line = get_next_line(0);
-			if (!line)
-			{
-				if (g_signal == SIGINT)
-				{
-					ft_free_shell(&shell);
-					close(fd);
-					exit (130);
-				}
-				ft_printf("\nminishield: warning: here-document at line ");
-				ft_printf("%d delimited by end-of-file (wanted `%s')\n",
-					nb_lines, n->limiter);
-				break ;
-			}
-			if (ft_is_limiter(line, n->limiter))
-			{
-				free(line);
-				break ;
-			}
-			write(fd, line, ft_strlen(line));
-			free(line);
-		}
-		ft_free_shell(&shell);
-		close(fd);
-		exit(0);
-	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-	{
-		if (WEXITSTATUS(status) == 0)
-			return (1);
-		else
-		{
-			if (WEXITSTATUS(status) == 130)
-			{
-				ft_putchar_fd('\n', STDOUT_FILENO);
-				g_signal = SIGINT;
-			}
-			unlink(n->filename);
-			return (0);
-		}
-	}
-	if (WIFSIGNALED(status))
-	{
-		unlink(n->filename);
-		return (0);
-	}
-	return (1);
+		ft_heredoc_child(n, shell);
+	return (ft_wait_heredoc(pid, n));
 }
 
 int	ft_redir_rebuild(t_ast *n)

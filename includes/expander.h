@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:06:44 by demane            #+#    #+#             */
-/*   Updated: 2026/01/29 15:06:46 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/30 00:18:56 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,10 @@ int			ft_cmd_rebuild2(t_ast *n, char **ret);
 int			ft_cmd_rebuild_noifs(t_ast *n);
 int			ft_cmd_rebuild2_noifs(t_ast *n, char **ret);
 int			ft_is_empty_noifs(char *s);
+int			ft_handle_heredoc_line(int fd, t_ast *n, int *nb_lines, \
+t_shell *shell);
+void		ft_heredoc_child(t_ast *n, t_shell *shell);
+int			ft_handle_exit_status(int status, t_ast *n);
+int			ft_wait_heredoc(pid_t pid, t_ast *n);
 
 #endif

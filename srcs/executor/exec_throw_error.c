@@ -6,19 +6,20 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:19:14 by demane            #+#    #+#             */
-/*   Updated: 2026/01/29 15:19:15 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/29 23:43:18 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../includes/executor.h"
 
 int	ft_print_err_directory(char *dir)
 {
-	ft_putstr_fd("minishield: ", STDERR_FILENO);
 	if (dir)
-		ft_putstr_fd(dir, STDERR_FILENO);
-	ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+		ft_printf_fd(STDERR_FILENO, "minishield: %s: \
+Is a directory\n", dir);
+	else
+		ft_printf_fd(STDERR_FILENO, "minishield: : \
+Is a directory\n");
 	return (126);
 }
 
@@ -48,17 +49,21 @@ int	ft_throw_error_cmd_not_found(char *err_p)
 {
 	if (ft_strchr(err_p, '/'))
 	{
-		ft_putstr_fd("minishield: ", STDERR_FILENO);
 		if (err_p)
-			ft_putstr_fd(err_p, STDERR_FILENO);
-		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+			ft_printf_fd(STDERR_FILENO, "minishield: %s: \
+No such file or directory\n", err_p);
+		else
+			ft_printf_fd(STDERR_FILENO, "minishield: : \
+No such file or directory\n");
 	}
 	else
 	{
-		ft_putstr_fd("minishield: ", STDERR_FILENO);
 		if (err_p)
-			ft_putstr_fd(err_p, STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+			ft_printf_fd(STDERR_FILENO, "minishield: %s: \
+command not found\n", err_p);
+		else
+			ft_printf_fd(STDERR_FILENO, "minishield: : \
+command not found\n");
 	}
 	return (127);
 }

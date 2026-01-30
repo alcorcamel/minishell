@@ -1,40 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   signals_ignore.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/29 15:19:57 by demane            #+#    #+#             */
-/*   Updated: 2026/01/29 22:57:42 by demane           ###   ########.fr       */
+/*   Created: 2026/01/29 22:50:00 by demane            #+#    #+#             */
+/*   Updated: 2026/01/29 22:52:10 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/signals.h"
 
-volatile sig_atomic_t	g_signal = 0;
-
-void	ft_restore_signal_heredoc(void)
+void	ft_ignore_signal_exec(void)
 {
-	t_sigaction	sa;
+	signal(SIGINT, ft_handle_sigint_exec);
+	signal(SIGQUIT, ft_handle_sigquit);
+}
 
-	sa.sa_handler = ft_handle_sigint_heredoc;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, NULL);
+void	ft_ignore_signal_prompt(void)
+{
+	signal(SIGINT, ft_handle_sigint_prompt);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	ft_verif_signal(t_shell *shell)
+void	ft_restore_signal(void)
 {
-	if (g_signal == SIGINT)
-	{
-		shell->last_status = 130;
-		g_signal = 0;
-	}
-	if (g_signal == SIGQUIT)
-	{
-		shell->last_status = 131;
-		g_signal = 0;
-	}
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
+
+void	ft_ignore_signal(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }

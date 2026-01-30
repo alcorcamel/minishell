@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:18:59 by demane            #+#    #+#             */
-/*   Updated: 2026/01/29 15:18:59 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/30 00:35:45 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	ft_exec_child(t_shell *shell, t_ast *node)
 		return (ft_free_shell(&shell), exit(ft_throw_error("open")));
 	if (dup2(fd, STDIN_FILENO) < 0)
 	{
+		close(fd);
 		ft_free_shell(&shell);
 		exit(1);
 	}

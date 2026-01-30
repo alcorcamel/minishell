@@ -31,13 +31,13 @@ FILES_EXPANDER = expander.c exec_cmd_expand.c exec_cmd_expand2.c \
 		   expander_redirs.c exec_globbing_checker.c expander_error.c \
 		   exec_globbing_redirs.c exec_globbing_any.c expander_utils3.c \
 		   expander_utils4.c exec_globbing_redirs2.c expander_utils5.c \
-		   exec_cmd_rebuild_noifs.c exec_cmd_rebuild_noifs2.c
+		   exec_cmd_rebuild_noifs.c exec_cmd_rebuild_noifs2.c expander_redirs_heredoc.c
 
-FILES_BUILTINS = built_cd.c built_echo.c built_env.c built_exit.c \
+FILES_BUILTINS = built_cd_fn.c built_cd.c built_echo.c built_env.c built_exit.c \
 		 built_export.c built_pwd.c built_unset.c built_utils.c
 
 FILES_EXECUTOR = exec_and.c exec_append.c exec_ast.c exec_cmd.c \
-		 exec_or.c exec_pipe.c exec_redirect.c \
+		 exec_or.c exec_pipe.c exec_redirect_in.c exec_redirect_out.c \
 		 exec_subshell.c exec_get_path.c exec_throw_error.c exec_built.c \
 		 exec_here_doc.c
 
@@ -45,7 +45,7 @@ FILES_ENV = env_cpy.c env_free.c env_make.c env_envp.c env_vars.c
 
 FILES_UTILS = utils.c
 
-FILES_SIGNALS = signals.c
+FILES_SIGNALS = signals.c signals_handle.c signals_ignore.c
 
 # ================= SRCS =================
 

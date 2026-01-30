@@ -6,10 +6,9 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:18:50 by demane            #+#    #+#             */
-/*   Updated: 2026/01/29 15:18:52 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/30 01:53:28 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../includes/executor.h"
 
@@ -54,14 +53,32 @@ static void	ft_exec_child(t_ast *node, t_shell *shell)
 	exit(status);
 }
 
+static int	ft_wait_child(pid_t pid)
+{
+	int	status;
+
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+	{
+		status = 128 + WTERMSIG(status);
+		if (status == 131)
+			ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
+		if (status == 130)
+			ft_putstr_fd("\n", STDOUT_FILENO);
+		return (status);
+	}
+	return (0);
+}
+
 int	ft_exec_cmd(t_ast *node, t_shell *shell)
 {
 	pid_t	pid;
-	int		status;
 
 	if (ft_cmd_expand(node, shell) == 0 || ft_cmd_rebuild(node) == 0)
 		return (1);
-	if (!node->args || !node->args[0])
+	if (!node || !node->args || !node->args[0])
 		return (0);
 	if (ft_strncmp(node->args[0], "export", 7) == 0)
 	{
@@ -79,17 +96,5 @@ int	ft_exec_cmd(t_ast *node, t_shell *shell)
 		return (ft_perror("fork"), 1);
 	if (pid == 0)
 		ft_exec_child(node, shell);
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	if (WIFSIGNALED(status))
-	{
-		status = 128 + WTERMSIG(status);
-		if (status == 131)
-			ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
-		if (status == 130)
-			ft_putstr_fd("\n", STDOUT_FILENO);
-		return (status);
-	}
-	return (0);
+	return (ft_wait_child(pid));
 }

@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*   ft_free_split.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/04 15:11:52 by demane            #+#    #+#             */
-/*   Updated: 2026/01/30 01:39:27 by demane           ###   ########.fr       */
+/*   Created: 2026/01/29 23:03:31 by demane            #+#    #+#             */
+/*   Updated: 2026/01/29 23:58:49 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memset(void *ptr, int c, size_t n)
+void	ft_free_split(char ***split)
 {
-	size_t				i;
-	unsigned char		*p;
+	char	**free_val;
+	int		i;
 
-	p = ptr;
+	if (!split)
+		return ((void)0);
+	free_val = *split;
+	if (!free_val)
+		return ((void)0);
 	i = 0;
-	while (i < n)
-		p[i++] = c;
-	return (p);
+	while (free_val[i])
+	{
+		ft_free((void **)&free_val[i]);
+		i++;
+	}
+	ft_free((void **)&free_val);
+	*split = NULL;
 }

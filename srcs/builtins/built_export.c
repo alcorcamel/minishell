@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:21:09 by demane            #+#    #+#             */
-/*   Updated: 2026/01/29 15:21:10 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/29 22:42:19 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,3 @@ int	ft_export(char **args, t_shell *shell)
 	}
 	return (status);
 }
-

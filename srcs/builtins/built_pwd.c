@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:21:13 by demane            #+#    #+#             */
-/*   Updated: 2026/01/29 15:21:13 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/29 22:41:26 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,3 @@ parent directories");
 	ft_free((void **)&cwd);
 	return (0);
 }
-

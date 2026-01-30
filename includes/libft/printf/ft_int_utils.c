@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 11:13:53 by demane            #+#    #+#             */
-/*   Updated: 2025/11/17 17:55:21 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/29 23:16:28 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ft_getzerocountunsignedint(t_format f, int len_abs)
 	return (nbr_zero);
 }
 
-int	ft_printabs(int n)
+int	ft_printabs(int n, int fd)
 {
 	long	x;
 
@@ -64,9 +64,9 @@ int	ft_printabs(int n)
 	if (n < 0)
 		x = -x;
 	if (x == 2147483648)
-		return (ft_putstr_fd("2147483648", 1), 10);
+		return (ft_putstr_fd("2147483648", fd), 10);
 	else
-		return (ft_putnbr_fd((int)x, 1), ft_intlen((int)x));
+		return (ft_putnbr_fd((int)x, fd), ft_intlen((int)x));
 }
 
 int	ft_intabslen(int n)

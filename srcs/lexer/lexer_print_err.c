@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:15:46 by demane            #+#    #+#             */
-/*   Updated: 2026/01/29 15:16:16 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/30 01:41:41 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 void	ft_lex_err(int i, char *s)
 {
 	if (i == 11)
-		printf("Error: Unexpected operator '%s'\n", s);
+		ft_printf_fd(STDERR_FILENO, "Error: Unexpected operator '%s'\n", s);
 	if (i == 12)
-		printf("Error: Unexistant operator '%s'\n", s);
+		ft_printf_fd(STDERR_FILENO, "Error: Unexistant operator '%s'\n", s);
 	if (i == 13)
-		printf("Error: Not handled operator '%s'\n", s);
+		ft_printf_fd(STDERR_FILENO, "Error: Not handled operator '%s'\n", s);
 	if (i == 14)
-		printf("Error: Expected '%s'\n", s);
+		ft_printf_fd(STDERR_FILENO, "Error: Expected '%s'\n", s);
 	if (i == 15)
-		printf("Error: Expected \"%s\"\n", s);
+		ft_printf_fd(STDERR_FILENO, "Error: Expected \"%s\"\n", s);
 	if (i == 16)
-		printf("Error: Not handled char '%s'\n", s);
+		ft_printf_fd(STDERR_FILENO, "Error: Not handled char '%s'\n", s);
 }

@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 13:59:13 by demane            #+#    #+#             */
-/*   Updated: 2025/11/17 17:54:32 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/29 23:17:35 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ int	ft_printint(t_format f, int nbr)
 	space_count = ft_getspacecount(f, len_abs, zero_count, ft_strlen(sign));
 	printed = 0;
 	if (!f.flag_minus)
-		printed += ft_putnchar(' ', space_count);
+		printed += ft_putnchar(' ', space_count, f.fd);
 	if (sign)
-		printed += ft_putnstr(sign, 1);
-	printed += ft_putnchar('0', zero_count);
+		printed += ft_putnstr(sign, 1, f.fd);
+	printed += ft_putnchar('0', zero_count, f.fd);
 	if (!(nbr == 0 && f.precision == 0))
-		printed += ft_printabs(nbr);
+		printed += ft_printabs(nbr, f.fd);
 	if (f.flag_minus)
-		printed += ft_putnchar(' ', space_count);
+		printed += ft_putnchar(' ', space_count, f.fd);
 	return (printed);
 }

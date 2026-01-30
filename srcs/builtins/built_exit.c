@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:20:41 by demane            #+#    #+#             */
-/*   Updated: 2026/01/29 15:21:02 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/29 22:40:31 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,3 @@ int	ft_exit(char **args, t_shell *shell)
 	return (shell->last_status = (unsigned char)status,
 		shell->should_exit = 1, shell->last_status);
 }
-

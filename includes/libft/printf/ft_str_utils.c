@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 11:17:38 by demane            #+#    #+#             */
-/*   Updated: 2025/11/17 11:23:14 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/29 23:15:11 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ int	ft_strnlen(char *str, int n)
 	return (len);
 }
 
-int	ft_putnstr(char *str, int n)
+int	ft_putnstr(char *str, int n, int fd)
 {
 	int	len;
 
 	len = 0;
 	while (str && str[len] && len < n)
-		ft_putchar_fd(str[len++], 1);
+		ft_putchar_fd(str[len++], fd);
 	return (len);
 }
 
@@ -51,9 +51,9 @@ int	ft_printstr(t_format f, char *str)
 	space_count = ft_getspacecount(f, len_str, 0, 0);
 	printed = 0;
 	if (!f.flag_minus)
-		printed += ft_putnchar(' ', space_count);
-	printed += ft_putnstr(str, len_str);
+		printed += ft_putnchar(' ', space_count, f.fd);
+	printed += ft_putnstr(str, len_str, f.fd);
 	if (f.flag_minus)
-		printed += ft_putnchar(' ', space_count);
+		printed += ft_putnchar(' ', space_count, f.fd);
 	return (printed);
 }

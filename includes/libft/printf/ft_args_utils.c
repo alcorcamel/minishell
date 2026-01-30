@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 13:57:41 by demane            #+#    #+#             */
-/*   Updated: 2025/11/17 16:34:34 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/29 23:25:33 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,5 @@ void	ft_printarg(t_format f, va_list ap, int *count)
 	if (type == 'p')
 		return ((*count) += ft_printptr(f, (void *)arg), (void)0);
 	if (type == '%')
-		return ((*count) += 1, ft_putchar_fd('%', 1));
+		return ((*count) += 1, ft_putchar_fd('%', f.fd));
 }

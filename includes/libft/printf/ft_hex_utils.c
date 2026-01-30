@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 11:14:51 by demane            #+#    #+#             */
-/*   Updated: 2025/11/17 17:53:53 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/29 23:22:03 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,15 @@ int	ft_hexlen(unsigned long nbr)
 	return (1);
 }
 
-int	ft_printnbrhex(t_format f, unsigned long long nbr)
+int	ft_printnbrhex(t_format f, unsigned long long nbr, int fd)
 {
 	int	len;
 
 	len = ft_hexlen(nbr);
 	if (f.type == 'x' || f.type == 'p')
-		ft_putunbr_base_fd(nbr, "0123456789abcdef", 1);
+		ft_putunbr_base_fd(nbr, "0123456789abcdef", fd);
 	if (f.type == 'X')
-		ft_putunbr_base_fd(nbr, "0123456789ABCDEF", 1);
+		ft_putunbr_base_fd(nbr, "0123456789ABCDEF", fd);
 	return (len);
 }
 
@@ -86,13 +86,13 @@ int	ft_printhex(t_format f, unsigned int nbr)
 	space_count = ft_getspacecount(f, hex_len, zero_count, ft_strlen(sign));
 	printed = 0;
 	if (!f.flag_minus)
-		printed += ft_putnchar(' ', space_count);
+		printed += ft_putnchar(' ', space_count, f.fd);
 	if (sign)
-		printed += ft_putnstr(sign, 2);
-	printed += ft_putnchar('0', zero_count);
+		printed += ft_putnstr(sign, 2, f.fd);
+	printed += ft_putnchar('0', zero_count, f.fd);
 	if (!(nbr == 0 && f.precision == 0))
-		printed += ft_printnbrhex(f, (unsigned long long)nbr);
+		printed += ft_printnbrhex(f, (unsigned long long)nbr, f.fd);
 	if (f.flag_minus)
-		printed += ft_putnchar(' ', space_count);
+		printed += ft_putnchar(' ', space_count, f.fd);
 	return (printed);
 }

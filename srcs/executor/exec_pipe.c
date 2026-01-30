@@ -6,12 +6,17 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:19:05 by demane            #+#    #+#             */
-/*   Updated: 2026/01/29 15:19:05 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/30 02:10:23 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../includes/executor.h"
+
+static void	ft_close_fd(int fd[2])
+{
+	close(fd[0]);
+	close(fd[1]);
+}
 
 static void	ft_exec_child(int fd[2], t_ast *node_child, t_shell *shell,
 	int child)
@@ -33,11 +38,11 @@ static void	ft_exec_child(int fd[2], t_ast *node_child, t_shell *shell,
 	ft_ignore_signal();
 	if (dup2(fd[index_fd], dup_fd) < 0)
 	{
+		ft_close_fd(fd);
 		ft_free_shell(&shell);
 		exit(ft_throw_error("dup2"));
 	}
-	close(fd[0]);
-	close(fd[1]);
+	ft_close_fd(fd);
 	status = ft_exec_ast(node_child, shell);
 	ft_free_shell(&shell);
 	exit(status);
@@ -79,8 +84,7 @@ int	ft_exec_pipe(t_ast *ast, t_shell *shell)
 		return (ft_throw_error("fork"));
 	if (pid[1] == 0)
 		ft_exec_child(fd, ast->right, shell, 2);
-	close(fd[0]);
-	close(fd[1]);
+	ft_close_fd(fd);
 	last_status = ft_recup_status(pid);
 	if (WIFEXITED(last_status))
 		return (WEXITSTATUS(last_status));

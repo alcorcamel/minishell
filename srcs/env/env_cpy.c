@@ -6,7 +6,7 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:20:16 by demane            #+#    #+#             */
-/*   Updated: 2026/01/29 15:20:16 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/30 01:03:37 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,4 +107,3 @@ t_bool	ft_cpy_enpv(char **envp, t_shell *shell)
 			return (ft_free_all_env(&(shell->vars)), FALSE);
 	return (TRUE);
 }
-

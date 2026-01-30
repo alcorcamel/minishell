@@ -6,10 +6,9 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:18:55 by demane            #+#    #+#             */
-/*   Updated: 2026/01/29 15:18:55 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/29 23:26:36 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../includes/executor.h"
 
@@ -24,25 +23,6 @@ int	ft_get_index_path(char **envp)
 			return (i);
 	}
 	return (-1);
-}
-
-void	ft_free_all_split_val(char ***split_val)
-{
-	char	**free_val;
-	int		i;
-
-	if (!split_val)
-		return ((void)0);
-	free_val = *split_val;
-	if (!free_val)
-		return ((void)0);
-	i = 0;
-	while (free_val[i])
-	{
-		ft_free((void **)&free_val[i]);
-		i++;
-	}
-	ft_free((void **)&free_val);
 }
 
 int	ft_access(char **path_params)
@@ -80,7 +60,7 @@ int	ft_access_in_rep(char **path_params, char ***split_val,
 	if (errno == EACCES)
 	{
 		ft_perror(path);
-		ft_free_all_split_val(split_val);
+		ft_free_split(split_val);
 		ft_free_shell(&shell);
 		exit(126);
 	}
@@ -99,15 +79,15 @@ char	*ft_try_paths(char ***split_val, char *cmd_name, t_shell *shell)
 		path = ft_strjoin_sep((*split_val)[i], cmd_name, '/');
 		if (!path)
 		{
-			ft_free_all_split_val(split_val);
+			ft_free_split(split_val);
 			ft_free_shell(&shell);
 			exit(1);
 		}
 		if (ft_access(&path))
-			return (ft_free_all_split_val(split_val), path);
+			return (ft_free_split(split_val), path);
 		ft_free((void **)&path);
 	}
-	return (ft_free_all_split_val(split_val), NULL);
+	return (ft_free_split(split_val), NULL);
 }
 
 char	*ft_get_path(t_ast *node, t_shell *shell)

@@ -6,12 +6,12 @@
 /*   By: demane <emanedanielakim@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 15:17:36 by demane            #+#    #+#             */
-/*   Updated: 2026/01/29 15:17:37 by demane           ###   ########.fr       */
+/*   Updated: 2026/01/30 01:02:40 by demane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/executor.h"
 #include "../../includes/expander.h"
+#include "../../includes/executor.h"
 
 static void	ft_append_seg_special(char *dst, t_seg *seg, size_t *i)
 {
@@ -85,8 +85,6 @@ static int	ft_cmd_rebuild_helper(t_seg *segs, size_t *size, char **ret)
 	t_seg	*tmp;
 
 	tmp = segs;
-	// if (!segs)
-	// 	return (0);
 	*size = 0;
 	while (tmp)
 	{
